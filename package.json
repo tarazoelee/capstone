@@ -24,5 +24,8 @@
     "firebase": "^10.6.0",
     "firebase-admin": "^11.11.0"
   },
-  "proxy": "http://localhost:5000"
+  "proxy": "http://localhost:5000",
+  "devDependencies": {
+    "tailwindcss": "^3.3.5"
+  }
 }
