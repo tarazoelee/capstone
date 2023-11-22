@@ -2,6 +2,7 @@ import React from "react";
 import { AuthProvider } from "../contexts/AuthContext";
 import Signup from "./Signup";
 import Login from "./Login";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
   // state = {
@@ -26,9 +27,16 @@ function App() {
   // };
 
   return (
-    <AuthProvider>
-      <Login />
-    </AuthProvider>
+    <div>
+      <Router>
+      <AuthProvider>
+        <Routes>
+          <Route exact path="/" element={<Login></Login>}/>
+        </Routes>
+      </AuthProvider>
+      </Router>
+    </div>
+    
   );
 }
 
