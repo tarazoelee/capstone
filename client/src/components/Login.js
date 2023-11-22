@@ -1,10 +1,10 @@
 import React, { useRef, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 
-export default function Signup() {
+export default function Login() {
   const emailRef = useRef();
   const passwordRef = useRef();
-  const { signup } = useAuth();
+  const { login, currentUser } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -14,7 +14,7 @@ export default function Signup() {
     try {
       setError("");
       setLoading(true);
-      await signup(emailRef.current.value, passwordRef.current.value);
+      await login(emailRef.current.value, passwordRef.current.value);
     } catch (e) {
       setError("Failed to Signup");
     }
@@ -45,7 +45,7 @@ export default function Signup() {
         onClick={handleSubmit}
         disabled={loading}
       >
-        Signup
+        Login
       </button>
     </div>
   );

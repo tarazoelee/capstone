@@ -1,6 +1,7 @@
 import React from "react";
-import Signup from "./Signup";
 import { AuthProvider } from "../contexts/AuthContext";
+import Signup from "./Signup";
+import Login from "./Login";
 
 function App() {
   // state = {
@@ -26,7 +27,7 @@ function App() {
 
   return (
     <AuthProvider>
-      <Signup />
+      <Login />
     </AuthProvider>
   );
 }
