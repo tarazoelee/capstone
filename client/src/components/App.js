@@ -3,7 +3,7 @@ import { AuthProvider } from "../contexts/AuthContext";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Signup from "./Signup";
 import Login from "./Login";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Dashboard from "./Dashboard";
 
 function App() {
   // state = {
@@ -33,6 +33,7 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/dashboard" element={<Dashboard></Dashboard>} />
         </Routes>
       </AuthProvider>
     </Router>
