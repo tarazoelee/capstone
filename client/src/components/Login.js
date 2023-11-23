@@ -25,31 +25,44 @@ export default function Login() {
     setLoading(false);
   }
   return (
-    <div className="flex flex-col mt-6">
-      <input
-        className="mb-6"
-        type="text"
-        placeholder="Enter Username"
-        name="username"
-        ref={emailRef}
-        required
-      />
-      <input
-        className="mb-6"
-        type="password"
-        placeholder="Enter Password"
-        name="password"
-        ref={passwordRef}
-        required
-      />{" "}
-      <button
-        className="bg-red-500"
-        type="submit"
-        onClick={handleSubmit}
-        disabled={loading}
-      >
-        Login
-      </button>
+    <div className="flex mt-6 items-center">
+      <div className="flex flex-col w-1/3 border-2">
+        <div>Discover the daily news like never before</div>
+      </div>
+      <div className="flex flex-col w-2/3 border-2 justify-center items-center">
+        <div className="font-bold text-3xl">
+          Log In to DailyBytes
+        </div>
+        <div>
+          Continue with Google 
+        </div>
+        <div className="flex flex-col gap-7">
+          <input
+            className="mb-6 bg-none border-b border-black w-80"
+            type="text"
+            placeholder="Email"
+            name="username"
+            ref={emailRef}
+            required
+          />
+          <input
+            className="mb-6 border-b border-black"
+            type="password"
+            placeholder="Password"
+            name="password"
+            ref={passwordRef}
+            required
+          />{" "}
+          <button
+            className="bg-gray-200 h-10 text-sm"
+            type="submit"
+            onClick={handleSubmit}
+            disabled={loading}
+          >
+            Login
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

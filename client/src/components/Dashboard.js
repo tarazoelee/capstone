@@ -3,5 +3,9 @@ import { useAuth } from "../contexts/AuthContext";
 
 export default function Dashboard() {
   const { currentUser } = useAuth();
-  return <div>{currentUser.email}</div>;
+
+  return (
+    <div>{currentUser.email}</div>
+  
+  );
 }

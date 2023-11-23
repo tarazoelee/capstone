@@ -28,6 +28,7 @@ function App() {
   // };
 
   return (
+    <div className="w-screen h-screen" >
     <Router>
       <AuthProvider>
         <Routes>
@@ -37,6 +38,7 @@ function App() {
         </Routes>
       </AuthProvider>
     </Router>
+    </div>
   );
 }
 
