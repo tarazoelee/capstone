@@ -16,29 +16,32 @@ export default function Login() {
     try {
       setError("");
       setLoading(true);
-      await login(emailRef.current.value, passwordRef.current.value)
-        .then(nav("/dashboard"));
+      await login(emailRef.current.value, passwordRef.current.value).then(
+        nav("/dashboard")
+      );
     } catch (e) {
-      setError("Failed to Signup");
+      setError("Failed to Login");
     }
 
     setLoading(false);
   }
   return (
     <div className="flex h-full">
-      <div className="flex flex-col w-1/3 border-2 items-center justify-center bg-myYellow">
-        <div className="font-bold text-5xl px-32"> Discover the daily news like never before</div>
+      <div className="flex flex-col w-1/3 items-center justify-center rounded-r-md bg-[#ffdd80]">
+        <div className="font-bold text-5xl px-32 text-yellow-900">
+          {" "}
+          Discover the daily news like never before.
+        </div>
       </div>
-      <div className="flex flex-col w-2/3 gap-6 border-2 justify-center items-center">
-        <div className="font-bold text-3xl">
-          Log In to DailyBytes
+      <div className="flex flex-col w-2/3 gap-6 justify-center items-center">
+        <div className="font-bold text-3xl text-yellow-900">
+          Welcome to DailyBytes
         </div>
-        <div>
-          Continue with Google 
-        </div>
+        <div>Continue with Google</div>
+        <div> {error}</div>
         <div className="flex flex-col">
           <input
-            className="mb-6 bg-none border-b border-black w-80"
+            className="mb-6 bg-none border-b border-black w-80 placeholder:text-black py-4"
             type="text"
             placeholder="Email"
             name="username"
@@ -46,7 +49,7 @@ export default function Login() {
             required
           />
           <input
-            className="mb-6 border-b border-black"
+            className="mb-6 border-b border-black placeholder:text-black py-4"
             type="password"
             placeholder="Password"
             name="password"
@@ -62,10 +65,12 @@ export default function Login() {
             Login
           </button>
           <div className="text-center mt-2 text-xs">
-            Don't have an account? <a href='/signup'>Sign Up</a>
+            Don't have an account?{" "}
+            <a href="/signup" className="underline underline-offset-2">
+              Sign Up
+            </a>
           </div>
         </div>
-        
       </div>
     </div>
   );
