@@ -26,10 +26,10 @@ export default function Login() {
   }
   return (
     <div className="flex h-full">
-      <div className="flex flex-col w-1/3 border-2 items-center justify-center bg-myYellow">
-        <div className="font-bold text-5xl px-32"> Discover the daily news like never before</div>
+      <div className="flex flex-col w-1/3 items-center justify-center rounded-r-md bg-[#ffdd80]">
+        <div className="font-bold text-5xl px-32 text-yellow-900"> Discover the daily news like never before.</div>
       </div>
-      <div className="flex flex-col w-2/3 gap-6 border-2 justify-center items-center">
+      <div className="flex flex-col w-2/3 gap-6 justify-center items-center">
         <div className="font-bold text-3xl">
           Log In to DailyBytes
         </div>
