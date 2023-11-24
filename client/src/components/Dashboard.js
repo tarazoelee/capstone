@@ -9,6 +9,7 @@ export default function Dashboard() {
   const [error, setError] = useState("");
   const { currentUser, logout } = useAuth();
   const nav = useNavigate();
+  const [isDropdownVisible, setDropdownVisible] = useState(false);
 
   async function handleLogout() {
     setError("");
@@ -18,21 +19,48 @@ export default function Dashboard() {
       setError("Failed to log out");
     }
   }
+  
+  const handleMouseEnter = () => {
+    setDropdownVisible(true);
+  };
+
+  const handleMouseLeave = () => {
+    setDropdownVisible(false);
+  };
 
   return (
    
   <div>
-    <a href="/profile">
-    <div className="flex items-center pl-16 gap-3">
+    
+    <div className="flex items-center pl-16 gap-3 py-20">
         <div className="">
-          <img src={user} className="w-8"></img>
+          {
+            /**<img src={user} className="w-8"></img> */
+          }
         </div>
-        <div className="text-yellow-900 font-bold py-20 self-start decoration-none">
-          {currentUser.email}
+        <div 
+          className="text-yellow-900 font-bold self-startflex flex-col"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
+          <a href="/profile" className="text-yellow-900 decoration-none hover:text-yellow-900 hover:no-underline">
+            {currentUser.email}
+          </a>
+          <div>
+             {isDropdownVisible && 
+                <div>
+                  <div className="hover:text-gray-100 text-yellow-900 ease-linear transition duration-100">Profile</div>
+                  <button 
+                    onClick={handleLogout}
+                    className="hover:text-gray-100 text-yellow-900 ease-linear transition duration-100"
+                  >
+                    Log Out
+                  </button>
+                </div>
+                }
+          </div>
         </div>
     </div>
-    </a>
-    <button onClick={handleLogout}>Log Out</button>
     <div className="flex h-full flex-col items-center">
       
        <div className="flex flex-col justify-center w-7/12 mb-44 gap-7 ">
