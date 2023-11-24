@@ -19,6 +19,9 @@ export default function Dashboard() {
       setError("Failed to log out");
     }
   }
+  function navProfile(){
+    nav("/profile")
+  }
   
   const handleMouseEnter = () => {
     setDropdownVisible(true);
@@ -31,8 +34,7 @@ export default function Dashboard() {
   return (
    
   <div>
-    
-    <div className="flex items-center pl-16 gap-3 py-20">
+    <div className="flex pl-16 gap-3 my-20 h-20 ">
         <div className="">
           {
             /**<img src={user} className="w-8"></img> */
@@ -43,16 +45,20 @@ export default function Dashboard() {
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <a href="/profile" className="text-yellow-900 decoration-none hover:text-yellow-900 hover:no-underline">
+          <div className="text-yellow-900 decoration-none hover:text-yellow-900 hover:no-underline">
             {currentUser.email}
-          </a>
+          </div>
           <div>
              {isDropdownVisible && 
                 <div>
-                  <div className="hover:text-gray-100 text-yellow-900 ease-linear transition duration-100">Profile</div>
+                  <div 
+                  onClick={navProfile}
+                   className="hover:text-gray-100 text-yellow-900 ease-linear transition duration-100 hover:cursor-pointer mt-1">
+                    Profile
+                  </div>
                   <button 
                     onClick={handleLogout}
-                    className="hover:text-gray-100 text-yellow-900 ease-linear transition duration-100"
+                    className="hover:text-gray-100 text-yellow-900 ease-linear transition duration-100 mt-1"
                   >
                     Log Out
                   </button>
