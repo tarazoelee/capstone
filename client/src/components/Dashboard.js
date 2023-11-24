@@ -45,7 +45,10 @@ export default function Dashboard() {
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <div className="text-yellow-900 decoration-none hover:text-yellow-900 hover:no-underline">
+          <div 
+            className="text-yellow-900 decoration-none hover:text-yellow-900 hover:no-underline"
+            
+          >
             {currentUser.email}
           </div>
           <div>
@@ -73,7 +76,7 @@ export default function Dashboard() {
         <div className="font-bold text-3xl text-yellow-900">
           Today's Byte
         </div>
-         <div className="px-20 py-10 bg-orange-100 text-black rounded-md">
+         <div className="px-20 py-16 bg-orange-100 text-black rounded-md">
           Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like</div>
        </div>
    
