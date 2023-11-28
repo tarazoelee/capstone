@@ -1,30 +1,52 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { GoogleButton } from "react-google-button";
 
 export default function Login() {
   const emailRef = useRef();
   const passwordRef = useRef();
-  const { login, currentUser } = useAuth();
+  const { login, currentUser, googleSignIn } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const nav = useNavigate();
+
+  useEffect(() => {
+    if (currentUser != null) {
+      var userID = currentUser.uid;
+      nav("dashboard");
+    } else {
+      nav("/");
+    }
+  }, [currentUser]);
 
   async function handleSubmit(e) {
     e.preventDefault();
     try {
       setError("");
       setLoading(true);
-      await login(emailRef.current.value, passwordRef.current.value).then(
-        nav("/dashboard")
-      );
+      await login(emailRef.current.value, passwordRef.current.value);
     } catch (e) {
       setError("Failed to Login");
     }
 
     setLoading(false);
   }
+
+  async function handleGoogleSignIn(e) {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      setError("");
+      await googleSignIn();
+    } catch (error) {
+      setError("Failed to Login");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <div className="flex h-full">
       <div className="flex flex-col w-1/3 items-center justify-center rounded-r-md bg-[#ffdd80]">
@@ -37,7 +59,10 @@ export default function Login() {
         <div className="font-bold text-3xl text-yellow-900">
           Welcome to DailyBytes
         </div>
-        <div>Continue with Google</div>
+        <div>
+          {" "}
+          <GoogleButton onClick={handleGoogleSignIn} />
+        </div>
         <div> {error}</div>
         <div className="flex flex-col">
           <input
