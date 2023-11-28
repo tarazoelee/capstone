@@ -22,7 +22,8 @@
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "firebase": "^10.6.0",
-    "firebase-admin": "^11.11.0"
+    "firebase-admin": "^11.11.0",
+    "rsuite": "^5.46.0"
   },
   "proxy": "http://localhost:5000",
   "devDependencies": {
