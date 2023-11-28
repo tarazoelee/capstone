@@ -14,5 +14,5 @@ app.get("/api", (request, response) => {
 });
 
 app.listen(1234, () => {
-  consle.log("Running on port 1234!");
+  console.log("Running on port 1234!");
 });
