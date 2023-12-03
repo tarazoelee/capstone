@@ -5,6 +5,7 @@ import Signup from "./Signup";
 import Login from "./Login";
 import Dashboard from "./Dashboard";
 import Profile from "./Profile";
+import CreateProfile from "./CreateProfile";
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/dashboard" element={<Dashboard></Dashboard>} />
           <Route path="/profile" element={<Profile/>}/>
+          <Route path="/createProfile" element ={<CreateProfile></CreateProfile>}></Route>
         </Routes>
       </AuthProvider>
     </Router>
