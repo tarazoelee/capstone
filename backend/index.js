@@ -1,6 +1,3 @@
-// Code for mongoose config in backend
-// Filename - backend/index.js
-
 // To connect with your mongoDB database
 const mongoose = require('mongoose');
 mongoose.connect("mongodb+srv://azhitkev:dltImV1IGgFvxXje@capstone.8mdcviu.mongodb.net/", {
@@ -11,29 +8,13 @@ mongoose.connect("mongodb+srv://azhitkev:dltImV1IGgFvxXje@capstone.8mdcviu.mongo
 
 .catch((err) => { console.error(err); });;
 
-// Schema for users of app
-const UserSchema = new mongoose.Schema({
-	name: {
-		type: String,
-		required: true,
-	},
-	email: {
-		type: String,
-		required: true,
-		unique: true,
-	},
-	date: {
-		type: Date,
-		default: Date.now,
-	},
-});
-const User = mongoose.model('users', UserSchema);
-User.createIndexes();
 
 // For backend and express
 const express = require('express');
 const app = express();
 const cors = require("cors");
+const topicsModel = require("./models/topics")
+const usersModel = require("./models/Users")
 console.log("App listen at port 5000");
 app.use(express.json());
 app.use(cors());
@@ -43,25 +24,73 @@ app.get("/", (req, resp) => {
 	// You can check backend is working or not by 
 	// entering http://loacalhost:5000
 	
-	// If you see App is working means
-	// backend working properly
+	// If you see App is working means backend working properly
 });
 
-app.post("/register", async (req, resp) => {
+//GETTING ALL TOPICS 
+app.get("/topics",async(req,res)=>{
+	try{
+		const topics = await topicsModel.find({})
+		res.send(topics)
+	}
+	catch(e){
+		console.log("unable to get topics")
+	}
+})
+
+//Adding User to Mongo
+// ...
+
+// app.post("/addUser", async (request, response) => {
+//   try {
+//     const user = new User(request.body);
+// 	console.log("user"+ user)
+// 	let result = await user.save();
+// 	result = result.toObject();
+// 	console.log(result)
+//   } catch (error) {
+//     response.status(500).send(error);
+// 	console.log("Unable to add user")
+//   }
+// });
+
+// ...
+
+
+app.listen(5000);
+
+//ADDING NEW USER ON SIGN UP 
+app.post("/addUser", async (req, resp) => {
+	const email = req.body.email
+	//var checkEmail = usersModel.findOne({}, { email:email} )
+	//console.log(checkEmail)
+
+	var user = new usersModel({
+		email: email,
+		topic_1:"",
+		topic_2:"",
+		topic_3:""
+	})
+	//if( checkEmail.length <=0 ){
+	user.save().then(()=>{
+		console.log("New user created" + email)
+	}).catch((err)=>{
+		console.log("Unable to create new user"+ "\n" + err);
+	})
+	//}
+	// else{
+	// 	console.log("User already exists")
+	// 	}
+	})
+
+app.post("/selectTopics", async (req, resp) => {
 	try {
-		const user = new User(req.body);
-		let result = await user.save();
-		result = result.toObject();
-		if (result) {
-			delete result.password;
-			resp.send(req.body);
-			console.log(result);
-		} else {
-			console.log("User already register");
-		}
+
+		topic = req.body;
+		console.log(topic);
 
 	} catch (e) {
 		resp.send("Something Went Wrong");
 	}
 });
-app.listen(5000);
+

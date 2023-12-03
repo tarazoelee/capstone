@@ -6,14 +6,25 @@ export default function Signup() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
-  const { signup } = useAuth();
+  const { currentUser, logout, signup } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
   const nav = useNavigate();
 
   async function goBack() {
     nav("/");
+  }
+ 
+  //ADD USER TO MONGODB
+  function addUser(email){
+    fetch(
+        'http://localhost:5000/addUser', {
+            method: "post",
+            body: JSON.stringify({email}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+      })
   }
 
   async function handleSubmit(e) {
@@ -27,9 +38,14 @@ export default function Signup() {
       setError("");
       setLoading(true);
 
+      //adding user to mongo
+      console.log(emailRef.current.value)
+      addUser(emailRef.current.value)
+
       await signup(emailRef.current.value, passwordRef.current.value).then(
-        nav("/")
+        nav("/createProfile")
       );
+
     } catch (e) {
       setError("Failed to Signup");
     }
