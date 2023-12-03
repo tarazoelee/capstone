@@ -14,7 +14,7 @@ const express = require('express');
 const app = express();
 const cors = require("cors");
 const topicsModel = require("./models/topics")
-const usersModel = require("./models/Users")
+const usersModel = require("./models/Users");
 console.log("App listen at port 5000");
 app.use(express.json());
 app.use(cors());
@@ -62,35 +62,79 @@ app.listen(5000);
 //ADDING NEW USER ON SIGN UP 
 app.post("/addUser", async (req, resp) => {
 	const email = req.body.email
-	//var checkEmail = usersModel.findOne({}, { email:email} )
-	//console.log(checkEmail)
+	var checkEmail = usersModel.find({ email:email} )
 
 	var user = new usersModel({
-		email: email,
-		topic_1:"",
-		topic_2:"",
-		topic_3:""
+		email: email
 	})
-	//if( checkEmail.length <=0 ){
+	if(( await checkEmail).length <=0 ){
 	user.save().then(()=>{
-		console.log("New user created" + email)
+		console.log("New user created: " + email)
 	}).catch((err)=>{
 		console.log("Unable to create new user"+ "\n" + err);
 	})
-	//}
-	// else{
-	// 	console.log("User already exists")
-	// 	}
+	}
+	else{
+		console.log("User already exists")
+		}
 	})
 
-app.post("/selectTopics", async (req, resp) => {
+//-----------ADDING TOPICS TO USER WHEN CREATING PROFILE--------
+app.post("/selectTopic1", async (req, resp) => {
 	try {
+		var topic = req.body.topic;
+		var email = req.body.email;
+		String(topic)
+		String(email)
+		
+		const query = {email:email};
+		const options = {upsert: true};
 
-		topic = req.body;
-		console.log(topic);
-
+		//Updating topic 1 
+		(await usersModel.updateOne(query,{$set: {topic_1: topic}},options)).then(
+			console.log("updated topic 1 " + topic)
+		)
+		
 	} catch (e) {
-		resp.send("Something Went Wrong");
+		resp.send("Unable to add topic");
+	}
+});
+
+app.post("/selectTopic2", async (req, resp) => {
+	try {
+		var topic = req.body.topic;
+		var email = req.body.email;
+		String(topic)
+		String(email)
+		
+		const query = {email:email};
+		const options = {upsert: true};
+
+		(await usersModel.updateOne(query,{$set: {topic_2: topic}},options)).then(
+			console.log("updated topic 2" + topic)
+		)
+		
+	} catch (e) {
+		resp.send("Unable to add topic");
+	}
+});
+
+app.post("/selectTopic3", async (req, resp) => {
+	try {
+		var topic = req.body.topic;
+		var email = req.body.email;
+		String(topic)
+		String(email)
+		
+		const query = {email:email};
+		const options = {upsert: true};
+
+		(await usersModel.updateOne(query,{$set: {topic_3: topic}},options)).then(
+			console.log("updated topic 3 " + topic)
+		)
+		
+	} catch (e) {
+		resp.send("Unable to add topic");
 	}
 });
 
