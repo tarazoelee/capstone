@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 function Profile() {
   const nav = useNavigate();
   const [topics, setTopics] = useState([])
+  const [lengths, setLengths] = useState([]);
 
   /**GETTING TOPICS ON FIRST LOAD */
   useEffect(()=>{
@@ -20,6 +21,16 @@ function Profile() {
     }
     )
   }
+
+    /**GETTING ALL TOPICS FROM THE TOPICS COLLECTION */
+    async function getLengths(){
+      await fetch("http://localhost:5000/lengths").then(
+        response => response.json()
+      ).then((data)=>{
+        setLengths(data)
+      }
+      )
+    }
 
   function navDash(){
     nav('/dashboard')
@@ -41,12 +52,12 @@ function Profile() {
 
         <div className='flex gap-10 items-center'>
           <div>Account Email</div>
-          <div className='bg-gray-100 rounded-md px-28 py-2 text-xs'>account@email.com</div>
+          <input className='bg-gray-100 rounded-md px-28 py-2 text-xs'>account@email.com</input>
         </div>
 
         <div className='flex gap-10 items-center'>
           <div>Podcast Email</div>
-          <div className='bg-gray-100 rounded-md px-28 py-2 text-xs'>podcast@email.com</div>
+          <input className='bg-gray-100 rounded-md px-28 py-2 text-xs'>podcast@email.com</input>
         </div>
 
         <div className='flex gap-10 items-center'>
