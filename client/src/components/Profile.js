@@ -52,12 +52,12 @@ function Profile() {
 
         <div className='flex gap-10 items-center'>
           <div>Account Email</div>
-          <input className='bg-gray-100 rounded-md px-28 py-2 text-xs'>account@email.com</input>
+          <div className='bg-gray-100 rounded-md px-28 py-2 text-xs'>account@email.com</div>
         </div>
 
         <div className='flex gap-10 items-center'>
           <div>Podcast Email</div>
-          <input className='bg-gray-100 rounded-md px-28 py-2 text-xs'>podcast@email.com</input>
+          <div className='bg-gray-100 rounded-md px-28 py-2 text-xs'>podcast@email.com</div>
         </div>
 
         <div className='flex gap-10 items-center'>
