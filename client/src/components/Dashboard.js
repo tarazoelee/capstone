@@ -37,12 +37,12 @@ export default function Dashboard() {
       <div className="flex pl-16 gap-3 my-20 h-20 ">
         <div className="">{/**<img src={user} className="w-8"></img> */}</div>
         <div
-          className="text-yellow-900 font-bold self-startflex flex-col"
+          className="text-yellow-900 font-bold"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
           <div className="text-yellow-900 decoration-none hover:text-yellow-900 hover:no-underline">
-            {currentUser.email}
+             {currentUser.email}
           </div>
           <div>
             {isDropdownVisible && (
@@ -82,7 +82,7 @@ export default function Dashboard() {
         <div className="flex flex-col justify-center w-7/12 mb-44 gap-7">
           <div className="font-bold text-3xl text-yellow-900">Past Bytes</div>
           <div className="">
-            <Calendar />
+            {/* {<Calendar />} */}
           </div>
         </div>
       </div>
