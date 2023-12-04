@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { baseURL } from "../config.js";
 
 export default function Signup() {
   const emailRef = useRef();
@@ -14,17 +15,16 @@ export default function Signup() {
   async function goBack() {
     nav("/");
   }
- 
+
   //ADD USER TO MONGODB
-  function addUser(email){
-    fetch(
-        'http://localhost:5000/addUser', {
-            method: "post",
-            body: JSON.stringify({email}),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-      })
+  function addUser(email) {
+    fetch(`${baseURL}/addUser`, {
+      method: "post",
+      body: JSON.stringify({ email }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   }
 
   async function handleSubmit(e) {
@@ -39,13 +39,12 @@ export default function Signup() {
       setLoading(true);
 
       //adding user to mongo
-      console.log(emailRef.current.value)
-      addUser(emailRef.current.value)
+      console.log(emailRef.current.value);
+      addUser(emailRef.current.value);
 
       await signup(emailRef.current.value, passwordRef.current.value).then(
         nav("/createProfile")
       );
-
     } catch (e) {
       setError("Failed to Signup");
     }
