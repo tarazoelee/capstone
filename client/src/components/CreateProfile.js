@@ -10,6 +10,7 @@ function CreateProfile() {
   const [topic1, setTopic1] = useState([]);
   const [topic2, setTopic2] = useState([]);
   const [topic3, setTopic3] = useState([]);
+  const [length, setLength] = useState([]);
 
   /**GETTING TOPICS ON FIRST LOAD */
   useEffect(() => {
@@ -27,7 +28,14 @@ function CreateProfile() {
 
 //WHEN EACH TOPIC IS CLICKED, SET TOPIC OBJECT TO SELECTED ITEM AND CHANGE ITS COLOUR
   async function selectTopic1(topic) {
+    if(topic1.length >0){
+      const oldtopicDiv = document.getElementById(`${topic1}` + "1");
+      oldtopicDiv.style.backgroundColor = "yellow";
+    }
+
     setTopic1(topic)
+    const newtopicDiv = document.getElementById(`${topic}` + "1");
+    newtopicDiv.style.backgroundColor = "orange";
 
     // console.log(topic);
     // const topicDiv = document.getElementById(`${topic}` + "1");
@@ -42,41 +50,23 @@ function CreateProfile() {
   }
 
   async function selectTopic2(topic) {
-    console.log(topic);
+    setTopic2(topic)
     const topicDiv = document.getElementById(`${topic}` + "2");
     topicDiv.style.backgroundColor = "orange";
-    await fetch(`${baseURL}/selectTopic2`, {
-      method: "post",
-      body: JSON.stringify({ topic: topic, email: currentUser.email }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
   }
 
   async function selectTopic3(topic) {
-    console.log(topic);
+    setTopic3(topic)
     const topicDiv = document.getElementById(`${topic}` + "3");
     topicDiv.style.backgroundColor = "orange";
-    await fetch(`${baseURL}/selectTopic3`, {
-      method: "post",
-      body: JSON.stringify({ topic: topic, email: currentUser.email }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
   }
-
-  
-  //getLength here, TEMP LENGTH RN
-  var length = "2 min";
 
   //CHANGING LENGTH COLOUR 
   async function selectLength(l) {
-    if (length == l) {
-      const lengthDiv = document.getElementById(l);
-      lengthDiv.style.backgroundColor = "orange";
-    }
+    setLength(l)
+    const lengthDiv = document.getElementById(l);
+    lengthDiv.style.backgroundColor = "orange";
+
   }
 
   //WHEN DONE IS CLICKED CHECK PREFS THEN SUBMIT THEM 
@@ -117,7 +107,7 @@ function CreateProfile() {
             <div
               id={t.topic + "2"}
               className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded"
-              onClick={() => setTopic2(t.topic)}
+               onClick={() => selectTopic2(t.topic)}
             >
               {t.topic}
             </div>
@@ -130,7 +120,7 @@ function CreateProfile() {
             <div
               id={t.topic + "3"}
               className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded"
-              onClick={() => setTopic3(t.topic)}
+               onClick={() => selectTopic3(t.topic)}
             >
               {t.topic}
             </div>
