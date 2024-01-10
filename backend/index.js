@@ -46,24 +46,6 @@ app.get("/topics", async (req, res) => {
   }
 });
 
-//Adding User to Mongo
-// ...
-
-// app.post("/addUser", async (request, response) => {
-//   try {
-//     const user = new User(request.body);
-// 	console.log("user"+ user)
-// 	let result = await user.save();
-// 	result = result.toObject();
-// 	console.log(result)
-//   } catch (error) {
-//     response.status(500).send(error);
-// 	console.log("Unable to add user")
-//   }
-// });
-
-// ...
-
 app.listen(5001);
 
 //ADDING NEW USER ON SIGN UP
@@ -141,5 +123,59 @@ app.post("/selectTopic3", async (req, resp) => {
     ).then(console.log("updated topic 3 " + topic));
   } catch (e) {
     resp.send("Unable to add topic");
+  }
+});
+
+app.get("/getUserTopics", async (req, res) => {
+  try {
+    const userEmail = req.query.email;
+    if (!userEmail) {
+      return res.status(400).send("Email is required");
+    }
+
+    const user = await usersModel.findOne(
+      { email: userEmail },
+      "topic_1 topic_2 topic_3"
+    );
+
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    // Create an array of topics
+    const topics = [user.topic_1, user.topic_2, user.topic_3];
+
+    // Filter out any undefined or null values in case some topics are not set
+    const filteredTopics = topics.filter((topic) => topic != null);
+
+    res.json(filteredTopics);
+  } catch (error) {
+    res.status(500).send("Server error");
+  }
+});
+
+app.post("/updatePreferences", async (req, resp) => {
+  const { email, topic1, topic2, topic3 } = req.body;
+
+  if (!email || !topic1 || !topic2 || !topic3) {
+    return resp.status(400).send("All fields are required.");
+  }
+
+  try {
+    const user = await usersModel.findOne({ email: email });
+    if (!user) {
+      return resp.status(404).send("User not found");
+    }
+
+    user.topic_1 = topic1;
+    user.topic_2 = topic2;
+    user.topic_3 = topic3;
+
+    await user.save();
+
+    resp.send("User preferences updated successfully.");
+  } catch (error) {
+    console.error(error);
+    resp.status(500).send("Server error");
   }
 });
