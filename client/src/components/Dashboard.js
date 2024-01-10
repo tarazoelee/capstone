@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Calendar } from "rsuite";
@@ -42,7 +42,7 @@ export default function Dashboard() {
           onMouseLeave={handleMouseLeave}
         >
           <div className="text-yellow-900 decoration-none hover:text-yellow-900 hover:no-underline">
-             {currentUser.email}
+            {currentUser.email}
           </div>
           <div>
             {isDropdownVisible && (
@@ -81,9 +81,7 @@ export default function Dashboard() {
 
         <div className="flex flex-col justify-center w-7/12 mb-44 gap-7">
           <div className="font-bold text-3xl text-yellow-900">Past Bytes</div>
-          <div className="">
-            {/* {<Calendar />} */}
-          </div>
+          <div className="">{/* {<Calendar />} */}</div>
         </div>
       </div>
     </div>
