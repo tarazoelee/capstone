@@ -6,22 +6,26 @@ import Login from "./Login";
 import Dashboard from "./Dashboard";
 import Profile from "./Profile";
 import CreateProfile from "./CreateProfile";
+import ContactUs from "./ContactUs";
 
 function App() {
-
   return (
-    <div className="w-screen h-screen" >
-    <Router>
-      <AuthProvider>
-        <Routes>
-          <Route exact path="/" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/dashboard" element={<Dashboard></Dashboard>} />
-          <Route path="/profile" element={<Profile/>}/>
-          <Route path="/createProfile" element ={<CreateProfile></CreateProfile>}></Route>
-        </Routes>
-      </AuthProvider>
-    </Router>
+    <div className="w-screen h-screen">
+      <Router>
+        <AuthProvider>
+          <Routes>
+            <Route exact path="/" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/dashboard" element={<Dashboard></Dashboard>} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/contact-us" element={<ContactUs />} />
+            <Route
+              path="/createProfile"
+              element={<CreateProfile></CreateProfile>}
+            ></Route>
+          </Routes>
+        </AuthProvider>
+      </Router>
     </div>
   );
 }

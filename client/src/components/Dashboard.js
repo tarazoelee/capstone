@@ -24,6 +24,10 @@ export default function Dashboard() {
     nav("/profile");
   }
 
+  function navContactUs() {
+    nav("/contact-us");
+  }
+
   const handleMouseEnter = () => {
     setDropdownVisible(true);
   };
@@ -42,7 +46,7 @@ export default function Dashboard() {
           onMouseLeave={handleMouseLeave}
         >
           <div className="text-yellow-900 decoration-none hover:text-yellow-900 hover:no-underline">
-             {currentUser.email}
+            {currentUser.email}
           </div>
           <div>
             {isDropdownVisible && (
@@ -53,12 +57,22 @@ export default function Dashboard() {
                 >
                   Profile
                 </div>
-                <button
-                  onClick={handleLogout}
-                  className="hover:text-gray-100 text-yellow-900 ease-linear transition duration-100 mt-1"
-                >
-                  Log Out
-                </button>
+                <div>
+                  <button
+                    onClick={navContactUs}
+                    className="hover:text-gray-100 text-yellow-900 ease-linear transition duration-100 mt-1"
+                  >
+                    Contact Us
+                  </button>
+                </div>
+                <div>
+                  <button
+                    onClick={handleLogout}
+                    className="hover:text-gray-100 text-yellow-900 ease-linear transition duration-100 mt-1"
+                  >
+                    Log Out
+                  </button>
+                </div>
               </div>
             )}
           </div>
@@ -81,9 +95,7 @@ export default function Dashboard() {
 
         <div className="flex flex-col justify-center w-7/12 mb-44 gap-7">
           <div className="font-bold text-3xl text-yellow-900">Past Bytes</div>
-          <div className="">
-            {/* {<Calendar />} */}
-          </div>
+          <div className="">{/* {<Calendar />} */}</div>
         </div>
       </div>
     </div>
