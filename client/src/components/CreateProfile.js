@@ -26,49 +26,117 @@ function CreateProfile() {
       });
   }
 
-//WHEN EACH TOPIC IS CLICKED, SET TOPIC OBJECT TO SELECTED ITEM AND CHANGE ITS COLOUR
+//---TOPIC 1 IS SELECTED----- 
   async function selectTopic1(topic) {
-    if(topic1.length >0){
+    
+    //UNSELECT SAME TOPIC
+    if(topic1.length > 0 && topic1 == topic){
+      console.log("unselected: " + topic1)
+      setTopic1("");
       const oldtopicDiv = document.getElementById(`${topic1}` + "1");
       oldtopicDiv.style.backgroundColor = "rgb(255 237 213)";
-    }
 
-    setTopic1(topic)
-    const newtopicDiv = document.getElementById(`${topic}` + "1");
-    newtopicDiv.style.backgroundColor = "orange";
+    }
+    //SELECT NEW TOPIC AND UNSELECT OLD TOPIC
+    else if(topic1.length > 0){
+      console.log("unselected: " + topic1)
+      const oldtopicDiv = document.getElementById(`${topic1}` + "1");
+      oldtopicDiv.style.backgroundColor = "rgb(255 237 213)";
+
+      showTopic1Select(topic)
+    }
+    //SELECT A NEW TOPIC
+    else{
+      showTopic1Select(topic)
+    }
   }
 
+  //---- SELECT NEW TOPIC 1 AND CHANGE COLOR TO DISPLAY SELECTION---- 
+  async function showTopic1Select(topic){
+      console.log("selected: " + topic)
+      setTopic1(topic)
+      const newtopicDiv = document.getElementById(`${topic}` + "1");
+      newtopicDiv.style.backgroundColor = "orange";
+  }
+
+//------TOPIC 2 IS SELECTED-------- 
   async function selectTopic2(topic) {
-    if(topic2.length>0){
+    if(topic2.length>0 && topic2 == topic){
+      console.log("unselected: " + topic2)
+      setTopic2("");
       const oldtopicDiv = document.getElementById(`${topic2}` + "2");
       oldtopicDiv.style.backgroundColor = "rgb(255 237 213)";
     }
+    else if (topic2.length >0){
+      console.log("unselected: " + topic2)
+      const oldtopicDiv = document.getElementById(`${topic2}` + "2");
+      oldtopicDiv.style.backgroundColor = "rgb(255 237 213)";
 
+      showTopic2Select(topic);
+    }
+    else {
+      showTopic2Select(topic);
+    }
+  }
+
+  //-----SELECT NEW TOPIC 2 AND DISPLAY SELECTION----
+  async function showTopic2Select(topic){
+     console.log("selected: " + topic)
     setTopic2(topic)
     const topicDiv = document.getElementById(`${topic}` + "2");
     topicDiv.style.backgroundColor = "orange";
+
   }
 
+  //---TOPIC 3 IS SELECTED ---- 
   async function selectTopic3(topic) {
-    if(topic3.length >0){
+    if(topic3.length >0 && topic3 == topic){
+      console.log("unselected: " + topic3)
+      setTopic3("");
       const oldtopicDiv = document.getElementById(`${topic3}` + "3");
       oldtopicDiv.style.backgroundColor = "rgb(255 237 213)";
     }
+    else if(topic3.length >0 ){
+      console.log("unselected: " + topic3)
+      const oldtopicDiv = document.getElementById(`${topic3}` + "3");
+      oldtopicDiv.style.backgroundColor = "rgb(255 237 213)";
+
+      showTopic3Select(topic);
+    }
+    else {
+      showTopic3Select(topic);
+    }
+  }
+
+  //----SELECT TOPIC 3 AND DISPLAY SELECTION ----- 
+  async function showTopic3Select(topic){
+    console.log("selected: " + topic)
     setTopic3(topic)
     const topicDiv = document.getElementById(`${topic}` + "3");
     topicDiv.style.backgroundColor = "orange";
   }
 
-  //CHANGING LENGTH COLOUR 
+
+  //-----SELECT LENGTH ----- 
   async function selectLength(l) {
-    if(length.length>0){
+    if(length.length>0 && length == l){
       const oldtopicDiv = document.getElementById(`${length}`);
       oldtopicDiv.style.backgroundColor = "rgb(255 237 213)";
+      setLength("")
     }
+    else if(length.length>0){
+      const oldtopicDiv = document.getElementById(`${length}`);
+      oldtopicDiv.style.backgroundColor = "rgb(255 237 213)";
 
-    setLength(l)
-    const lengthDiv = document.getElementById(l);
-    lengthDiv.style.backgroundColor = "orange";
+      setLength(l)
+      const lengthDiv = document.getElementById(l);
+      lengthDiv.style.backgroundColor = "orange";
+    }
+    else {
+      setLength(l)
+      const lengthDiv = document.getElementById(l);
+      lengthDiv.style.backgroundColor = "orange";
+    }
 
   }
 
@@ -106,7 +174,6 @@ function CreateProfile() {
   }
   return (
     <div className="flex flex-col justify-center items-center min-h-full gap-12">
-      {/* {currentUser} */}
       <div className="flex flex-col gap-2 items-center w-1/2">
         <div className="font-bold text-black">What Topics Interest You?</div>
 
@@ -115,7 +182,7 @@ function CreateProfile() {
           {topics.map((t) => (
             <div
               id={t.topic + "1"}
-              className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded"
+              className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded cursor-pointer"
               onClick={() => selectTopic1(t.topic)}
             >
               {t.topic}
@@ -128,7 +195,7 @@ function CreateProfile() {
           {topics.map((t) => (
             <div
               id={t.topic + "2"}
-              className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded"
+              className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded cursor-pointer"
                onClick={() => selectTopic2(t.topic)}
             >
               {t.topic}
@@ -141,7 +208,7 @@ function CreateProfile() {
           {topics.map((t) => (
             <div
               id={t.topic + "3"}
-              className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded"
+              className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded cursor-pointer"
                onClick={() => selectTopic3(t.topic)}
             >
               {t.topic}
