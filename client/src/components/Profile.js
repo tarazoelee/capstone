@@ -6,6 +6,7 @@ import { baseURL } from "../config.js";
 function Profile() {
   const nav = useNavigate();
   const [topics, setTopics] = useState([]);
+
   const [userTopics, setUserTopics] = useState([]);
   const [lengths, setLengths] = useState([]);
   const { currentUser } = useAuth();
@@ -13,7 +14,9 @@ function Profile() {
   /**GETTING TOPICS ON FIRST LOAD */
   useEffect(() => {
     getTopics();
+
     getUserTopics();
+
   }, []);
 
   /**GETTING ALL TOPICS FROM THE TOPICS COLLECTION */
@@ -88,7 +91,10 @@ function Profile() {
     } catch (e) {
       alert("Unable to Update User Preferences");
     }
+
   }
+
+  function saveChanges() {}
 
   return (
     <div className="flex flex-col min-h-screen">
