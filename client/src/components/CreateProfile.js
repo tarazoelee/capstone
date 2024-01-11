@@ -84,25 +84,21 @@ function CreateProfile() {
     else if(length.length <= 0){
       alert("Please select a podcast length")
     }
-    postPrefs()
+    else{
+      postPrefs()
+    }
   }
 
   async function postPrefs(){
     console.log("posting" + topic1 + topic2 + topic3 )
-      await fetch(`${baseURL}/postPrefs`, {
+    await fetch(`${baseURL}/postPrefs`, {
       method: "post",
       body: JSON.stringify({ topic1: topic1, topic2: topic2, topic3: topic3, email: currentUser.email, length: length}),
       headers: {
         "Content-Type": "application/json",
       },
-    });
-    //   await fetch(`${baseURL}/selectTopic2`, {
-    //   method: "post",
-    //   body: JSON.stringify({ topic2: topic2, email: currentUser.email}),
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // });
+    })
+    .then(Home());
   }
 
   async function Home() {
