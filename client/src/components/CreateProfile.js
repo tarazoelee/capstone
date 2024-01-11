@@ -43,14 +43,14 @@ function CreateProfile() {
       console.log("unselected: " + topic1)
       setTopic1("");
       const oldtopicDiv = document.getElementById(`${topic1}` + "1");
-      oldtopicDiv.style.backgroundColor = "rgb(255 237 213)";
+      oldtopicDiv.style.backgroundColor = "rgb(254 215 170)";
 
     }
     //SELECT NEW TOPIC AND UNSELECT OLD TOPIC
     else if(topic1.length > 0){
       console.log("unselected: " + topic1)
       const oldtopicDiv = document.getElementById(`${topic1}` + "1");
-      oldtopicDiv.style.backgroundColor = "rgb(255 237 213)";
+      oldtopicDiv.style.backgroundColor = "rgb(254 215 170)";
 
       showTopic1Select(topic)
     }
@@ -65,7 +65,7 @@ function CreateProfile() {
       console.log("selected: " + topic)
       setTopic1(topic)
       const newtopicDiv = document.getElementById(`${topic}` + "1");
-      newtopicDiv.style.backgroundColor = "orange";
+      newtopicDiv.style.backgroundColor = "rgb(251 146 60)";
   }
 
 //------TOPIC 2 IS SELECTED-------- 
@@ -74,12 +74,12 @@ function CreateProfile() {
       console.log("unselected: " + topic2)
       setTopic2("");
       const oldtopicDiv = document.getElementById(`${topic2}` + "2");
-      oldtopicDiv.style.backgroundColor = "rgb(255 237 213)";
+      oldtopicDiv.style.backgroundColor = "rgb(254 215 170)";
     }
     else if (topic2.length >0){
       console.log("unselected: " + topic2)
       const oldtopicDiv = document.getElementById(`${topic2}` + "2");
-      oldtopicDiv.style.backgroundColor = "rgb(255 237 213)";
+      oldtopicDiv.style.backgroundColor = "rgb(254 215 170)";
 
       showTopic2Select(topic);
     }
@@ -93,7 +93,7 @@ function CreateProfile() {
      console.log("selected: " + topic)
     setTopic2(topic)
     const topicDiv = document.getElementById(`${topic}` + "2");
-    topicDiv.style.backgroundColor = "orange";
+    topicDiv.style.backgroundColor = "rgb(251 146 60)";
 
   }
 
@@ -103,12 +103,12 @@ function CreateProfile() {
       console.log("unselected: " + topic3)
       setTopic3("");
       const oldtopicDiv = document.getElementById(`${topic3}` + "3");
-      oldtopicDiv.style.backgroundColor = "rgb(255 237 213)";
+      oldtopicDiv.style.backgroundColor = "rgb(254 215 170)";
     }
     else if(topic3.length >0 ){
       console.log("unselected: " + topic3)
       const oldtopicDiv = document.getElementById(`${topic3}` + "3");
-      oldtopicDiv.style.backgroundColor = "rgb(255 237 213)";
+      oldtopicDiv.style.backgroundColor = "rgb(254 215 170)";
 
       showTopic3Select(topic);
     }
@@ -122,7 +122,7 @@ function CreateProfile() {
     console.log("selected: " + topic)
     setTopic3(topic)
     const topicDiv = document.getElementById(`${topic}` + "3");
-    topicDiv.style.backgroundColor = "orange";
+    topicDiv.style.backgroundColor = "rgb(251 146 60)";
   }
 
 
@@ -130,21 +130,21 @@ function CreateProfile() {
   async function selectLength(l) {
     if(length.length>0 && length == l){
       const oldtopicDiv = document.getElementById(`${length}`);
-      oldtopicDiv.style.backgroundColor = "rgb(255 237 213)";
+      oldtopicDiv.style.backgroundColor = "rgb(254 215 170)";
       setLength("")
     }
     else if(length.length>0){
       const oldtopicDiv = document.getElementById(`${length}`);
-      oldtopicDiv.style.backgroundColor = "rgb(255 237 213)";
+      oldtopicDiv.style.backgroundColor = "rgb(254 215 170)";
 
       setLength(l)
       const lengthDiv = document.getElementById(l);
-      lengthDiv.style.backgroundColor = "orange";
+      lengthDiv.style.backgroundColor = "rgb(251 146 60)";
     }
     else {
       setLength(l)
       const lengthDiv = document.getElementById(l);
-      lengthDiv.style.backgroundColor = "orange";
+      lengthDiv.style.backgroundColor = "rgb(251 146 60)";
     }
 
   }
@@ -180,7 +180,7 @@ function CreateProfile() {
 
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-full gap-12 py-24">
+    <div className="flex flex-col justify-center items-center min-h-full gap-12 py-24 font-display">
       <button 
         className="flex justify-start self-start pl-40 pt-9 cursor-pointer font-bold text-orange-900 hover:text-orange-950 ease-linear transition duration-100"
         onClick={goBack}
@@ -192,7 +192,7 @@ function CreateProfile() {
         <div className="font-bold text-orange-900 text-xl">What Topics Interest You?</div>
 
         <div className="italic text-orange-900 mt-10">Topic 1</div>
-        <div className="flex gap-10 flex-wrap items-center justify-center">
+        <div className="flex gap-10 flex-wrap items-center justify-center text-gray-700">
           {topics.map((t) => (
             <div
               id={t.topic + "1"}
@@ -205,7 +205,7 @@ function CreateProfile() {
         </div>
 
         <div className="italic text-orange-900 mt-10">Topic 2</div>
-        <div className="flex gap-10 flex-wrap items-center justify-center">
+        <div className="flex gap-10 flex-wrap items-center justify-center text-gray-700">
           {topics.map((t) => (
             <div
               id={t.topic + "2"}
@@ -218,7 +218,7 @@ function CreateProfile() {
         </div>
 
         <div className="italic text-orange-900 mt-10">Topic 3</div>
-        <div className="flex gap-10 flex-wrap items-center justify-center">
+        <div className="flex gap-10 flex-wrap items-center justify-center text-gray-700">
           {topics.map((t) => (
             <div
               id={t.topic + "3"}
@@ -234,7 +234,7 @@ function CreateProfile() {
         <div className="font-bold text-xl my-10 text-orange-900">
           How long do you want your daily updates?
         </div>
-        <div className="flex gap-10 flex-wrap items-center justify-center">
+        <div className="flex gap-10 flex-wrap items-center justify-center text-gray-700">
           <div
             className="bg-orange-200 w-32 px-6 py-2 text-center rounded-med rounded"
             id="2 min"

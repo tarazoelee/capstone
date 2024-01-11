@@ -52,7 +52,7 @@ export default function Signup() {
   }
   return (
     <div className="flex h-full font-display">
-      <div className="flex flex-col w-1/3 items-center justify-center rounded-r-md bg-orange-300">
+      <div className="flex flex-col w-1/3 items-center justify-center rounded-r-md bg-orange-200">
         <div className="font-bold text-6xl px-28 text-orange-900 leading-tight">
           {" "}
           Discover the daily news like never before.

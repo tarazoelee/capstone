@@ -70,8 +70,8 @@ export default function Login() {
 
   return (
     <div className="flex h-full font-display">
-      <div className="flex flex-col w-1/3 items-center justify-center rounded-r-md bg-orange-300">
-        <div className="font-bold text-6xl px-28 text-orange-900 leading-tight">
+      <div className="flex flex-col w-1/3 items-center justify-center rounded-r-md bg-orange-900">
+        <div className="font-bold text-6xl px-28 text-orange-300 leading-tight">
           {" "}
           Discover the daily news like never before.
         </div>
