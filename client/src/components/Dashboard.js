@@ -64,13 +64,13 @@ export default function Dashboard() {
         </div>
       </div>
       <div className="flex h-full flex-col px-56">
-        <div className="justify-start border-gray-800 text-orange-100 font-bold text-6xl text-left bg-orange-950 py-36 px-20 shadow-lg rounded-lg">
+        <div className="justify-start border-gray-800 text-orange-200 font-bold text-6xl text-left bg-orange-950 py-36 px-20 shadow-lg rounded-lg">
           <div className="w-3/5">
           Listen to the news like never before.
           </div>
         </div>
         <div className="flex flex-col justify-center w-7/12 mb-44 mt-24 gap-7 self-center">
-          <div className="font-bold text-3xl text-orange-900">Today's Byte</div>
+          <div className="font-bold text-3xl text-orange-400">Today's Byte</div>
           <div className="px-28 py-20 bg-orange-200 text-gray-900 rounded-md shadow-lg">
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry's standard dummy text
