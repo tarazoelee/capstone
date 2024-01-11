@@ -71,7 +71,7 @@ export default function Login() {
   return (
     <div className="flex h-full">
       <div className="flex flex-col w-1/3 items-center justify-center rounded-r-md bg-orange-300">
-        <div className="font-bold text-5xl px-32 text-orange-900 leading-">
+        <div className="font-bold text-5xl px-32 text-orange-900">
           {" "}
           Discover the daily news like never before.
         </div>

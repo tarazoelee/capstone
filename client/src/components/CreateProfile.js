@@ -12,6 +12,15 @@ function CreateProfile() {
   const [topic3, setTopic3] = useState([]);
   const [length, setLength] = useState([]);
 
+  //NAVIGATION FUNCTIONS 
+  async function goBack() {
+    nav("/signup");
+  }
+
+   async function Home() {
+    nav("/");
+  }
+
   /**GETTING TOPICS ON FIRST LOAD */
   useEffect(() => {
     getTopics();
@@ -169,20 +178,25 @@ function CreateProfile() {
     .then(Home());
   }
 
-  async function Home() {
-    nav("/");
-  }
-  return (
-    <div className="flex flex-col justify-center items-center min-h-full gap-12">
-      <div className="flex flex-col gap-2 items-center w-1/2">
-        <div className="font-bold text-black">What Topics Interest You?</div>
 
-        <div className="italic text-black mt-10">Topic 1</div>
+  return (
+    <div className="flex flex-col justify-center items-center min-h-full gap-12 py-24">
+      <button 
+        className="flex justify-start self-start pl-40 pt-9 cursor-pointer font-bold text-orange-900 hover:text-orange-950 ease-linear transition duration-100"
+        onClick={goBack}
+      >
+        Back
+      </button>
+
+      <div className="flex flex-col gap-2 items-center w-1/2 py-14">
+        <div className="font-bold text-orange-900 text-xl">What Topics Interest You?</div>
+
+        <div className="italic text-orange-900 mt-10">Topic 1</div>
         <div className="flex gap-10 flex-wrap items-center justify-center">
           {topics.map((t) => (
             <div
               id={t.topic + "1"}
-              className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded cursor-pointer"
+              className="bg-orange-200 w-32 px-6 py-2 text-center rounded-med rounded cursor-pointer"
               onClick={() => selectTopic1(t.topic)}
             >
               {t.topic}
@@ -190,12 +204,12 @@ function CreateProfile() {
           ))}
         </div>
 
-        <div className="italic text-black mt-10">Topic 2</div>
+        <div className="italic text-orange-900 mt-10">Topic 2</div>
         <div className="flex gap-10 flex-wrap items-center justify-center">
           {topics.map((t) => (
             <div
               id={t.topic + "2"}
-              className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded cursor-pointer"
+              className="bg-orange-200 w-32 px-6 py-2 text-center rounded-med rounded cursor-pointer"
                onClick={() => selectTopic2(t.topic)}
             >
               {t.topic}
@@ -203,12 +217,12 @@ function CreateProfile() {
           ))}
         </div>
 
-        <div className="italic text-black mt-10">Topic 3</div>
+        <div className="italic text-orange-900 mt-10">Topic 3</div>
         <div className="flex gap-10 flex-wrap items-center justify-center">
           {topics.map((t) => (
             <div
               id={t.topic + "3"}
-              className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded cursor-pointer"
+              className="bg-orange-200 w-32 px-6 py-2 text-center rounded-med rounded cursor-pointer"
                onClick={() => selectTopic3(t.topic)}
             >
               {t.topic}
@@ -217,12 +231,12 @@ function CreateProfile() {
         </div>
       </div>
       <div className="flex flex-col gap-2 items-center w-1/2">
-        <div className="font-bold text-black">
+        <div className="font-bold text-xl my-10 text-orange-900">
           How long do you want your daily updates?
         </div>
         <div className="flex gap-10 flex-wrap items-center justify-center">
           <div
-            className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded"
+            className="bg-orange-200 w-32 px-6 py-2 text-center rounded-med rounded"
             id="2 min"
             onClick={() => selectLength("2 min")}
           >
@@ -230,7 +244,7 @@ function CreateProfile() {
             1-2 min
           </div>
           <div
-            className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded"
+            className="bg-orange-200 w-32 px-6 py-2 text-center rounded-med rounded"
             id="5 min"
             onClick={() => selectLength("5 min")}
           >
@@ -238,14 +252,14 @@ function CreateProfile() {
             2-5 min{" "}
           </div>
           <div
-            className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded"
+            className="bg-orange-200 w-32 px-6 py-2 text-center rounded-med rounded"
             id="10 min"
             onClick={() => selectLength("10 min")}
           >
             5-10 min
           </div>
           <div
-            className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded"
+            className="bg-orange-200 w-32 px-6 py-2 text-center rounded-med rounded"
             id="20 min"
             onClick={() => selectLength("20 min")}
           >
@@ -254,7 +268,12 @@ function CreateProfile() {
         </div>
       </div>
       <div>
-        <button onClick={submitPrefs}>Done</button>
+        <button 
+          onClick={submitPrefs}
+          className="mt-10 px-10 py-3 rounded-md bg-orange-900 text-white hover:bg-orange-950 ease-linear transition duration-100"
+        >
+          Done
+        </button>
       </div>
     </div>
   );
