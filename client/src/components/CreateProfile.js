@@ -36,17 +36,6 @@ function CreateProfile() {
     setTopic1(topic)
     const newtopicDiv = document.getElementById(`${topic}` + "1");
     newtopicDiv.style.backgroundColor = "orange";
-
-    // console.log(topic);
-    // const topicDiv = document.getElementById(`${topic}` + "1");
-    // topicDiv.style.backgroundColor = "orange";
-    // await fetch(`${baseURL}/selectTopic1`, {
-    //   method: "post",
-    //   body: JSON.stringify({ topic: topic, email: currentUser.email }),
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // });
   }
 
   async function selectTopic2(topic) {
@@ -94,8 +83,26 @@ function CreateProfile() {
     }
     else if(length.length <= 0){
       alert("Please select a podcast length")
-
     }
+    postPrefs()
+  }
+
+  async function postPrefs(){
+    console.log("posting" + topic1 + topic2 + topic3 )
+      await fetch(`${baseURL}/postPrefs`, {
+      method: "post",
+      body: JSON.stringify({ topic1: topic1, topic2: topic2, topic3: topic3, email: currentUser.email, length: length}),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    //   await fetch(`${baseURL}/selectTopic2`, {
+    //   method: "post",
+    //   body: JSON.stringify({ topic2: topic2, email: currentUser.email}),
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // });
   }
 
   async function Home() {

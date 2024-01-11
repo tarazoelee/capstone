@@ -71,60 +71,74 @@ app.post("/addUser", async (req, resp) => {
 });
 
 //-----------ADDING TOPICS TO USER WHEN CREATING PROFILE--------
-app.post("/selectTopic1", async (req, resp) => {
+app.post("/postPrefs", async (req, resp) => {
   try {
-    var topic = req.body.topic;
+    var topic1 = req.body.topic1;
+    var topic2 = req.body.topic2;
+    var topic3 = req.body.topic3;
+    var length = req.body.length;
     var email = req.body.email;
-    String(topic);
+    String(topic1);
+    String(topic2);
+    String(topic3);
+    String(length);
     String(email);
 
     const query = { email: email };
     const options = { upsert: true };
 
-    //Updating topic 1
+    //setting preferences
     (
-      await usersModel.updateOne(query, { $set: { topic_1: topic } }, options)
-    ).then(console.log("updated topic 1 " + topic));
+      await usersModel.updateMany(query, 
+        { $set: { 
+          topic_1: topic1, 
+          topic_2: topic2, 
+          topic_3: topic3, 
+          length: length }
+        }, 
+          options)
+    ).then(console.log("updated topics successfully"));
   } catch (e) {
     resp.send("Unable to add topic");
   }
 });
 
-app.post("/selectTopic2", async (req, resp) => {
-  try {
-    var topic = req.body.topic;
-    var email = req.body.email;
-    String(topic);
-    String(email);
+// app.post("/selectTopic2", async (req, resp) => {
+//   try {
+//     var topic = req.body.topic2;
+//     var email = req.body.email;
+//     String(topic);
+//     console.log(topic)
+//     String(email);
 
-    const query = { email: email };
-    const options = { upsert: true };
+//     const query = { email: email };
+//     const options = { upsert: true };
 
-    (
-      await usersModel.updateOne(query, { $set: { topic_2: topic } }, options)
-    ).then(console.log("updated topic 2" + topic));
-  } catch (e) {
-    resp.send("Unable to add topic");
-  }
-});
+//     (
+//       await usersModel.updateOne(query, { $set: { topic_2: topic } }, options)
+//     ).then(console.log("updated topic 2" + topic));
+//   } catch (e) {
+//     resp.send("Unable to add topic");
+//   }
+// });
 
-app.post("/selectTopic3", async (req, resp) => {
-  try {
-    var topic = req.body.topic;
-    var email = req.body.email;
-    String(topic);
-    String(email);
+// app.post("/selectTopic3", async (req, resp) => {
+//   try {
+//     var topic = req.body.topic;
+//     var email = req.body.email;
+//     String(topic);
+//     String(email);
 
-    const query = { email: email };
-    const options = { upsert: true };
+//     const query = { email: email };
+//     const options = { upsert: true };
 
-    (
-      await usersModel.updateOne(query, { $set: { topic_3: topic } }, options)
-    ).then(console.log("updated topic 3 " + topic));
-  } catch (e) {
-    resp.send("Unable to add topic");
-  }
-});
+//     (
+//       await usersModel.updateOne(query, { $set: { topic_3: topic } }, options)
+//     ).then(console.log("updated topic 3 " + topic));
+//   } catch (e) {
+//     resp.send("Unable to add topic");
+//   }
+// });
 
 app.get("/getUserTopics", async (req, res) => {
   try {
