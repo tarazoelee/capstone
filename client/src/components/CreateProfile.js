@@ -30,7 +30,7 @@ function CreateProfile() {
   async function selectTopic1(topic) {
     if(topic1.length >0){
       const oldtopicDiv = document.getElementById(`${topic1}` + "1");
-      oldtopicDiv.style.backgroundColor = "yellow";
+      oldtopicDiv.style.backgroundColor = "rgb(255 237 213)";
     }
 
     setTopic1(topic)
@@ -50,12 +50,21 @@ function CreateProfile() {
   }
 
   async function selectTopic2(topic) {
+    if(topic2.length>0){
+      const oldtopicDiv = document.getElementById(`${topic2}` + "2");
+      oldtopicDiv.style.backgroundColor = "rgb(255 237 213)";
+    }
+
     setTopic2(topic)
     const topicDiv = document.getElementById(`${topic}` + "2");
     topicDiv.style.backgroundColor = "orange";
   }
 
   async function selectTopic3(topic) {
+    if(topic3.length >0){
+      const oldtopicDiv = document.getElementById(`${topic3}` + "3");
+      oldtopicDiv.style.backgroundColor = "rgb(255 237 213)";
+    }
     setTopic3(topic)
     const topicDiv = document.getElementById(`${topic}` + "3");
     topicDiv.style.backgroundColor = "orange";
@@ -63,6 +72,11 @@ function CreateProfile() {
 
   //CHANGING LENGTH COLOUR 
   async function selectLength(l) {
+    if(length.length>0){
+      const oldtopicDiv = document.getElementById(`${length}`);
+      oldtopicDiv.style.backgroundColor = "rgb(255 237 213)";
+    }
+
     setLength(l)
     const lengthDiv = document.getElementById(l);
     lengthDiv.style.backgroundColor = "orange";
@@ -74,8 +88,13 @@ function CreateProfile() {
     console.log(topic1)
     console.log(topic2)
     console.log(topic3)
+    console.log(length)
     if(topic1 == topic2 || topic1 == topic3 || topic2 == topic3){
       alert("Each topic must be unique")
+    }
+    else if(length.length <= 0){
+      alert("Please select a podcast length")
+
     }
   }
 
