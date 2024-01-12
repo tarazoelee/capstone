@@ -33,15 +33,14 @@ export default function Dashboard() {
   };
 
   return (
-    <div>
-      <div className="flex pl-16 gap-3 my-20 h-20 ">
-        <div className="">{/**<img src={user} className="w-8"></img> */}</div>
+    <div className="font-display py-10">
+      <div className="flex pl-24 gap-3 my-10 h-20">
         <div
-          className="text-yellow-900 font-bold"
+          className="text-orange-900 font-bold"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <div className="text-yellow-900 decoration-none hover:text-yellow-900 hover:no-underline">
+          <div className="text-orange-900 decoration-none hover:no-underline cursor-pointer text-base">
             {currentUser.email}
           </div>
           <div>
@@ -49,13 +48,13 @@ export default function Dashboard() {
               <div>
                 <div
                   onClick={navProfile}
-                  className="hover:text-gray-100 text-yellow-900 ease-linear transition duration-100 hover:cursor-pointer mt-1"
+                  className="hover:text-orange-700 text-orange-900 ease-linear transition duration-100 hover:cursor-pointer mt-1"
                 >
                   Profile
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="hover:text-gray-100 text-yellow-900 ease-linear transition duration-100 mt-1"
+                  className="hover:text-orange-700 text-orange-900 ease-linear transition duration-100 mt-1"
                 >
                   Log Out
                 </button>
@@ -64,10 +63,33 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-      <div className="flex h-full flex-col items-center">
-        <div className="flex flex-col justify-center w-7/12 mb-44 gap-7 ">
-          <div className="font-bold text-3xl text-yellow-900">Today's Byte</div>
-          <div className="px-20 py-16 bg-orange-100 text-black rounded-md">
+      <div className="flex h-full flex-col px-56">
+        <div className="justify-start border-gray-800 text-orange-200 font-bold text-6xl text-left bg-orange-950 py-36 px-20 shadow-lg rounded-lg">
+          <div className="w-3/5">Listen to the news like never before.</div>
+        </div>
+        <div className="flex flex-col justify-center w-7/12 mb-44 mt-24 gap-7 self-center">
+          <div className="font-bold text-3xl text-orange-400">Today's Byte</div>
+          <div className="px-28 py-20 bg-orange-200 text-gray-900 rounded-md shadow-lg">
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the industry's standard dummy text
+            ever since the 1500s, when an unknown printer took a galley of type
+            and scrambled it to make a type specimen book. It has survived not
+            only five centuries, but also the leap into electronic typesetting,
+            remaining essentially unchanged. It was popularised in the 1960s
+            with the release of Letraset sheets containing Lorem Ipsum passages,
+            and more recently with desktop publishing software like
+            <br />
+            <br />
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the industry's standard dummy text
+            ever since the 1500s, when an unknown printer took a galley of type
+            and scrambled it to make a type specimen book. It has survived not
+            only five centuries, but also the leap into electronic typesetting,
+            remaining essentially unchanged. It was popularised in the 1960s
+            with the release of Letraset sheets containing Lorem Ipsum passages,
+            and more recently with desktop publishing software like
+            <br />
+            <br />
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry's standard dummy text
             ever since the 1500s, when an unknown printer took a galley of type
@@ -79,8 +101,8 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="flex flex-col justify-center w-7/12 mb-44 gap-7">
-          <div className="font-bold text-3xl text-yellow-900">Past Bytes</div>
+        <div className="flex flex-col justify-center w-7/12 mb-44 gap-7 self-center">
+          <div className="font-bold text-3xl text-orange-900">Past Bytes</div>
           <div className="">{/* {<Calendar />} */}</div>
         </div>
       </div>

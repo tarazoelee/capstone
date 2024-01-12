@@ -21,6 +21,7 @@ const app = express();
 const cors = require("cors");
 const topicsModel = require("./models/topics");
 const usersModel = require("./models/Users");
+const { sendContactEmail } = require("./contactFormHandler");
 console.log("App listen at port 5001");
 app.use(express.json());
 app.use(cors());
@@ -71,71 +72,75 @@ app.post("/addUser", async (req, resp) => {
 });
 
 //-----------ADDING TOPICS TO USER WHEN CREATING PROFILE--------
-app.post("/selectTopic1", async (req, resp) => {
+app.post("/postPrefs", async (req, resp) => {
   try {
-    var topic = req.body.topic;
+    var topic1 = req.body.topic1;
+    var topic2 = req.body.topic2;
+    var topic3 = req.body.topic3;
+    var length = req.body.length;
     var email = req.body.email;
-    String(topic);
+    String(topic1);
+    String(topic2);
+    String(topic3);
+    String(length);
     String(email);
 
     const query = { email: email };
     const options = { upsert: true };
 
-    //Updating topic 1
+    //setting preferences
     (
-      await usersModel.updateMany(
-        query,
-        {
-          $set: {
-            topic_1: topic1,
-            topic_2: topic2,
-            topic_3: topic3,
-            length: length,
-          },
-        },
-        options
-      )
+
+      await usersModel.updateMany(query, 
+        { $set: { 
+          topic_1: topic1, 
+          topic_2: topic2, 
+          topic_3: topic3, 
+          length: length }
+        }, 
+          options)
     ).then(console.log("updated topics successfully"));
   } catch (e) {
     resp.send("Unable to add topic");
   }
 });
 
-app.post("/selectTopic2", async (req, resp) => {
-  try {
-    var topic = req.body.topic;
-    var email = req.body.email;
-    String(topic);
-    String(email);
+// app.post("/selectTopic2", async (req, resp) => {
+//   try {
+//     var topic = req.body.topic2;
+//     var email = req.body.email;
+//     String(topic);
+//     console.log(topic)
+//     String(email);
 
-    const query = { email: email };
-    const options = { upsert: true };
+//     const query = { email: email };
+//     const options = { upsert: true };
 
-    (
-      await usersModel.updateOne(query, { $set: { topic_2: topic } }, options)
-    ).then(console.log("updated topic 2" + topic));
-  } catch (e) {
-    resp.send("Unable to add topic");
-  }
-});
+//     (
+//       await usersModel.updateOne(query, { $set: { topic_2: topic } }, options)
+//     ).then(console.log("updated topic 2" + topic));
+//   } catch (e) {
+//     resp.send("Unable to add topic");
+//   }
+// });
 
-app.post("/selectTopic3", async (req, resp) => {
-  try {
-    var topic = req.body.topic;
-    var email = req.body.email;
-    String(topic);
-    String(email);
+// app.post("/selectTopic3", async (req, resp) => {
+//   try {
+//     var topic = req.body.topic;
+//     var email = req.body.email;
+//     String(topic);
+//     String(email);
 
-    const query = { email: email };
-    const options = { upsert: true };
+//     const query = { email: email };
+//     const options = { upsert: true };
 
-    (
-      await usersModel.updateOne(query, { $set: { topic_3: topic } }, options)
-    ).then(console.log("updated topic 3 " + topic));
-  } catch (e) {
-    resp.send("Unable to add topic");
-  }
-});
+//     (
+//       await usersModel.updateOne(query, { $set: { topic_3: topic } }, options)
+//     ).then(console.log("updated topic 3 " + topic));
+//   } catch (e) {
+//     resp.send("Unable to add topic");
+//   }
+// });
 
 app.get("/getUserTopics", async (req, res) => {
   try {
@@ -214,5 +219,20 @@ app.post("/updatePreferences", async (req, resp) => {
   } catch (error) {
     console.error(error);
     resp.status(500).send("Server error");
+  }
+});
+
+//-----------CONTACT FORM ENDPOINT--------
+app.post("/send-contact-email", async (req, res) => {
+  console.log("Received data:", req.body);
+  try {
+    const result = await sendContactEmail(req.body.email, req.body.message);
+    if (result.status === "success") {
+      res.status(200).send(result.message);
+    } else {
+      res.status(500).send(result.message);
+    }
+  } catch (error) {
+    res.status(500).send("Server error");
   }
 });
