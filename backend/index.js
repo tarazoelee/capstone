@@ -47,24 +47,6 @@ app.get("/topics", async (req, res) => {
   }
 });
 
-//Adding User to Mongo
-// ...
-
-// app.post("/addUser", async (request, response) => {
-//   try {
-//     const user = new User(request.body);
-// 	console.log("user"+ user)
-// 	let result = await user.save();
-// 	result = result.toObject();
-// 	console.log(result)
-//   } catch (error) {
-//     response.status(500).send(error);
-// 	console.log("Unable to add user")
-//   }
-// });
-
-// ...
-
 app.listen(5001);
 
 //ADDING NEW USER ON SIGN UP
@@ -90,58 +72,126 @@ app.post("/addUser", async (req, resp) => {
 });
 
 //-----------ADDING TOPICS TO USER WHEN CREATING PROFILE--------
-app.post("/selectTopic1", async (req, resp) => {
+app.post("/postPrefs", async (req, resp) => {
   try {
-    var topic = req.body.topic;
+    var topic1 = req.body.topic1;
+    var topic2 = req.body.topic2;
+    var topic3 = req.body.topic3;
+    var length = req.body.length;
     var email = req.body.email;
-    String(topic);
+    String(topic1);
+    String(topic2);
+    String(topic3);
+    String(length);
     String(email);
 
     const query = { email: email };
     const options = { upsert: true };
 
-    //Updating topic 1
+    //setting preferences
     (
-      await usersModel.updateOne(query, { $set: { topic_1: topic } }, options)
-    ).then(console.log("updated topic 1 " + topic));
+      await usersModel.updateMany(query, 
+        { $set: { 
+          topic_1: topic1, 
+          topic_2: topic2, 
+          topic_3: topic3, 
+          length: length }
+        }, 
+          options)
+    ).then(console.log("updated topics successfully"));
   } catch (e) {
     resp.send("Unable to add topic");
   }
 });
 
-app.post("/selectTopic2", async (req, resp) => {
+// app.post("/selectTopic2", async (req, resp) => {
+//   try {
+//     var topic = req.body.topic2;
+//     var email = req.body.email;
+//     String(topic);
+//     console.log(topic)
+//     String(email);
+
+//     const query = { email: email };
+//     const options = { upsert: true };
+
+//     (
+//       await usersModel.updateOne(query, { $set: { topic_2: topic } }, options)
+//     ).then(console.log("updated topic 2" + topic));
+//   } catch (e) {
+//     resp.send("Unable to add topic");
+//   }
+// });
+
+// app.post("/selectTopic3", async (req, resp) => {
+//   try {
+//     var topic = req.body.topic;
+//     var email = req.body.email;
+//     String(topic);
+//     String(email);
+
+//     const query = { email: email };
+//     const options = { upsert: true };
+
+//     (
+//       await usersModel.updateOne(query, { $set: { topic_3: topic } }, options)
+//     ).then(console.log("updated topic 3 " + topic));
+//   } catch (e) {
+//     resp.send("Unable to add topic");
+//   }
+// });
+
+app.get("/getUserTopics", async (req, res) => {
   try {
-    var topic = req.body.topic;
-    var email = req.body.email;
-    String(topic);
-    String(email);
+    const userEmail = req.query.email;
+    if (!userEmail) {
+      return res.status(400).send("Email is required");
+    }
 
-    const query = { email: email };
-    const options = { upsert: true };
+    const user = await usersModel.findOne(
+      { email: userEmail },
+      "topic_1 topic_2 topic_3"
+    );
 
-    (
-      await usersModel.updateOne(query, { $set: { topic_2: topic } }, options)
-    ).then(console.log("updated topic 2" + topic));
-  } catch (e) {
-    resp.send("Unable to add topic");
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    // Create an array of topics
+    const topics = [user.topic_1, user.topic_2, user.topic_3];
+
+    // Filter out any undefined or null values in case some topics are not set
+    const filteredTopics = topics.filter((topic) => topic != null);
+
+    res.json(filteredTopics);
+  } catch (error) {
+    res.status(500).send("Server error");
   }
 });
 
-app.post("/selectTopic3", async (req, resp) => {
+app.post("/updatePreferences", async (req, resp) => {
+  const { email, topic1, topic2, topic3 } = req.body;
+
+  if (!email || !topic1 || !topic2 || !topic3) {
+    return resp.status(400).send("All fields are required.");
+  }
+
   try {
-    var topic = req.body.topic;
-    var email = req.body.email;
-    String(topic);
-    String(email);
+    const user = await usersModel.findOne({ email: email });
+    if (!user) {
+      return resp.status(404).send("User not found");
+    }
 
-    const query = { email: email };
-    const options = { upsert: true };
+    user.topic_1 = topic1;
+    user.topic_2 = topic2;
+    user.topic_3 = topic3;
 
-    (
-      await usersModel.updateOne(query, { $set: { topic_3: topic } }, options)
-    ).then(console.log("updated topic 3 " + topic));
-  } catch (e) {
-    resp.send("Unable to add topic");
+    await user.save();
+
+    resp.send("User preferences updated successfully.");
+  } catch (error) {
+    console.error(error);
+    resp.status(500).send("Server error");
   }
 });
 
