@@ -13,6 +13,10 @@ function ContactUs() {
   });
   const toast = useToast();
 
+  useEffect(() => {
+    console.log(formData); // This will log formData every time it changes
+  }, [formData]);
+
   function navDash() {
     nav("/dashboard");
   }
@@ -36,6 +40,7 @@ function ContactUs() {
     if (result) {
       alert("Email was sent successfully");
     }
+    setFormData({ email: currentUser, message: "" });
   }
 
   return (
