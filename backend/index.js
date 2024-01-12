@@ -83,8 +83,19 @@ app.post("/selectTopic1", async (req, resp) => {
 
     //Updating topic 1
     (
-      await usersModel.updateOne(query, { $set: { topic_1: topic } }, options)
-    ).then(console.log("updated topic 1 " + topic));
+      await usersModel.updateMany(
+        query,
+        {
+          $set: {
+            topic_1: topic1,
+            topic_2: topic2,
+            topic_3: topic3,
+            length: length,
+          },
+        },
+        options
+      )
+    ).then(console.log("updated topics successfully"));
   } catch (e) {
     resp.send("Unable to add topic");
   }
@@ -154,10 +165,35 @@ app.get("/getUserTopics", async (req, res) => {
   }
 });
 
-app.post("/updatePreferences", async (req, resp) => {
-  const { email, topic1, topic2, topic3 } = req.body;
+app.get("/getUserLength", async (req, res) => {
+  try {
+    const userEmail = req.query.email;
+    if (!userEmail) {
+      return res.status(400).send("Email is required");
+    }
 
-  if (!email || !topic1 || !topic2 || !topic3) {
+    const user = await usersModel.findOne({ email: userEmail }, "length");
+
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    const length = user.length;
+
+    if (length == null) {
+      return res.status(404).send("Length not set for user");
+    }
+
+    res.json({ length: length });
+  } catch (error) {
+    res.status(500).send("Server error");
+  }
+});
+
+app.post("/updatePreferences", async (req, resp) => {
+  const { email, topic1, topic2, topic3, length } = req.body;
+
+  if (!email || !topic1 || !topic2 || !topic3 || !length) {
     return resp.status(400).send("All fields are required.");
   }
 
@@ -170,6 +206,7 @@ app.post("/updatePreferences", async (req, resp) => {
     user.topic_1 = topic1;
     user.topic_2 = topic2;
     user.topic_3 = topic3;
+    user.length = length;
 
     await user.save();
 

@@ -7,7 +7,7 @@ function Profile() {
   const nav = useNavigate();
   const [topics, setTopics] = useState([]);
   const [userTopics, setUserTopics] = useState([]);
-  const [lengths, setLengths] = useState([]);
+  const [selectedLength, setSelectedLength] = useState("");
   const { currentUser } = useAuth();
 
   /**GETTING TOPICS ON FIRST LOAD */
@@ -37,6 +37,18 @@ function Profile() {
       });
   }
 
+  /**GETTING USERS SELECTED LENGTH*/
+  async function getUserLength() {
+    await fetch(
+      `${baseURL}/getUserLength?email=${encodeURIComponent(currentUser.email)}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setUserTopics(data);
+      });
+  }
+
   function navDash() {
     nav("/dashboard");
   }
@@ -44,6 +56,11 @@ function Profile() {
   // Function to check if a topic is one of the user's topics
   const isUserTopic = (topicName) => {
     return userTopics.includes(topicName);
+  };
+
+  const handleLengthClick = (lengthValue) => {
+    // Set the selected length to the clicked value
+    setSelectedLength(lengthValue);
   };
 
   const handleTopicClick = (topicName) => {
@@ -76,6 +93,7 @@ function Profile() {
             topic2: userTopics[1],
             topic3: userTopics[2],
             email: currentUser.email,
+            length: selectedLength,
           }),
           headers: {
             "Content-Type": "application/json",
@@ -137,39 +155,29 @@ function Profile() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-2 items-center w-1/2">
-          <div className="flex gap-10 flex-wrap items-center justify-center">
-            <div
-              className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded"
-              id="2 min"
-            >
-              {" "}
-              1-2 min
-            </div>
-            <div
-              className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded"
-              id="5 min"
-            >
-              {" "}
-              2-5 min{" "}
-            </div>
-            <div
-              className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded"
-              id="10 min"
-            >
-              5-10 min
-            </div>
-            <div
-              className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded"
-              id="20 min"
-            >
-              10-20 min
-            </div>
-          </div>
+        <div className="flex gap-10 flex-wrap items-center justify-center">
+          {["1-2 min", "2-5 min", "5-10 min", "10-20 min"].map(
+            (lengthValue, index) => (
+              <div
+                key={index}
+                className={`${
+                  selectedLength === lengthValue
+                    ? "bg-orange-300"
+                    : "bg-orange-100"
+                } w-32 px-6 py-2 text-center rounded-med rounded cursor-pointer`}
+                onClick={() => handleLengthClick(lengthValue)}
+              >
+                {lengthValue}
+              </div>
+            )
+          )}
         </div>
 
         <div className="">
-          <button onClick={saveChanges} className="bg-gray-100 p-4">
+          <button
+            onClick={saveChanges}
+            className="bg-orange-900 text-gray-100 mt-10 px-10 py-2 rounded-md"
+          >
             Save
           </button>
         </div>
