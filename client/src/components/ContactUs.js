@@ -44,7 +44,7 @@ function ContactUs() {
   }
 
   return (
-    <div className="w-screen h-screen">
+    <div className="w-screen h-screen font-display">
       <div className="self-start pl-16 gap-3 my-20 h-20 text-yellow-900 font-bold">
         <button onClick={navDash}>Dashboard</button>
       </div>
