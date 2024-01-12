@@ -6,7 +6,6 @@ import { baseURL } from "../config.js";
 function Profile() {
   const nav = useNavigate();
   const [topics, setTopics] = useState([]);
-
   const [userTopics, setUserTopics] = useState([]);
   const [selectedLength, setSelectedLength] = useState("");
   const { currentUser } = useAuth();
@@ -14,9 +13,8 @@ function Profile() {
   /**GETTING TOPICS ON FIRST LOAD */
   useEffect(() => {
     getTopics();
-
+    getUserLength();
     getUserTopics();
-
   }, []);
 
   /**GETTING ALL TOPICS FROM THE TOPICS COLLECTION */
@@ -48,7 +46,7 @@ function Profile() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        setUserTopics(data);
+        setSelectedLength(data.length); // Correctly set the selected length
       });
   }
 
@@ -109,10 +107,7 @@ function Profile() {
     } catch (e) {
       alert("Unable to Update User Preferences");
     }
-
   }
-
-  function saveChanges() {}
 
   return (
     <div className="flex flex-col min-h-screen font-display">
@@ -161,7 +156,6 @@ function Profile() {
           </div>
         </div>
 
-
         <div className="flex gap-10 flex-wrap items-center justify-center">
           {["1-2 min", "2-5 min", "5-10 min", "10-20 min"].map(
             (lengthValue, index) => (
@@ -185,7 +179,6 @@ function Profile() {
             onClick={saveChanges}
             className="bg-orange-900 text-gray-100 mt-10 px-10 py-2 rounded-md"
           >
-
             Save
           </button>
         </div>
