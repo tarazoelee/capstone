@@ -156,7 +156,7 @@ function CreateProfile() {
     console.log(topic3)
     console.log(length)
     if(topic1 == topic2 || topic1 == topic3 || topic2 == topic3){
-      alert("Each topic must be unique")
+      alert("Please select at least 2 unique topics")
     }
     else if(length.length <= 0){
       alert("Please select a podcast length")
