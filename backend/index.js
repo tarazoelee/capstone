@@ -21,6 +21,7 @@ const app = express();
 const cors = require("cors");
 const topicsModel = require("./models/topics");
 const usersModel = require("./models/Users");
+const { sendContactEmail } = require("./contactFormHandler");
 console.log("App listen at port 5001");
 app.use(express.json());
 app.use(cors());
@@ -141,5 +142,20 @@ app.post("/selectTopic3", async (req, resp) => {
     ).then(console.log("updated topic 3 " + topic));
   } catch (e) {
     resp.send("Unable to add topic");
+  }
+});
+
+//-----------CONTACT FORM ENDPOINT--------
+app.post("/send-contact-email", async (req, res) => {
+  console.log("Received data:", req.body);
+  try {
+    const result = await sendContactEmail(req.body.email, req.body.message);
+    if (result.status === "success") {
+      res.status(200).send(result.message);
+    } else {
+      res.status(500).send(result.message);
+    }
+  } catch (error) {
+    res.status(500).send("Server error");
   }
 });
