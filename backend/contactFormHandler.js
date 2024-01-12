@@ -21,8 +21,8 @@ async function sendContactEmail(formEmail, formMessage) {
   // Mail options
   const mailOptions = {
     from: `${formEmail}`,
-    to: "alexandra.zhitkevich@gmail.com",
-    subject: "New Message From Contact Form",
+    to: "lex.zhch@gmail.com",
+    subject: `Message From DailyBytes, Re:${formEmail.email}`,
     text: `User: ${formEmail.email}\n Reason for contact: ${formMessage}`,
   };
 

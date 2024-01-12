@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Textarea } from "@chakra-ui/react";
+import { Textarea, useToast } from "@chakra-ui/react";
 import { useAuth } from "../contexts/AuthContext";
 import { baseURL } from "../config.js";
 
@@ -11,10 +11,7 @@ function ContactUs() {
     email: currentUser,
     message: "",
   });
-
-  useEffect(() => {
-    console.log(formData); // This will log formData every time it changes
-  }, [formData]);
+  const toast = useToast();
 
   function navDash() {
     nav("/dashboard");
@@ -26,7 +23,7 @@ function ContactUs() {
   }
 
   async function handleSubmit(event) {
-    event.preventDefault(); // Prevent default form submission
+    event.preventDefault();
     let result = await fetch(`${baseURL}/send-contact-email`, {
       method: "post",
       body: JSON.stringify(formData),
@@ -53,19 +50,16 @@ function ContactUs() {
             We'd love to help. Reach out and we'll get in touch within 24 hours.{" "}
             <div className="ml-1 w-10 h-10">👐</div>
           </div>
-          <form
-            onSubmit={handleSubmit}
-            className="flex h-full flex-col items-center"
-          >
+          <form onSubmit={handleSubmit} className="flex h-full flex-col">
             <Textarea
               name="message"
               placeholder="Leave us a message..."
               onChange={handleInputChange}
               value={formData.message}
-              className="h-48 border-2 border-slate-200 rounded-md pl-4 pt-2"
+              className="h-48 border-2 border-slate-200 rounded-md pl-4 pt-2 mb-4"
             />
             <button
-              className="bg-gray-200 h-10 text-sm rounded-md hover:bg-gray-300 ease-linear transition duration-100"
+              className="bg-gray-200 h-10 w-1/3 text-sm rounded-md hover:bg-gray-300 ease-linear transition duration-100"
               type="submit"
             >
               Send Message
