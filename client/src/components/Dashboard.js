@@ -24,6 +24,10 @@ export default function Dashboard() {
     nav("/profile");
   }
 
+  function navContactPage() {
+    nav("/contact-us");
+  }
+
   const handleMouseEnter = () => {
     setDropdownVisible(true);
   };
@@ -51,6 +55,14 @@ export default function Dashboard() {
                   className="hover:text-orange-700 text-orange-900 ease-linear transition duration-100 hover:cursor-pointer mt-1"
                 >
                   Profile
+                </div>
+                <div>
+                  <button
+                    onClick={navContactPage}
+                    className="hover:text-orange-700 text-orange-900 ease-linear transition duration-100 mt-1"
+                  >
+                    Contact Us
+                  </button>
                 </div>
                 <button
                   onClick={handleLogout}
