@@ -12,12 +12,12 @@ function CreateProfile() {
   const [topic3, setTopic3] = useState([]);
   const [length, setLength] = useState([]);
 
-  //NAVIGATION FUNCTIONS 
+  //NAVIGATION FUNCTIONS
   async function goBack() {
     nav("/signup");
   }
 
-   async function Home() {
+  async function Home() {
     nav("/");
   }
 
@@ -35,153 +35,144 @@ function CreateProfile() {
       });
   }
 
-//---TOPIC 1 IS SELECTED----- 
+  //---TOPIC 1 IS SELECTED-----
   async function selectTopic1(topic) {
-    
     //UNSELECT SAME TOPIC
-    if(topic1.length > 0 && topic1 == topic){
-      console.log("unselected: " + topic1)
+    if (topic1.length > 0 && topic1 == topic) {
+      console.log("unselected: " + topic1);
       setTopic1("");
       const oldtopicDiv = document.getElementById(`${topic1}` + "1");
       oldtopicDiv.style.backgroundColor = "rgb(254 215 170)";
-
     }
     //SELECT NEW TOPIC AND UNSELECT OLD TOPIC
-    else if(topic1.length > 0){
-      console.log("unselected: " + topic1)
+    else if (topic1.length > 0) {
+      console.log("unselected: " + topic1);
       const oldtopicDiv = document.getElementById(`${topic1}` + "1");
       oldtopicDiv.style.backgroundColor = "rgb(254 215 170)";
 
-      showTopic1Select(topic)
+      showTopic1Select(topic);
     }
     //SELECT A NEW TOPIC
-    else{
-      showTopic1Select(topic)
+    else {
+      showTopic1Select(topic);
     }
   }
 
-  //---- SELECT NEW TOPIC 1 AND CHANGE COLOR TO DISPLAY SELECTION---- 
-  async function showTopic1Select(topic){
-      console.log("selected: " + topic)
-      setTopic1(topic)
-      const newtopicDiv = document.getElementById(`${topic}` + "1");
-      newtopicDiv.style.backgroundColor = "rgb(251 146 60)";
+  //---- SELECT NEW TOPIC 1 AND CHANGE COLOR TO DISPLAY SELECTION----
+  async function showTopic1Select(topic) {
+    console.log("selected: " + topic);
+    setTopic1(topic);
+    const newtopicDiv = document.getElementById(`${topic}` + "1");
+    newtopicDiv.style.backgroundColor = "rgb(251 146 60)";
   }
 
-//------TOPIC 2 IS SELECTED-------- 
+  //------TOPIC 2 IS SELECTED--------
   async function selectTopic2(topic) {
-    if(topic2.length>0 && topic2 == topic){
-      console.log("unselected: " + topic2)
+    if (topic2.length > 0 && topic2 == topic) {
+      console.log("unselected: " + topic2);
       setTopic2("");
       const oldtopicDiv = document.getElementById(`${topic2}` + "2");
       oldtopicDiv.style.backgroundColor = "rgb(254 215 170)";
-    }
-    else if (topic2.length >0){
-      console.log("unselected: " + topic2)
+    } else if (topic2.length > 0) {
+      console.log("unselected: " + topic2);
       const oldtopicDiv = document.getElementById(`${topic2}` + "2");
       oldtopicDiv.style.backgroundColor = "rgb(254 215 170)";
 
       showTopic2Select(topic);
-    }
-    else {
+    } else {
       showTopic2Select(topic);
     }
   }
 
   //-----SELECT NEW TOPIC 2 AND DISPLAY SELECTION----
-  async function showTopic2Select(topic){
-     console.log("selected: " + topic)
-    setTopic2(topic)
+  async function showTopic2Select(topic) {
+    console.log("selected: " + topic);
+    setTopic2(topic);
     const topicDiv = document.getElementById(`${topic}` + "2");
     topicDiv.style.backgroundColor = "rgb(251 146 60)";
-
   }
 
-  //---TOPIC 3 IS SELECTED ---- 
+  //---TOPIC 3 IS SELECTED ----
   async function selectTopic3(topic) {
-    if(topic3.length >0 && topic3 == topic){
-      console.log("unselected: " + topic3)
+    if (topic3.length > 0 && topic3 == topic) {
+      console.log("unselected: " + topic3);
       setTopic3("");
       const oldtopicDiv = document.getElementById(`${topic3}` + "3");
       oldtopicDiv.style.backgroundColor = "rgb(254 215 170)";
-    }
-    else if(topic3.length >0 ){
-      console.log("unselected: " + topic3)
+    } else if (topic3.length > 0) {
+      console.log("unselected: " + topic3);
       const oldtopicDiv = document.getElementById(`${topic3}` + "3");
       oldtopicDiv.style.backgroundColor = "rgb(254 215 170)";
 
       showTopic3Select(topic);
-    }
-    else {
+    } else {
       showTopic3Select(topic);
     }
   }
 
-  //----SELECT TOPIC 3 AND DISPLAY SELECTION ----- 
-  async function showTopic3Select(topic){
-    console.log("selected: " + topic)
-    setTopic3(topic)
+  //----SELECT TOPIC 3 AND DISPLAY SELECTION -----
+  async function showTopic3Select(topic) {
+    console.log("selected: " + topic);
+    setTopic3(topic);
     const topicDiv = document.getElementById(`${topic}` + "3");
     topicDiv.style.backgroundColor = "rgb(251 146 60)";
   }
 
-
-  //-----SELECT LENGTH ----- 
+  //-----SELECT LENGTH -----
   async function selectLength(l) {
-    if(length.length>0 && length == l){
+    if (length.length > 0 && length == l) {
       const oldtopicDiv = document.getElementById(`${length}`);
       oldtopicDiv.style.backgroundColor = "rgb(254 215 170)";
-      setLength("")
-    }
-    else if(length.length>0){
+      setLength("");
+    } else if (length.length > 0) {
       const oldtopicDiv = document.getElementById(`${length}`);
       oldtopicDiv.style.backgroundColor = "rgb(254 215 170)";
 
-      setLength(l)
+      setLength(l);
+      const lengthDiv = document.getElementById(l);
+      lengthDiv.style.backgroundColor = "rgb(251 146 60)";
+    } else {
+      setLength(l);
       const lengthDiv = document.getElementById(l);
       lengthDiv.style.backgroundColor = "rgb(251 146 60)";
     }
-    else {
-      setLength(l)
-      const lengthDiv = document.getElementById(l);
-      lengthDiv.style.backgroundColor = "rgb(251 146 60)";
-    }
-
   }
 
-  //WHEN DONE IS CLICKED CHECK PREFS THEN SUBMIT THEM 
-  async function submitPrefs(){
-    console.log(topic1)
-    console.log(topic2)
-    console.log(topic3)
-    console.log(length)
-    if(topic1 == topic2 || topic1 == topic3 || topic2 == topic3){
-      alert("Please select at least 2 unique topics")
-    }
-    else if(length.length <= 0){
-      alert("Please select a podcast length")
-    }
-    else{
-      postPrefs()
+  //WHEN DONE IS CLICKED CHECK PREFS THEN SUBMIT THEM
+  async function submitPrefs() {
+    console.log(topic1);
+    console.log(topic2);
+    console.log(topic3);
+    console.log(length);
+    if (topic1 == topic2 || topic1 == topic3 || topic2 == topic3) {
+      alert("Please select at least 2 unique topics");
+    } else if (length.length <= 0) {
+      alert("Please select a podcast length");
+    } else {
+      postPrefs();
     }
   }
 
-  async function postPrefs(){
-    console.log("posting" + topic1 + topic2 + topic3 )
+  async function postPrefs() {
+    console.log("posting" + topic1 + topic2 + topic3);
     await fetch(`${baseURL}/postPrefs`, {
       method: "post",
-      body: JSON.stringify({ topic1: topic1, topic2: topic2, topic3: topic3, email: currentUser.email, length: length}),
+      body: JSON.stringify({
+        topic1: topic1,
+        topic2: topic2,
+        topic3: topic3,
+        email: currentUser.email,
+        length: length,
+      }),
       headers: {
         "Content-Type": "application/json",
       },
-    })
-    .then(Home());
+    }).then(Home());
   }
-
 
   return (
     <div className="flex flex-col justify-center items-center min-h-full gap-12 py-24 font-display">
-      <button 
+      <button
         className="flex justify-start self-start pl-40 pt-9 cursor-pointer font-bold text-orange-900 hover:text-orange-950 ease-linear transition duration-100"
         onClick={goBack}
       >
@@ -189,7 +180,9 @@ function CreateProfile() {
       </button>
 
       <div className="flex flex-col gap-2 items-center w-1/2 py-14">
-        <div className="font-bold text-orange-900 text-xl">What Topics Interest You?</div>
+        <div className="font-bold text-orange-900 text-xl">
+          What Topics Interest You?
+        </div>
 
         <div className="italic text-orange-900 mt-10">Topic 1</div>
         <div className="flex gap-10 flex-wrap items-center justify-center text-gray-700">
@@ -210,7 +203,7 @@ function CreateProfile() {
             <div
               id={t.topic + "2"}
               className="bg-orange-200 w-32 px-6 py-2 text-center rounded-med rounded cursor-pointer"
-               onClick={() => selectTopic2(t.topic)}
+              onClick={() => selectTopic2(t.topic)}
             >
               {t.topic}
             </div>
@@ -223,7 +216,7 @@ function CreateProfile() {
             <div
               id={t.topic + "3"}
               className="bg-orange-200 w-32 px-6 py-2 text-center rounded-med rounded cursor-pointer"
-               onClick={() => selectTopic3(t.topic)}
+              onClick={() => selectTopic3(t.topic)}
             >
               {t.topic}
             </div>
@@ -268,7 +261,7 @@ function CreateProfile() {
         </div>
       </div>
       <div>
-        <button 
+        <button
           onClick={submitPrefs}
           className="mt-10 px-10 py-3 rounded-md bg-orange-900 text-white hover:bg-orange-950 ease-linear transition duration-100"
         >

@@ -19,208 +19,27 @@ mongoose
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const topicsModel = require("./models/topics");
-const usersModel = require("./models/Users");
-const { sendContactEmail } = require("./contactFormHandler");
+
 console.log("App listen at port 5001");
+
 app.use(express.json());
 app.use(cors());
-app.get("/", (req, resp) => {
-  resp.send("App is Working");
-  // You can check backend is working or not by
-  // entering http://loacalhost:5001
 
-  resp.send("App is Working");
-  // You can check backend is working or not by
-  // entering http://loacalhost:5001
+// Import routes
+const userRoutes = require("./routes/userRoutes");
+const topicRoutes = require("./routes/topicRoutes");
+const prefRoutes = require("./routes/preferencesRoutes");
 
-  // If you see App is working means backend working properly
-});
+// ... other app setup code (like middleware)
 
-//GETTING ALL TOPICS
-app.get("/topics", async (req, res) => {
-  try {
-    const topics = await topicsModel.find({});
-    res.send(topics);
-  } catch (e) {
-    console.log("unable to get topics");
-  }
-});
+// Use routes
+app.use("/users", userRoutes);
+app.use("/topics", topicRoutes);
+app.use("/pref", prefRoutes);
 
 app.listen(5001);
 
-//ADDING NEW USER ON SIGN UP
-app.post("/addUser", async (req, resp) => {
-  const email = req.body.email;
-  var checkEmail = usersModel.find({ email: email });
-
-  var user = new usersModel({
-    email: email,
-  });
-  if ((await checkEmail).length <= 0) {
-    user
-      .save()
-      .then(() => {
-        console.log("New user created: " + email);
-      })
-      .catch((err) => {
-        console.log("Unable to create new user" + "\n" + err);
-      });
-  } else {
-    console.log("User already exists");
-  }
-});
-
-//-----------ADDING TOPICS TO USER WHEN CREATING PROFILE--------
-app.post("/postPrefs", async (req, resp) => {
-  try {
-    var topic1 = req.body.topic1;
-    var topic2 = req.body.topic2;
-    var topic3 = req.body.topic3;
-    var length = req.body.length;
-    var email = req.body.email;
-    String(topic1);
-    String(topic2);
-    String(topic3);
-    String(length);
-    String(email);
-
-    const query = { email: email };
-    const options = { upsert: true };
-
-    //setting preferences
-    (
-
-      await usersModel.updateMany(query, 
-        { $set: { 
-          topic_1: topic1, 
-          topic_2: topic2, 
-          topic_3: topic3, 
-          length: length }
-        }, 
-          options)
-    ).then(console.log("updated topics successfully"));
-  } catch (e) {
-    resp.send("Unable to add topic");
-  }
-});
-
-// app.post("/selectTopic2", async (req, resp) => {
-//   try {
-//     var topic = req.body.topic2;
-//     var email = req.body.email;
-//     String(topic);
-//     console.log(topic)
-//     String(email);
-
-//     const query = { email: email };
-//     const options = { upsert: true };
-
-//     (
-//       await usersModel.updateOne(query, { $set: { topic_2: topic } }, options)
-//     ).then(console.log("updated topic 2" + topic));
-//   } catch (e) {
-//     resp.send("Unable to add topic");
-//   }
-// });
-
-// app.post("/selectTopic3", async (req, resp) => {
-//   try {
-//     var topic = req.body.topic;
-//     var email = req.body.email;
-//     String(topic);
-//     String(email);
-
-//     const query = { email: email };
-//     const options = { upsert: true };
-
-//     (
-//       await usersModel.updateOne(query, { $set: { topic_3: topic } }, options)
-//     ).then(console.log("updated topic 3 " + topic));
-//   } catch (e) {
-//     resp.send("Unable to add topic");
-//   }
-// });
-
-app.get("/getUserTopics", async (req, res) => {
-  try {
-    const userEmail = req.query.email;
-    if (!userEmail) {
-      return res.status(400).send("Email is required");
-    }
-
-    const user = await usersModel.findOne(
-      { email: userEmail },
-      "topic_1 topic_2 topic_3"
-    );
-
-    if (!user) {
-      return res.status(404).send("User not found");
-    }
-
-    // Create an array of topics
-    const topics = [user.topic_1, user.topic_2, user.topic_3];
-
-    // Filter out any undefined or null values in case some topics are not set
-    const filteredTopics = topics.filter((topic) => topic != null);
-
-    res.json(filteredTopics);
-  } catch (error) {
-    res.status(500).send("Server error");
-  }
-});
-
-app.get("/getUserLength", async (req, res) => {
-  try {
-    const userEmail = req.query.email;
-    if (!userEmail) {
-      return res.status(400).send("Email is required");
-    }
-
-    const user = await usersModel.findOne({ email: userEmail }, "length");
-
-    if (!user) {
-      return res.status(404).send("User not found");
-    }
-
-    const length = user.length;
-
-    if (length == null) {
-      return res.status(404).send("Length not set for user");
-    }
-
-    res.json({ length: length });
-  } catch (error) {
-    res.status(500).send("Server error");
-  }
-});
-
-app.post("/updatePreferences", async (req, resp) => {
-  const { email, topic1, topic2, topic3, length } = req.body;
-
-  if (!email || !topic1 || !topic2 || !topic3 || !length) {
-    return resp.status(400).send("All fields are required.");
-  }
-
-  try {
-    const user = await usersModel.findOne({ email: email });
-    if (!user) {
-      return resp.status(404).send("User not found");
-    }
-
-    user.topic_1 = topic1;
-    user.topic_2 = topic2;
-    user.topic_3 = topic3;
-    user.length = length;
-
-    await user.save();
-
-    resp.send("User preferences updated successfully.");
-  } catch (error) {
-    console.error(error);
-    resp.status(500).send("Server error");
-  }
-});
+const { sendContactEmail } = require("./contactFormHandler");
 
 //-----------CONTACT FORM ENDPOINT--------
 app.post("/send-contact-email", async (req, res) => {
