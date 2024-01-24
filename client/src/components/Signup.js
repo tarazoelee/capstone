@@ -18,7 +18,7 @@ export default function Signup() {
 
   //ADD USER TO MONGODB
   function addUser(email) {
-    fetch(`${baseURL}/addUser`, {
+    fetch(`${baseURL}/users/addUser`, {
       method: "post",
       body: JSON.stringify({ email }),
       headers: {

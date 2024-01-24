@@ -19,7 +19,7 @@ function Profile() {
 
   /**GETTING ALL TOPICS FROM THE TOPICS COLLECTION */
   async function getTopics() {
-    await fetch(`${baseURL}/topics`)
+    await fetch(`${baseURL}/topics/`)
       .then((response) => response.json())
       .then((data) => {
         setTopics(data);
@@ -29,7 +29,7 @@ function Profile() {
   /**GETTING USERS SELECTED TOPICS*/
   async function getUserTopics() {
     await fetch(
-      `${baseURL}/getUserTopics?email=${encodeURIComponent(currentUser.email)}`
+      `${baseURL}/topics/getUserTopics?email=${encodeURIComponent(currentUser.email)}`
     )
       .then((response) => response.json())
       .then((data) => {

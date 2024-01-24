@@ -13,6 +13,7 @@ export default function Login() {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     let result = await fetch(`${baseURL}/register`, {

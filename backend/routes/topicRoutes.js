@@ -5,7 +5,7 @@ const topicsModel = require("../models/topics");
 const usersModel = require("../models/Users");
 
 //GETTING ALL TOPICS
-app.get("/topics", async (req, res) => {
+app.get("/", async (req, res) => {
   try {
     const topics = await topicsModel.find({});
     res.send(topics);

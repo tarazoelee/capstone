@@ -28,7 +28,7 @@ function CreateProfile() {
 
   /**GETTING ALL TOPICS FROM THE TOPICS COLLECTION */
   async function getTopics() {
-    await fetch(`${baseURL}/topics`)
+    await fetch(`${baseURL}/topics/`)
       .then((response) => response.json())
       .then((data) => {
         setTopics(data);
@@ -155,7 +155,7 @@ function CreateProfile() {
 
   async function postPrefs() {
     console.log("posting" + topic1 + topic2 + topic3);
-    await fetch(`${baseURL}/postPrefs`, {
+    await fetch(`${baseURL}/pref/postPrefs`, {
       method: "post",
       body: JSON.stringify({
         topic1: topic1,
