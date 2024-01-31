@@ -11,8 +11,8 @@ function CreateProfile() {
   const [length, setLength] = useState([]);
 
   //NAVIGATION FUNCTIONS
-  async function goBack() {
-    nav("/signup");
+  async function Skip() {
+    nav("/");
   }
 
   async function Home() {
@@ -110,9 +110,9 @@ function CreateProfile() {
     <div className="flex flex-col justify-center items-center min-h-full gap-12 py-24 font-display">
       <button
         className="flex justify-start self-start pl-40 pt-9 cursor-pointer font-bold text-orange-900 hover:text-orange-950 ease-linear transition duration-100"
-        onClick={goBack}
+        onClick={Skip}
       >
-        Back
+        Skip
       </button>
 
       <div className="flex flex-col gap-2 items-center w-1/2 py-14">
