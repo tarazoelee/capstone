@@ -64,21 +64,16 @@ function CreateProfile() {
 
   //-----SELECT LENGTH -----
   async function selectLength(l) {
-    if (length.length > 0 && length == l) {
-      const oldtopicDiv = document.getElementById(`${length}`);
-      oldtopicDiv.style.backgroundColor = "rgb(254 215 170)";
-      setLength("");
-    } else if (length.length > 0) {
-      const oldtopicDiv = document.getElementById(`${length}`);
-      oldtopicDiv.style.backgroundColor = "rgb(254 215 170)";
-
+    //unselect length 
+    if(length.includes(l)){
+      console.log(length)
+        setLength("")
+      unshowTopicSelect(l);
+    }
+    else if(length.length < 1){
       setLength(l);
-      const lengthDiv = document.getElementById(l);
-      lengthDiv.style.backgroundColor = "rgb(251 146 60)";
-    } else {
-      setLength(l);
-      const lengthDiv = document.getElementById(l);
-      lengthDiv.style.backgroundColor = "rgb(251 146 60)";
+      showTopicSelect(l);
+      console.log("selected: " + l)
     }
   }
 
