@@ -17,6 +17,14 @@ const UserSchema = new mongoose.Schema({
 		type:String,
 		required:false
 	},
+	topic_4:{
+		type:String,
+		required:false
+	},
+	topic_5:{
+		type:String,
+		required:false
+	},
 	length:{
 		type:String,
 		required:false
