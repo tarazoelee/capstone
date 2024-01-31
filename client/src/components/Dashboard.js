@@ -10,6 +10,12 @@ export default function Dashboard() {
   const { currentUser, logout } = useAuth();
   const nav = useNavigate();
   const [isDropdownVisible, setDropdownVisible] = useState(false);
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth() + 1;
+  const day = today.getDate();
+  // Format the date as "YYYY-MM-DD"
+  const formattedDate = `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
 
   async function handleLogout() {
     setError("");
@@ -35,6 +41,19 @@ export default function Dashboard() {
   const handleMouseLeave = () => {
     setDropdownVisible(false);
   };
+
+  var url = 'https://newsapi.org/v2/top-headlines?' +
+          'country=us&' +
+          'category=sports&' +
+          'q=NFL&' +
+          'sortBy=popularity&' +
+          'apiKey=94b9c0081ebf421b89233a87e38b17ef';
+
+  async function scrape() {
+     await fetch(url)
+     .then((response) => response.json())
+    .then((json) => console.log(json));
+  }
 
   return (
     <div className="font-display py-10">
@@ -80,6 +99,7 @@ export default function Dashboard() {
           <div className="w-3/5">Listen to the news like never before.</div>
         </div>
         <div className="flex flex-col justify-center w-7/12 mb-44 mt-24 gap-7 self-center">
+          <div onClick={scrape}>Scrape NFL</div>
           <div className="font-bold text-3xl text-orange-400">Today's Byte</div>
           <div className="px-28 py-20 bg-orange-200 text-gray-900 rounded-md shadow-lg">
             Lorem Ipsum is simply dummy text of the printing and typesetting
