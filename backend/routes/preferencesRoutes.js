@@ -6,9 +6,12 @@ const usersModel = require("../models/Users");
 //ADDING USER PREFERNECES TO USER ON SIGNUP
 app.post("/postPrefs", async (req, resp) => {
   try {
+    console.log("here")
     var topic1 = req.body.topic1;
     var topic2 = req.body.topic2;
     var topic3 = req.body.topic3;
+    var topic4 = req.body.topic4;
+    var topic5 = req.body.topic5;
     var length = req.body.length;
     var email = req.body.email;
     String(topic1);

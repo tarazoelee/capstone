@@ -6,10 +6,8 @@ import { baseURL } from "../config.js";
 function CreateProfile() {
   const nav = useNavigate();
   const [topics, setTopics] = useState([]);
-  const { currentUser, logout } = useAuth();
-  const [topic1, setTopic1] = useState([]);
-  const [topic2, setTopic2] = useState([]);
-  const [topic3, setTopic3] = useState([]);
+  const [selectedTopics, setSelectedTopics] = useState([]);
+  const {currentUser, logout } = useAuth();
   const [length, setLength] = useState([]);
 
   //NAVIGATION FUNCTIONS
@@ -38,79 +36,51 @@ function CreateProfile() {
   //---TOPIC 1 IS SELECTED-----
   async function selectTopic(topic) {
     //UNSELECT SAME TOPIC
-    if (topic1.length > 0 && topic1 == topic || topic2.length > 0 && topic2 == topic || topic3.length > 0 && topic3 == topic ) {
-      unselectSameTopic(topic)
+    if (selectedTopics.includes(topic)) {
+      setSelectedTopics((top)=> top.filter((t)=> t != topic))
+      unshowTopicSelect(topic)
+      console.log("unselected: " + topic)
     }
-    //SELECT NEW TOPIC AND UNSELECT OLD TOPIC
-    else if (topic1.length > 0) {
-      console.log("unselected: " + topic1);
-      const oldtopicDiv = document.getElementById(`${topic1}` + "1");
-      oldtopicDiv.style.backgroundColor = "rgb(254 215 170)";
-
-      showTopic1Select(topic);
+    else if(selectedTopics.length < 5){
+      setSelectedTopics((prevSelectedTopics) => [...prevSelectedTopics, topic]);
+      showTopicSelect(topic);
+      console.log("selected: " + topic)
     }
-    //SELECT A NEW TOPIC
-    else {
-      showTopic1Select(topic);
+    else{
+      alert("Can only select 5 topics")
     }
   }
 
   //---- SELECT NEW TOPIC 1 AND CHANGE COLOR TO DISPLAY SELECTION----
-  async function showTopic1Select(topic) {
-    console.log("selected: " + topic);
-    setTopic1(topic);
-    const newtopicDiv = document.getElementById(`${topic}` + "1");
+  async function showTopicSelect(topic) {
+    const newtopicDiv = document.getElementById(`${topic}`);
     newtopicDiv.style.backgroundColor = "rgb(251 146 60)";
   }
 
-  async function unselectSameTopic(topic){
-    if (topic1.length > 0 && topic1 == topic) {
-      setTopic1("");
-      const oldtopicDiv = document.getElementById(`${topic1}` + "1");
-      oldtopicDiv.style.backgroundColor = "rgb(254 215 170)";
-    }
-    else if (topic2.length > 0 && topic2 == topic) {
-      setTopic2("");
-      const oldtopicDiv = document.getElementById(`${topic1}` + "1");
-      oldtopicDiv.style.backgroundColor = "rgb(254 215 170)";
-    }
-    else if (topic3.length > 0 && topic3 == topic) {
-      setTopic3("");
-      const oldtopicDiv = document.getElementById(`${topic1}` + "1");
-      oldtopicDiv.style.backgroundColor = "rgb(254 215 170)";
-    }
-    console.log("unselected: " + topic);
+  async function unshowTopicSelect(topic){
+    const newtopicDiv = document.getElementById(`${topic}`);
+    newtopicDiv.style.backgroundColor = "rgb(254 215 170)";
   }
 
   //-----SELECT LENGTH -----
   async function selectLength(l) {
-    if (length.length > 0 && length == l) {
-      const oldtopicDiv = document.getElementById(`${length}`);
-      oldtopicDiv.style.backgroundColor = "rgb(254 215 170)";
-      setLength("");
-    } else if (length.length > 0) {
-      const oldtopicDiv = document.getElementById(`${length}`);
-      oldtopicDiv.style.backgroundColor = "rgb(254 215 170)";
-
+    //unselect length 
+    if(length.includes(l)){
+      console.log(length)
+        setLength("")
+      unshowTopicSelect(l);
+    }
+    else if(length.length < 1){
       setLength(l);
-      const lengthDiv = document.getElementById(l);
-      lengthDiv.style.backgroundColor = "rgb(251 146 60)";
-    } else {
-      setLength(l);
-      const lengthDiv = document.getElementById(l);
-      lengthDiv.style.backgroundColor = "rgb(251 146 60)";
+      showTopicSelect(l);
+      console.log("selected: " + l)
     }
   }
 
   //WHEN DONE IS CLICKED CHECK PREFS THEN SUBMIT THEM
   async function submitPrefs() {
-    console.log(topic1);
-    console.log(topic2);
-    console.log(topic3);
-    console.log(length);
-    if (topic1 == topic2 || topic1 == topic3 || topic2 == topic3) {
-      alert("Please select at least 2 unique topics");
-    } else if (length.length <= 0) {
+    console.log(selectedTopics)
+    if (length.length <= 0) {
       alert("Please select a podcast length");
     } else {
       postPrefs();
@@ -118,13 +88,15 @@ function CreateProfile() {
   }
 
   async function postPrefs() {
-    console.log("posting" + topic1 + topic2 + topic3);
+   console.log("posting");
     await fetch(`${baseURL}/pref/postPrefs`, {
       method: "post",
       body: JSON.stringify({
-        topic1: topic1,
-        topic2: topic2,
-        topic3: topic3,
+        topic1: selectedTopics[0],
+        topic2: selectedTopics[1],
+        topic3: selectedTopics[2],
+        topic4: selectedTopics[3],
+        topic5: selectedTopics[4],
         email: currentUser.email,
         length: length,
       }),
@@ -199,7 +171,7 @@ function CreateProfile() {
       </div>
       <div>
         <button
-          onClick={submitPrefs}
+         onClick={submitPrefs}
           className="mt-10 px-10 py-3 rounded-md bg-orange-900 text-white hover:bg-orange-950 ease-linear transition duration-100"
         >
           Done
