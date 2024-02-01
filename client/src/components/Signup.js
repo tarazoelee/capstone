@@ -52,8 +52,8 @@ export default function Signup() {
   }
   return (
     <div className="flex h-full font-display">
-      <div className="flex flex-col w-1/3 items-center justify-center rounded-r-md bg-orange-200">
-        <div className="font-bold text-6xl px-28 text-orange-900 leading-tight">
+      <div className="flex flex-col w-1/2 items-center justify-center rounded-xl p-10 my-5 mx-3 bg-orange-200 shadow-lg">
+        <div className="font-bold text-6xl px-36 text-orange-900 leading-tight">
           {" "}
           Discover the daily news like never before.
         </div>
@@ -66,7 +66,7 @@ export default function Signup() {
         <div> {error}</div>
         <div className="flex flex-col">
           <input
-            className="mb-6 bg-none border-b border-gray-500 w-80 placeholder:text-gray-600  py-4"
+            className="mb-6 bg-none border border-gray-200 rounded-2xl w-80 px-4 placeholder:text-gray-600 py-4"
             type="text"
             placeholder="Email"
             name="email"
@@ -74,7 +74,7 @@ export default function Signup() {
             required
           />
           <input
-            className="mb-6 bg-none border-b border-gray-500 w-80 placeholder:text-gray-600  py-4"
+            className="mb-6 bg-none border border-gray-200 rounded-2xl w-80 px-4 placeholder:text-gray-600 py-4"
             type="password"
             placeholder="Password"
             name="password"
@@ -82,7 +82,7 @@ export default function Signup() {
             required
           />{" "}
           <input
-            className="mb-6 bg-none border-b border-gray-500 w-80 placeholder:text-gray-600  py-4"
+            className="mb-6 bg-none border border-gray-200 rounded-2xl w-80 px-4 placeholder:text-gray-600 py-4"
             type="password"
             placeholder="Confirm password"
             name="confirmPassword"
@@ -90,7 +90,7 @@ export default function Signup() {
             required
           />{" "}
           <button
-            className="bg-gray-200 h-10 text-sm rounded-md hover:bg-gray-300 ease-linear transition duration-100 my-5 shadow-md"
+            className="bg-gray-200 h-12 my-4 text-sm rounded-2xl hover:bg-gray-300 ease-linear transition duration-100 shadow-sm"
             type="submit"
             onClick={handleSubmit}
             disabled={loading}
