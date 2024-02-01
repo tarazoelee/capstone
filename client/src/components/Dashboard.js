@@ -53,7 +53,7 @@ export default function Dashboard() {
   var mlb = 'https://newsapi.org/v2/top-headlines?' +
   'country=us&' +
   'category=sports&' +
-  'q=MLB&' +
+  'q=baseball&' +
   'sortBy=popularity&' +
   'apiKey=94b9c0081ebf421b89233a87e38b17ef';
 
@@ -61,6 +61,20 @@ export default function Dashboard() {
   'country=us&' +
   'category=sports&' +
   'q=NBA&' +
+  'sortBy=popularity&' +
+  'apiKey=94b9c0081ebf421b89233a87e38b17ef';
+
+  var ncaa = 'https://newsapi.org/v2/top-headlines?' +
+  'country=us&' +
+  'category=sports&' +
+  'q=ncaa&' +
+  'sortBy=popularity&' +
+  'apiKey=94b9c0081ebf421b89233a87e38b17ef';
+
+  var nhl = 'https://newsapi.org/v2/top-headlines?' +
+  'country=us&' +
+  'category=sports&' +
+  'q=nhl&' +
   'sortBy=popularity&' +
   'apiKey=94b9c0081ebf421b89233a87e38b17ef';
 
@@ -82,6 +96,17 @@ export default function Dashboard() {
   .then((json) => console.log(json));
   }
 
+  async function scrapeNCAA() {
+    await fetch(ncaa)
+    .then((response) => response.json())
+   .then((json) => console.log(json));
+  }
+
+  async function scrapeNHL() {
+    await fetch(nhl)
+    .then((response) => response.json())
+   .then((json) => console.log(json));
+  }
   
 
   return (
@@ -131,6 +156,8 @@ export default function Dashboard() {
           <div onClick={scrapeNFL}>Scrape NFL</div>
           <div onClick={scrapeMLB}>Scrape MLB *** not working </div>
           <div onClick={scrapeNBA}>Scrape NBA</div>
+          <div onClick={scrapeNCAA}>Scrape NCAA</div>
+          <div onClick={scrapeNHL}>Scrape NHL</div>
           <div className="font-bold text-3xl text-orange-400">Today's Byte</div>
           <div className="px-28 py-20 bg-orange-200 text-gray-900 rounded-md shadow-lg">
             Lorem Ipsum is simply dummy text of the printing and typesetting
