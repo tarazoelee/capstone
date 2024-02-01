@@ -68,7 +68,7 @@ function CreateProfile() {
     if(length.includes(l)){
       console.log(length)
         setLength("")
-      unshowTopicSelect(l);
+        unshowTopicSelect(l);
     }
     else if(length.length < 1){
       setLength(l);
@@ -119,6 +119,7 @@ function CreateProfile() {
         <div className="font-bold text-orange-900 text-xl">
           What Topics Interest You?
         </div>
+        <div className="italic">Select up to 5</div>
         <div className="flex gap-10 flex-wrap items-center justify-center text-gray-700">
           {topics.map((t) => (
             <div
@@ -138,7 +139,7 @@ function CreateProfile() {
         </div>
         <div className="flex gap-10 flex-wrap items-center justify-center text-gray-700">
           <div
-            className="bg-orange-400 w-32 px-6 py-2 text-center rounded-med rounded hover:bg-orange-300 cursor-pointer"
+            className="bg-orange-400 w-32 px-6 py-2 text-center rounded-med rounded hover:bg-orange-300 cursor-pointer ease-linear transition duration-100"
             id="2 min"
             onClick={() => selectLength("2 min")}
           >
@@ -146,7 +147,7 @@ function CreateProfile() {
             1-2 min
           </div>
           <div
-            className="bg-orange-200 w-32 px-6 py-2 text-center rounded-med rounded hover:bg-orange-300 cursor-pointer"
+            className="bg-orange-200 w-32 px-6 py-2 text-center rounded-med rounded hover:bg-orange-300 cursor-pointer ease-linear transition duration-100"
             id="5 min"
             onClick={() => selectLength("5 min")}
           >
@@ -154,14 +155,14 @@ function CreateProfile() {
             2-5 min{" "}
           </div>
           <div
-            className="bg-orange-200 w-32 px-6 py-2 text-center rounded-med rounded hover:bg-orange-300 cursor-pointer"
+            className="bg-orange-200 w-32 px-6 py-2 text-center rounded-med rounded hover:bg-orange-300 cursor-pointer ease-linear transition duration-100"
             id="10 min"
             onClick={() => selectLength("10 min")}
           >
             5-10 min
           </div>
           <div
-            className="bg-orange-200 w-32 px-6 py-2 text-center rounded-med rounded hover:bg-orange-300 cursor-pointer"
+            className="bg-orange-200 w-32 px-6 py-2 text-center rounded-med rounded hover:bg-orange-300 cursor-pointer ease-linear transition duration-100"
             id="20 min"
             onClick={() => selectLength("20 min")}
           >
