@@ -42,18 +42,47 @@ export default function Dashboard() {
     setDropdownVisible(false);
   };
 
-  var url = 'https://newsapi.org/v2/top-headlines?' +
-          'country=us&' +
-          'category=sports&' +
-          'q=NFL&' +
-          'sortBy=popularity&' +
-          'apiKey=94b9c0081ebf421b89233a87e38b17ef';
+  //---------SCRAPING URLS -------
+  var nfl = 'https://newsapi.org/v2/top-headlines?' +
+  'country=us&' +
+  'category=sports&' +
+  'q=NFL&' +
+  'sortBy=popularity&' +
+  'apiKey=94b9c0081ebf421b89233a87e38b17ef';
 
-  async function scrape() {
-     await fetch(url)
+  var mlb = 'https://newsapi.org/v2/top-headlines?' +
+  'country=us&' +
+  'category=sports&' +
+  'q=MLB&' +
+  'sortBy=popularity&' +
+  'apiKey=94b9c0081ebf421b89233a87e38b17ef';
+
+  var nba = 'https://newsapi.org/v2/top-headlines?' +
+  'country=us&' +
+  'category=sports&' +
+  'q=NBA&' +
+  'sortBy=popularity&' +
+  'apiKey=94b9c0081ebf421b89233a87e38b17ef';
+
+  async function scrapeNFL() {
+     await fetch(nfl)
      .then((response) => response.json())
     .then((json) => console.log(json));
   }
+
+  async function scrapeMLB() {
+    await fetch(mlb)
+    .then((response) => response.json())
+   .then((json) => console.log(json));
+ }
+
+  async function scrapeNBA() {
+    await fetch(nba)
+    .then((response) => response.json())
+  .then((json) => console.log(json));
+  }
+
+  
 
   return (
     <div className="font-display py-10">
@@ -99,7 +128,9 @@ export default function Dashboard() {
           <div className="w-3/5">Listen to the news like never before.</div>
         </div>
         <div className="flex flex-col justify-center w-7/12 mb-44 mt-24 gap-7 self-center">
-          <div onClick={scrape}>Scrape NFL</div>
+          <div onClick={scrapeNFL}>Scrape NFL</div>
+          <div onClick={scrapeMLB}>Scrape MLB *** not working </div>
+          <div onClick={scrapeNBA}>Scrape NBA</div>
           <div className="font-bold text-3xl text-orange-400">Today's Byte</div>
           <div className="px-28 py-20 bg-orange-200 text-gray-900 rounded-md shadow-lg">
             Lorem Ipsum is simply dummy text of the printing and typesetting
