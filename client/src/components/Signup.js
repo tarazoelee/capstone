@@ -90,7 +90,7 @@ export default function Signup() {
             required
           />{" "}
           <button
-            className="bg-gray-200 h-10 text-sm rounded-md hover:bg-gray-300 ease-linear transition duration-100 my-5"
+            className="bg-gray-200 h-10 text-sm rounded-md hover:bg-gray-300 ease-linear transition duration-100 my-5 shadow-md"
             type="submit"
             onClick={handleSubmit}
             disabled={loading}
