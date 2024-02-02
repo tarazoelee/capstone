@@ -29,6 +29,7 @@ app.use(cors());
 const userRoutes = require("./routes/userRoutes");
 const topicRoutes = require("./routes/topicRoutes");
 const prefRoutes = require("./routes/preferencesRoutes");
+const scraperRoutes = require("./routes/scraperRoutes");
 
 // ... other app setup code (like middleware)
 
@@ -36,6 +37,7 @@ const prefRoutes = require("./routes/preferencesRoutes");
 app.use("/users", userRoutes);
 app.use("/topics", topicRoutes);
 app.use("/pref", prefRoutes);
+app.use("/scraper", scraperRoutes);
 
 app.listen(5001);
 

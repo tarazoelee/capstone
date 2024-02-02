@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Calendar } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 import user from "../images/user.png";
+import { baseURL } from "../config.js";
 
 export default function Dashboard() {
   const [error, setError] = useState("");
@@ -15,7 +16,9 @@ export default function Dashboard() {
   const month = today.getMonth() + 1;
   const day = today.getDate();
   // Format the date as "YYYY-MM-DD"
-  const formattedDate = `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
+  const formattedDate = `${year}-${month < 10 ? "0" + month : month}-${
+    day < 10 ? "0" + day : day
+  }`;
 
   async function handleLogout() {
     setError("");
@@ -43,71 +46,74 @@ export default function Dashboard() {
   };
 
   //---------SCRAPING URLS -------
-  var nfl = 'https://newsapi.org/v2/top-headlines?' +
-  'country=us&' +
-  'category=sports&' +
-  'q=NFL&' +
-  'sortBy=popularity&' +
-  'apiKey=94b9c0081ebf421b89233a87e38b17ef';
+  // var nfl = 'https://newsapi.org/v2/top-headlines?' +
+  // 'country=us&' +
+  // 'category=sports&' +
+  // 'q=NFL&' +
+  // 'sortBy=popularity&' +
+  // 'apiKey=94b9c0081ebf421b89233a87e38b17ef';
 
-  var mlb = 'https://newsapi.org/v2/top-headlines?' +
-  'country=us&' +
-  'category=sports&' +
-  'q=baseball&' +
-  'sortBy=popularity&' +
-  'apiKey=94b9c0081ebf421b89233a87e38b17ef';
+  var mlb =
+    "https://newsapi.org/v2/top-headlines?" +
+    "country=us&" +
+    "category=sports&" +
+    "q=baseball&" +
+    "sortBy=popularity&" +
+    "apiKey=94b9c0081ebf421b89233a87e38b17ef";
 
-  var nba = 'https://newsapi.org/v2/top-headlines?' +
-  'country=us&' +
-  'category=sports&' +
-  'q=NBA&' +
-  'sortBy=popularity&' +
-  'apiKey=94b9c0081ebf421b89233a87e38b17ef';
+  var nba =
+    "https://newsapi.org/v2/top-headlines?" +
+    "country=us&" +
+    "category=sports&" +
+    "q=NBA&" +
+    "sortBy=popularity&" +
+    "apiKey=94b9c0081ebf421b89233a87e38b17ef";
 
-  var ncaa = 'https://newsapi.org/v2/top-headlines?' +
-  'country=us&' +
-  'category=sports&' +
-  'q=ncaa&' +
-  'sortBy=popularity&' +
-  'apiKey=94b9c0081ebf421b89233a87e38b17ef';
+  var ncaa =
+    "https://newsapi.org/v2/top-headlines?" +
+    "country=us&" +
+    "category=sports&" +
+    "q=ncaa&" +
+    "sortBy=popularity&" +
+    "apiKey=94b9c0081ebf421b89233a87e38b17ef";
 
-  var nhl = 'https://newsapi.org/v2/top-headlines?' +
-  'country=us&' +
-  'category=sports&' +
-  'q=nhl&' +
-  'sortBy=popularity&' +
-  'apiKey=94b9c0081ebf421b89233a87e38b17ef';
+  var nhl =
+    "https://newsapi.org/v2/top-headlines?" +
+    "country=us&" +
+    "category=sports&" +
+    "q=nhl&" +
+    "sortBy=popularity&" +
+    "apiKey=94b9c0081ebf421b89233a87e38b17ef";
 
   async function scrapeNFL() {
-     await fetch(nfl)
-     .then((response) => response.json())
-    .then((json) => console.log(json));
+    await fetch(`${baseURL}/scraper/nfl-articles`)
+      .then((response) => response.json())
+      .then((data) => console.log("DATA", data));
   }
 
   async function scrapeMLB() {
     await fetch(mlb)
-    .then((response) => response.json())
-   .then((json) => console.log(json));
- }
+      .then((response) => response.json())
+      .then((json) => console.log(json));
+  }
 
   async function scrapeNBA() {
     await fetch(nba)
-    .then((response) => response.json())
-  .then((json) => console.log(json));
+      .then((response) => response.json())
+      .then((json) => console.log(json));
   }
 
   async function scrapeNCAA() {
     await fetch(ncaa)
-    .then((response) => response.json())
-   .then((json) => console.log(json));
+      .then((response) => response.json())
+      .then((json) => console.log(json));
   }
 
   async function scrapeNHL() {
     await fetch(nhl)
-    .then((response) => response.json())
-   .then((json) => console.log(json));
+      .then((response) => response.json())
+      .then((json) => console.log(json));
   }
-  
 
   return (
     <div className="font-display py-10">
