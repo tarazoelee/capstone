@@ -7,7 +7,9 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-exports.chatReq = async (req, res) => {
+console.log("good with openai", openai);
+
+app.get("/summary", async (req, res) => {
   try {
     const message = "Which is the capital of Albania?";
     const response = await openai.chat.completions.create({
@@ -16,9 +18,11 @@ exports.chatReq = async (req, res) => {
       temperature: 0,
       max_tokens: 1000,
     });
+    console.log("RESPONSE FROM CHAT", response);
     res.status(200).json(response);
   } catch (err) {
     res.status(500).json(err.message);
   }
-};
+});
 
+module.exports = app;

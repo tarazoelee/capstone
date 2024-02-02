@@ -30,6 +30,7 @@ const userRoutes = require("./routes/userRoutes");
 const topicRoutes = require("./routes/topicRoutes");
 const prefRoutes = require("./routes/preferencesRoutes");
 const scraperRoutes = require("./routes/scraperRoutes");
+const chatbotRoutes = require("./routes/chatbotRoutes");
 
 // ... other app setup code (like middleware)
 
@@ -38,6 +39,7 @@ app.use("/users", userRoutes);
 app.use("/topics", topicRoutes);
 app.use("/pref", prefRoutes);
 app.use("/scraper", scraperRoutes);
+app.use("/chat", chatbotRoutes);
 
 app.listen(5001);
 

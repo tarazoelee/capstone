@@ -89,6 +89,13 @@ export default function Dashboard() {
     await fetch(`${baseURL}/scraper/nfl-articles`)
       .then((response) => response.json())
       .then((data) => console.log("DATA", data));
+
+    const responseChat = await fetch(`${baseURL}/chat/summary`);
+    if (!responseChat.ok) {
+      console.error(`Error: ${responseChat.status} ${responseChat.statusText}`);
+    }
+    const dataChat = await responseChat.json();
+    console.log("CHAT SUMMARY", dataChat);
   }
 
   async function scrapeMLB() {
