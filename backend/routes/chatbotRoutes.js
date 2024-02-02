@@ -9,9 +9,10 @@ const openai = new OpenAI({
 
 console.log("good with openai", openai);
 
-app.get("/summary", async (req, res) => {
+app.post("/summary", async (req, res) => {
   try {
-    const message = "Which is the capital of Albania?";
+    messageToProcess = res.body;
+    const message = `${messageToProcess}`;
     const response = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [{ role: "user", content: message }],

@@ -19,8 +19,30 @@ app.get("/nfl-articles", async (req, res) => {
       // If the response status code is not in the 200-299 range
       throw new Error("Network response was not ok");
     }
-    const json = await response.json();
-    console.log("JSON", json);
+    const newsContent = await response.json();
+    console.log("JSON", newsContent);
+
+    //NEED TO FIX THE PROCESSEDMESSAGE HERE TO SEND TO SUMMARY
+
+    const summaryUrl = "http://localhost:5001/chat/summary";
+    try {
+      const summaryResponse = await fetch(summaryUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: newsContent }),
+      });
+
+      const summaryJson = await summaryResponse.json();
+      console.log("Summary Response", summaryJson);
+      res.send(summaryJson);
+      // You can now return this summary as part of your /nfl-articles response or process it further
+    } catch (error) {
+      console.error("Error fetching summary", error);
+      // Handle error
+    }
+
     res.send(json);
   } catch (e) {
     console.log("unable to get topics", e);
