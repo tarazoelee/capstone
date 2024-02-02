@@ -37,10 +37,8 @@ app.get("/nfl-articles", async (req, res) => {
       const summaryJson = await summaryResponse.json();
       console.log("Summary Response", summaryJson);
       res.send(summaryJson);
-      // You can now return this summary as part of your /nfl-articles response or process it further
     } catch (error) {
       console.error("Error fetching summary", error);
-      // Handle error
     }
 
     res.send(json);
