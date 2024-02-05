@@ -29,7 +29,9 @@ function Profile() {
   /**GETTING USERS SELECTED TOPICS*/
   async function getUserTopics() {
     await fetch(
-      `${baseURL}/topics/getUserTopics?email=${encodeURIComponent(currentUser.email)}`
+      `${baseURL}/topics/getUserTopics?email=${encodeURIComponent(
+        currentUser.email
+      )}`
     )
       .then((response) => response.json())
       .then((data) => {
@@ -41,7 +43,9 @@ function Profile() {
   /**GETTING USERS SELECTED LENGTH*/
   async function getUserLength() {
     await fetch(
-      `${baseURL}/getUserLength?email=${encodeURIComponent(currentUser.email)}`
+      `${baseURL}/pref/getUserLength?email=${encodeURIComponent(
+        currentUser.email
+      )}`
     )
       .then((response) => response.json())
       .then((data) => {
@@ -87,7 +91,7 @@ function Profile() {
   async function saveChanges() {
     try {
       if (userTopics.length === 3) {
-        await fetch(`${baseURL}/updatePreferences`, {
+        await fetch(`${baseURL}/pref/updatePreferences`, {
           method: "POST",
           body: JSON.stringify({
             topic1: userTopics[0],
@@ -133,9 +137,9 @@ function Profile() {
           </div>
         </div>
 
-        <div className="flex gap-10 items-center">
-          <div className="font-bold text-gray-600">Your Interests</div>
-          <div className="flex gap-10">
+        <div className="flex gap-10 justify-center items-center flex-wrap">
+          <div className="font-bold text-gray-600 ">Your Interests</div>
+          <div className="flex gap-10 flex-wrap justify-center">
             {topics.map((topicObj, index) => {
               const topicName = topicObj.topic;
 
@@ -156,22 +160,25 @@ function Profile() {
           </div>
         </div>
 
-        <div className="flex gap-10 flex-wrap items-center justify-center">
-          {["1-2 min", "2-5 min", "5-10 min", "10-20 min"].map(
-            (lengthValue, index) => (
-              <div
-                key={index}
-                className={`${
-                  selectedLength === lengthValue
-                    ? "bg-orange-300"
-                    : "bg-orange-100"
-                } w-32 px-6 py-2 text-center rounded-med rounded cursor-pointer`}
-                onClick={() => handleLengthClick(lengthValue)}
-              >
-                {lengthValue}
-              </div>
-            )
-          )}
+        <div className="flex gap-10 justify-center items-center flex-wrap">
+          <div className="font-bold text-gray-600 ">Podcast Length</div>
+          <div className="flex gap-10 flex-wrap justify-center">
+            {["2 min", "5 min", "10 min", "20 min"].map(
+              (lengthValue, index) => (
+                <div
+                  key={index}
+                  className={`${
+                    selectedLength === lengthValue
+                      ? "bg-orange-300"
+                      : "bg-orange-100"
+                  } w-32 px-6 py-2 text-center rounded-med rounded cursor-pointer`}
+                  onClick={() => handleLengthClick(lengthValue)}
+                >
+                  {lengthValue}
+                </div>
+              )
+            )}
+          </div>
         </div>
 
         <div className="">
