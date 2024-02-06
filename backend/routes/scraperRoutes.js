@@ -22,6 +22,8 @@ app.get("/nfl-articles", async (req, res) => {
     const newsContent = await response.json();
     console.log("JSON", newsContent);
 
+    const extractedNewsInfo = extractTitlesAndDescription(newsContent);
+
     //NEED TO FIX THE PROCESSEDMESSAGE HERE TO SEND TO SUMMARY
 
     const summaryUrl = "http://localhost:5001/chat/summary";
@@ -31,7 +33,7 @@ app.get("/nfl-articles", async (req, res) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ message: newsContent }),
+        body: JSON.stringify({ message: extractedNewsInfo }),
       });
 
       const summaryJson = await summaryResponse.json();
@@ -40,13 +42,18 @@ app.get("/nfl-articles", async (req, res) => {
     } catch (error) {
       console.error("Error fetching summary", error);
     }
-
-    res.send(json);
   } catch (e) {
     console.log("unable to get topics", e);
     res.status(500).send("Error fetching NFL articles");
   }
 });
+
+function extractTitlesAndDescription(newsContent) {
+  return newsContent.articles.map((article) => ({
+    title: article.title,
+    description: article.description,
+  }));
+}
 
 module.exports = app;
 
