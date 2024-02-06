@@ -20,7 +20,8 @@ app.get("/nfl-articles", async (req, res) => {
       throw new Error("Network response was not ok");
     }
     const newsContent = await response.json();
-    console.log("JSON", newsContent);
+
+    const extractedNewsInfo = extractTitlesAndDescription(newsContent);
 
     //NEED TO FIX THE PROCESSEDMESSAGE HERE TO SEND TO SUMMARY
 
@@ -31,22 +32,27 @@ app.get("/nfl-articles", async (req, res) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ message: newsContent }),
+        body: JSON.stringify({ message: extractedNewsInfo }),
       });
 
       const summaryJson = await summaryResponse.json();
-      console.log("Summary Response", summaryJson);
       res.send(summaryJson);
     } catch (error) {
       console.error("Error fetching summary", error);
     }
-
-    res.send(json);
   } catch (e) {
-    console.log("unable to get topics", e);
-    res.status(500).send("Error fetching NFL articles");
+    res.status(500).send("Error fetching NFL articles,", e);
   }
 });
+
+function extractTitlesAndDescription(newsContent) {
+  const articleInfo = newsContent.articles.map((article) => {
+    return `${article.title}, ${article.description}`;
+  });
+
+  const concatenatedString = articleInfo.join("\n\n");
+  return concatenatedString;
+}
 
 module.exports = app;
 
