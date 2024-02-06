@@ -49,11 +49,12 @@ app.get("/nfl-articles", async (req, res) => {
 });
 
 function extractTitlesAndDescription(newsContent) {
-  let articleInfo = "";
-  newsContent.articles.map((article) => {
-    articleInfo = article.title + article.description;
+  const articleInfo = newsContent.articles.map((article) => {
+    return `${article.title}, ${article.description}`;
   });
-  return articleInfo;
+
+  const concatenatedString = articleInfo.join("\n\n");
+  return concatenatedString;
 }
 
 module.exports = app;
