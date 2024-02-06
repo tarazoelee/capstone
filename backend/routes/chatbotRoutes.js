@@ -13,8 +13,10 @@ app.post("/summary", async (req, res) => {
   try {
     messageToProcess = req.body.message;
     const articleInfo = `${messageToProcess}`;
-    console.log("ARTICLE INFO", messageToProcess);
-    const message = `CONTEXT: Put the following articles into an interesting news format that summarizes the articles and can be read by one person. This is the information that you must summarize: ${articleInfo}`;
+    const message =
+      `CONTEXT: Put the following articles into an interesting news format that summarizes the articles and can be read by one person. This is the information that you must summarize:` +
+      articleInfo;
+    console.log("message to send", message);
     const response = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [
@@ -28,7 +30,6 @@ app.post("/summary", async (req, res) => {
     });
     console.log("RESPONSE FROM CHAT", response.choices[0].message);
     res.send(response);
-    res.status(200).json(response);
   } catch (err) {
     res.status(500).json(err.message);
   }
