@@ -8,6 +8,7 @@ import { baseURL } from "../config.js";
 
 export default function Dashboard() {
   const [error, setError] = useState("");
+  const [podcastScript, setPodcastScript] = useState("");
   const { currentUser, logout } = useAuth();
   const nav = useNavigate();
   const [isDropdownVisible, setDropdownVisible] = useState(false);
@@ -88,7 +89,10 @@ export default function Dashboard() {
   async function scrapeNFL() {
     await fetch(`${baseURL}/scraper/nfl-articles`)
       .then((response) => response.json())
-      .then((data) => console.log("DATA", data));
+      .then((data) => {
+        setPodcastScript(data.choices[0].message.content);
+        console.log("podcast script", podcastScript);
+      });
   }
 
   async function scrapeMLB() {
@@ -160,6 +164,7 @@ export default function Dashboard() {
         </div>
         <div className="flex flex-col justify-center w-7/12 mb-44 mt-24 gap-7 self-center">
           <div onClick={scrapeNFL}>Scrape NFL</div>
+          {podcastScript !== "" && <div>Podcast Script: {podcastScript}</div>}
           <div onClick={scrapeMLB}>Scrape MLB *** not working </div>
           <div onClick={scrapeNBA}>Scrape NBA</div>
           <div onClick={scrapeNCAA}>Scrape NCAA</div>

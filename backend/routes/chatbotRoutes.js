@@ -7,8 +7,6 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-console.log("good with openai", openai);
-
 app.post("/summary", async (req, res) => {
   try {
     messageToProcess = req.body.message;
@@ -16,7 +14,6 @@ app.post("/summary", async (req, res) => {
     const message =
       `CONTEXT: Put the following articles into an interesting news format that summarizes the articles and can be read by one person. This is the information that you must summarize:` +
       articleInfo;
-    console.log("message to send", message);
     const response = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [
@@ -28,7 +25,6 @@ app.post("/summary", async (req, res) => {
       temperature: 0,
       max_tokens: 1000,
     });
-    console.log("RESPONSE FROM CHAT", response.choices[0].message);
     res.send(response);
   } catch (err) {
     res.status(500).json(err.message);

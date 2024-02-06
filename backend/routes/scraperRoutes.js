@@ -20,7 +20,6 @@ app.get("/nfl-articles", async (req, res) => {
       throw new Error("Network response was not ok");
     }
     const newsContent = await response.json();
-    console.log("JSON", newsContent);
 
     const extractedNewsInfo = extractTitlesAndDescription(newsContent);
 
@@ -37,14 +36,12 @@ app.get("/nfl-articles", async (req, res) => {
       });
 
       const summaryJson = await summaryResponse.json();
-      console.log("Summary Response", summaryJson);
       res.send(summaryJson);
     } catch (error) {
       console.error("Error fetching summary", error);
     }
   } catch (e) {
-    console.log("unable to get topics", e);
-    res.status(500).send("Error fetching NFL articles");
+    res.status(500).send("Error fetching NFL articles,", e);
   }
 });
 
