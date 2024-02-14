@@ -112,14 +112,14 @@ export default function Dashboard() {
   return (
     <div className="font-display">
       <div className="flex h-full flex-col">
-        <div className="bg-orange-950 py-36 px-80 shadow-lg">
-            <div className="flex gap-3 h-20 text-sm justify-self-end">
+        <div className="bg-orange-950 py-36 px-80 shadow-lg flex-col">
+            <div className="justify-self-center gap-3 h-20 text-sm self-end text-orange-200">
               <div
-                className="text-orange-900 font-bold"
+                className="font-bold"
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
               >
-                <div className="text-orange-900 decoration-none hover:no-underline cursor-pointer text-base">
+                <div className="decoration-none hover:no-underline cursor-pointer text-base">
                   {currentUser.email}
                 </div>
                 <div>
@@ -127,21 +127,21 @@ export default function Dashboard() {
                     <div>
                       <div
                         onClick={navProfile}
-                        className="hover:text-orange-700 text-orange-900 ease-linear transition duration-100 hover:cursor-pointer mt-1"
+                        className="hover:text-orange-100  ease-linear transition duration-100 hover:cursor-pointer mt-1"
                       >
                         Profile
                       </div>
                       <div>
                         <button
                           onClick={navContactPage}
-                          className="hover:text-orange-700 text-orange-900 ease-linear transition duration-100 mt-1"
+                          className="hover:text-orange-100 ease-linear transition duration-100 mt-1"
                         >
                           Contact Us
                         </button>
                       </div>
                       <button
                         onClick={handleLogout}
-                        className="hover:text-orange-700 text-orange-900 ease-linear transition duration-100 mt-1"
+                        className="hover:text-orange-100 ease-linear transition duration-100 mt-1"
                       >
                         Log Out
                       </button>
