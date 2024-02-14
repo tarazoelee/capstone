@@ -7,6 +7,7 @@ import Dashboard from "./Dashboard";
 import Profile from "./Profile";
 import CreateProfile from "./CreateProfile";
 import ContactUs from "./ContactUs";
+import ForgotPassword from "./ForgotPassword";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard></Dashboard>} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/contact-us" element={<ContactUs />} />
+            <Route path="/forgotpassword" element={<ForgotPassword />} />
             <Route
               path="/createProfile"
               element={<CreateProfile></CreateProfile>}
