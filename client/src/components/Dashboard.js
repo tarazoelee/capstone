@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import Footer from "./Footer";
 import { Calendar } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 import user from "../images/user.png";
@@ -194,6 +195,7 @@ export default function Dashboard() {
           <div className="">{/* {<Calendar />} */}</div>
         </div>
       </div>
+      <Footer></Footer>
     </div>
   );
 }
