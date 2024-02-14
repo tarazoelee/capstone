@@ -112,46 +112,46 @@ export default function Dashboard() {
   return (
     <div className="font-display">
       <div className="flex h-full flex-col">
-        <div className="justify-start border-gray-800 text-orange-200 bg-orange-950 py-36 px-20 shadow-lg rounded-lg">
-          <div className="flex pl-24 gap-3 my-10 h-20 text-sm">
-          <div
-            className="text-orange-900 font-bold"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
-            <div className="text-orange-900 decoration-none hover:no-underline cursor-pointer text-base">
-              {currentUser.email}
-            </div>
-            <div>
-              {isDropdownVisible && (
-                <div>
-                  <div
-                    onClick={navProfile}
-                    className="hover:text-orange-700 text-orange-900 ease-linear transition duration-100 hover:cursor-pointer mt-1"
-                  >
-                    Profile
-                  </div>
-                  <div>
-                    <button
-                      onClick={navContactPage}
-                      className="hover:text-orange-700 text-orange-900 ease-linear transition duration-100 mt-1"
-                    >
-                      Contact Us
-                    </button>
-                  </div>
-                  <button
-                    onClick={handleLogout}
-                    className="hover:text-orange-700 text-orange-900 ease-linear transition duration-100 mt-1"
-                  >
-                    Log Out
-                  </button>
+        <div className="bg-orange-950 py-36 px-80 shadow-lg">
+            <div className="flex gap-3 h-20 text-sm justify-self-end">
+              <div
+                className="text-orange-900 font-bold"
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
+                <div className="text-orange-900 decoration-none hover:no-underline cursor-pointer text-base">
+                  {currentUser.email}
                 </div>
-              )}
-            </div>
+                <div>
+                  {isDropdownVisible && (
+                    <div>
+                      <div
+                        onClick={navProfile}
+                        className="hover:text-orange-700 text-orange-900 ease-linear transition duration-100 hover:cursor-pointer mt-1"
+                      >
+                        Profile
+                      </div>
+                      <div>
+                        <button
+                          onClick={navContactPage}
+                          className="hover:text-orange-700 text-orange-900 ease-linear transition duration-100 mt-1"
+                        >
+                          Contact Us
+                        </button>
+                      </div>
+                      <button
+                        onClick={handleLogout}
+                        className="hover:text-orange-700 text-orange-900 ease-linear transition duration-100 mt-1"
+                      >
+                        Log Out
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
           </div>
+          <div className="text-6xl font-bold text-left text-orange-200 w-3/5">Listen to the news like never before.</div>
         </div>
-        <div className="text-6xl font-bold text-left ">Listen to the news like never before.</div>
-      </div>
         <div className="flex flex-col justify-center w-7/12 mb-44 mt-24 gap-7 self-center">
           <div onClick={scrapeNFL}>Scrape NFL</div>
           <div onClick={scrapeMLB}>Scrape MLB *** not working </div>
