@@ -120,6 +120,12 @@ export default function Login() {
               Sign Up
             </a>
           </div>
+          <div className="text-center mt-3 text-xs text-gray-600">
+            Forgot Password?{" "}
+            <a href="/forgotpassword" className="underline underline-offset-2">
+              Click Here
+            </a>
+          </div>
         </div>
       </div>
     </div>
