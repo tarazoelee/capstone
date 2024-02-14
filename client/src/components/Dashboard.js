@@ -113,9 +113,8 @@ export default function Dashboard() {
     <div className="font-display">
       <div className="flex h-full flex-col">
         <div className="bg-orange-950 py-36 px-80 shadow-lg flex-col">
-            <div className="justify-self-center gap-3 h-20 text-sm self-end text-orange-200">
-              <div
-                className="font-bold"
+            <div
+                className="font-bold justify-self-end self-end flex-col gap-3 h-20 text-sm text-orange-200"
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
               >
@@ -148,7 +147,6 @@ export default function Dashboard() {
                     </div>
                   )}
                 </div>
-              </div>
           </div>
           <div className="text-6xl font-bold text-left text-orange-200 w-3/5">Listen to the news like never before.</div>
         </div>
