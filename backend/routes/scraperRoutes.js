@@ -23,8 +23,6 @@ app.get("/nfl-articles", async (req, res) => {
 
     const extractedNewsInfo = extractTitlesAndDescription(newsContent);
 
-    //NEED TO FIX THE PROCESSEDMESSAGE HERE TO SEND TO SUMMARY
-
     const summaryUrl = "http://localhost:5001/chat/summary";
     try {
       const summaryResponse = await fetch(summaryUrl, {
