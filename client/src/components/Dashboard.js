@@ -86,6 +86,13 @@ export default function Dashboard() {
     "sortBy=popularity&" +
     "apiKey=94b9c0081ebf421b89233a87e38b17ef";
 
+    var business =
+    "https://newsapi.org/v2/top-headlines?" +
+    "country=us&" +
+    "category=business&" +
+    "sortBy=popularity&" +
+    "apiKey=94b9c0081ebf421b89233a87e38b17ef";
+
   async function scrapeNFL() {
     await fetch(`${baseURL}/scraper/nfl-articles`)
       .then((response) => response.json())
@@ -115,6 +122,12 @@ export default function Dashboard() {
 
   async function scrapeNHL() {
     await fetch(nhl)
+      .then((response) => response.json())
+      .then((json) => console.log(json));
+  }
+
+  async function scrapeBusiness() {
+    await fetch(business)
       .then((response) => response.json())
       .then((json) => console.log(json));
   }
