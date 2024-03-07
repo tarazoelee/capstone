@@ -123,9 +123,9 @@ export default function Dashboard() {
   return (
     <div className="font-display">
       <div className="flex h-full flex-col">
-        <div className="bg-orange-950 py-36 px-80 shadow-lg flex-col">
+        <div className="bg-orange-950 py-20 px-80 shadow-lg flex-col">
             <div
-                className="font-bold justify-self-end self-end flex-col gap-3 h-20 text-sm text-orange-200"
+                className="font-bold justify-self-end self-end flex-col gap-3 h-20 text-sm text-orange-200 mb-8"
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
               >
@@ -159,7 +159,7 @@ export default function Dashboard() {
                   )}
                 </div>
           </div>
-          <div className="text-6xl font-bold text-left text-orange-200 w-3/5">Listen to the news like never before.</div>
+          <div className="text-6xl font-bold text-left text-orange-200 w-3/5 pb-6">Listen to the news like never before.</div>
         </div>
         <div className="flex flex-col justify-center w-7/12 mb-44 mt-24 gap-7 self-center">
           <div onClick={scrapeNFL}>Scrape NFL</div>
