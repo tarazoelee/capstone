@@ -25,14 +25,14 @@ export default function Footer(){
       }
 
  return(
-     <div className='bg-orange-50 py-24 px-56 text-black flex'>
-        <div class="flex gap-4 justify-self-start content-center">
-            <div onClick={navContactPage}>Contact Us</div>
-            <div onClick={navProfile}>Profile</div>
-            <div onClick={handleLogout}>Logout</div>
+     <div className='bg-orange-50 py-24 px-56 text-black flex justify-between text-orange-950'>
+        <div class="flex gap-4 content-center">
+            <div class="hover:cursor-pointer" onClick={navContactPage}>Contact Us</div>
+            <div class="hover:cursor-pointer" onClick={navProfile}>Profile</div>
+            <div class="hover:cursor-pointer" onClick={handleLogout}>Logout</div>
         </div>
-        <div class="justify-self-end">
-                Made in London 
+        <div class="">
+                Made in London &#x1F9E1;
         </div>
      </div>
  );
