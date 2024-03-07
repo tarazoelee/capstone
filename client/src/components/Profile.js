@@ -43,7 +43,7 @@ function Profile() {
   /**GETTING USERS SELECTED LENGTH*/
   async function getUserLength() {
     await fetch(
-      `${baseURL}/pref/getUserLength?email=${encodeURIComponent(
+      `${baseURL}/pref/getUserLengthAndPreferences?email=${encodeURIComponent(
         currentUser.email
       )}`
     )

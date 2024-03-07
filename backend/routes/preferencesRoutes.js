@@ -44,26 +44,39 @@ app.post("/postPrefs", async (req, resp) => {
   }
 });
 
-app.get("/getUserLength", async (req, res) => {
+app.get("/getUserLengthAndPreferences", async (req, res) => {
   try {
     const userEmail = req.query.email;
     if (!userEmail) {
       return res.status(400).send("Email is required");
     }
 
-    const user = await usersModel.findOne({ email: userEmail }, "length");
+    const user = await usersModel.findOne({ email: userEmail }, "length topic_1 topic_2 topic_3");
 
     if (!user) {
       return res.status(404).send("User not found");
     }
 
     const length = user.length;
+    const topic1 = user.topic_1;
+    const topic2 = user.topic_2;
+    const topic3 = user.topic_3;
 
     if (length == null) {
       return res.status(404).send("Length not set for user");
     }
+    
+    if (topic1 == null){
+      return res.status(404).send("Preference #1 not set for user");
+    }
+    if (topic2 == null) {
+      return res.status(404).send("Preference #2 not set for user");
+    }
+    if (topic3 == null) {
+      return res.status(404).send("Preference #3 not set for user");
+    }
 
-    res.json({ length: length });
+    res.json({ length: length, topic1: topic1, topic2: topic2, topic3: topic3 });
   } catch (error) {
     res.status(500).send("Server error");
   }
