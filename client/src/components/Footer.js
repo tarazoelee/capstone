@@ -11,11 +11,23 @@ export default function Footer(){
     function navProfile() {
         nav("/profile");
       }
+      async function handleLogout() {
+        setError("");
+        try {
+          await logout();
+          nav("/");
+        } catch {
+          setError("Failed to log out");
+        }
+      }
 
  return(
      <div className='bg-orange-50 py-24 px-56 text-black flex'>
-        <div onClick={navContactPage}>Contact Us</div>
-        <div onClick={navContactPage}>Profile</div>
+        <div class="gap-4">
+            <div onClick={navContactPage}>Contact Us</div>
+            <div onClick={navProfile}>Profile</div>
+            <div onClick={handleLogout}>Logout</div>
+        </div>
      </div>
  );
 }
