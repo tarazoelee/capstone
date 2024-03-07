@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function Footer(){
+    const [error, setError] = useState("");
     const nav = useNavigate();
+    const { currentUser, logout } = useAuth();
 
     function navContactPage() {
         nav("/contact-us");
