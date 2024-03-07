@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 
 const usersModel = require("../models/Users");
+const podcastsModel = require("../models/Podcasts");
 
 //ADDING USER PREFERNECES TO USER ON SIGNUP
 app.post("/postPrefs", async (req, resp) => {
@@ -92,6 +93,33 @@ app.post("/updatePreferences", async (req, resp) => {
   } catch (error) {
     console.error(error);
     resp.status(500).send("Server error");
+  }
+});
+
+//BACKEND TO GET USER PODCASTS
+app.get("/getUserPodcasts", async (req, resp) => {
+  const { email } = req.query; // Changed from req.body to req.query for a GET request
+
+  if (!email) {
+    return resp.status(400).send("Email is required.");
+  }
+
+  try {
+    // Find all podcasts that have the user's email in the corresponding_users array
+    const podcasts = await Podcast.find(
+      { corresponding_users: email },
+      "date_created topics -_id"
+    ).exec();
+
+    if (podcasts.length === 0) {
+      return resp.status(404).send("No podcasts found for the given user.");
+    }
+
+    // Return the podcasts and their creation dates
+    return resp.status(200).json(podcasts);
+  } catch (error) {
+    console.error(error);
+    return resp.status(500).send("Server error");
   }
 });
 
