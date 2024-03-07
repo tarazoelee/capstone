@@ -123,7 +123,7 @@ export default function Dashboard() {
   return (
     <div className="font-display">
       <div className="flex h-full flex-col">
-        <div className="bg-orange-950 py-20 px-80 shadow-lg flex-col">
+        <div className="bg-orange-950 py-20 px-56 shadow-lg flex-col">
             <div
                 className="font-bold justify-self-end self-end flex-col gap-3 h-20 text-sm text-orange-200 mb-8"
                 onMouseEnter={handleMouseEnter}
@@ -159,7 +159,7 @@ export default function Dashboard() {
                   )}
                 </div>
           </div>
-          <div className="text-6xl font-bold text-left text-orange-200 w-3/5 pb-6">Listen to the news like never before.</div>
+          <div className="text-6xl font-bold text-left text-orange-200 w-3/5 pb-6 px-16">Listen to the news like never before.</div>
         </div>
         <div className="flex flex-col justify-center w-7/12 mb-44 mt-24 gap-7 self-center">
           <div onClick={scrapeNFL}>Scrape NFL</div>
@@ -168,8 +168,8 @@ export default function Dashboard() {
           <div onClick={scrapeNBA}>Scrape NBA</div>
           <div onClick={scrapeNCAA}>Scrape NCAA</div>
           <div onClick={scrapeNHL}>Scrape NHL</div>
-          <div className="font-bold text-3xl text-orange-400">Today's Byte</div>
-          <div className="px-28 py-20 bg-orange-200 text-gray-900 rounded-md shadow-lg">
+          <div className="font-bold text-3xl text-orange-900">Today's Byte</div>
+          <div className="px-28 py-20 bg-orange-50 text-gray-900 rounded-md shadow-lg">
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry's standard dummy text
             ever since the 1500s, when an unknown printer took a galley of type
