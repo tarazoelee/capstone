@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const podcastSchema = new mongoose.Schema({
+const PodcastSchema = new mongoose.Schema({
   date_created: {
     type: Date,
     required: true,
@@ -22,7 +22,7 @@ const podcastSchema = new mongoose.Schema({
     required: true,
   },
   audio_file: {
-    type: Buffer, // You may choose to store the file reference instead of the binary
+    type: Buffer,
     contentType: String,
   },
   corresponding_users: [
@@ -34,4 +34,6 @@ const podcastSchema = new mongoose.Schema({
   ],
 });
 
-const Podcast = mongoose.model("Podcast", podcastSchema);
+const Podcasts = mongoose.model("Podcast", PodcastSchema);
+
+module.exports = Podcasts;
