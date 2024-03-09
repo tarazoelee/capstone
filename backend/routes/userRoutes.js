@@ -4,7 +4,7 @@ const app = express();
 const usersModel = require("../models/Users");
 
 //ADDING NEW USER ON SIGN UP
-app.post("/addUser", async (req, resp) => {
+app.post("/addUser", async (req, res) => {
   const email = req.body.email;
   var checkEmail = usersModel.find({ email: email });
 
