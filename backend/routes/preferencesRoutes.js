@@ -127,10 +127,9 @@ app.get("/getUserPodcasts", async (req, resp) => {
 
   try {
     // Find all podcasts that have the user's email in the corresponding_users array
-    const podcasts = await Podcast.find(
-      { corresponding_users: email },
-      "date_created topics -_id"
-    ).exec();
+    const podcasts = await podcastsModel
+      .find({ corresponding_users: email }, "date_created topics -_id")
+      .exec();
 
     if (podcasts.length === 0) {
       return resp.status(404).send("No podcasts found for the given user.");
@@ -144,9 +143,11 @@ app.get("/getUserPodcasts", async (req, resp) => {
   }
 });
 
+/*
 //ADDING PODCAST TO TABLE
-app.post("/addPodcast", async (req, resp) => {
-  const { topic_1, topic_2, topic_3, length, audio_file } = req.body;
+app.post("/addPodcast", upload.single("audio_file"), async (req, resp) => {
+  const { topic_1, topic_2, topic_3, length } = req.body;
+  const audio_file = req.file; // Assuming 'audio_file' is the name of the form field for the uploaded file
 
   try {
     const interestedUsers = await usersModel.find({
@@ -218,5 +219,6 @@ app.post("/addPodcast", async (req, resp) => {
     resp.status(500).send("Server error while adding the podcast");
   }
 });
+*/
 
 module.exports = app;
