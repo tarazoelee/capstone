@@ -114,32 +114,31 @@ function Profile() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen font-display">
-      <div className="self-start pl-16 gap-3 my-20 h-20 text-yellow-900 font-bold">
+    <div className="flex flex-col min-h-screen font-display px-72 py-20 text-orange-900 ">
+      <div className="h-20font-bold flex justify-end">
         <button onClick={navDash}>Dashboard</button>
       </div>
-      <div className="text-black flex flex-col gap-12 justify-center items-center">
+      <div className="flex flex-col gap-12 justify-center items-center my-20">
         <div className="flex gap-10 text-yellow-900 font-bold">
           <div className="font-bold">User since November 2023</div>
         </div>
 
         <div className="flex gap-10 items-center">
-          <div className="font-bold text-gray-600">Account Email</div>
+          <div className="font-bold">Account Email</div>
           <div className="bg-gray-100 rounded-md px-28 py-2 text-xs">
             {currentUser.email}
           </div>
         </div>
-
         <div className="flex gap-10 items-center">
-          <div className="font-bold text-gray-600"> Podcast Email</div>
+          <div className="font-bold "> Podcast Email</div>
           <div className="bg-gray-100 rounded-md px-28 py-2 text-xs">
             podcast@email.com
           </div>
         </div>
 
         <div className="flex gap-10 justify-center items-center flex-wrap">
-          <div className="font-bold text-gray-600 ">Your Interests</div>
-          <div className="flex gap-10 flex-wrap justify-center">
+          <div className="font-bold  ">Your Interests</div>
+          <div className="flex gap-10 flex-wrap justify-center items-center">
             {topics.map((topicObj, index) => {
               const topicName = topicObj.topic;
 
@@ -150,7 +149,7 @@ function Profile() {
               return (
                 <div
                   key={index}
-                  className={`${topicClass} w-32 px-6 py-2 text-center rounded-med rounded`}
+                  className={`${topicClass} w-32 px-6 py-2 align-middle text-center rounded-med rounded hover:bg-orange-200 ease-linear transition duration-100`}
                   onClick={() => handleTopicClick(topicName)}
                 >
                   {topicName}
@@ -161,7 +160,7 @@ function Profile() {
         </div>
 
         <div className="flex gap-10 justify-center items-center flex-wrap">
-          <div className="font-bold text-gray-600 ">Podcast Length</div>
+          <div className="font-bold ">Podcast Length</div>
           <div className="flex gap-10 flex-wrap justify-center">
             {["2 min", "5 min", "10 min", "20 min"].map(
               (lengthValue, index) => (
@@ -171,7 +170,7 @@ function Profile() {
                     selectedLength === lengthValue
                       ? "bg-orange-300"
                       : "bg-orange-100"
-                  } w-32 px-6 py-2 text-center rounded-med rounded cursor-pointer`}
+                  } w-32 px-6 py-2 text-center rounded-med rounded cursor-pointer hover:bg-orange-200 ease-linear transition duration-100`}
                   onClick={() => handleLengthClick(lengthValue)}
                 >
                   {lengthValue}
