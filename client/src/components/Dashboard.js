@@ -85,37 +85,6 @@ export default function Dashboard() {
   // 'sortBy=popularity&' +
   // 'apiKey=94b9c0081ebf421b89233a87e38b17ef';
 
-  var mlb =
-    "https://newsapi.org/v2/top-headlines?" +
-    "country=us&" +
-    "category=sports&" +
-    "q=baseball&" +
-    "sortBy=popularity&" +
-    "apiKey=94b9c0081ebf421b89233a87e38b17ef";
-
-  var nba =
-    "https://newsapi.org/v2/top-headlines?" +
-    "country=us&" +
-    "category=sports&" +
-    "q=NBA&" +
-    "sortBy=popularity&" +
-    "apiKey=94b9c0081ebf421b89233a87e38b17ef";
-
-  var ncaa =
-    "https://newsapi.org/v2/top-headlines?" +
-    "country=us&" +
-    "category=sports&" +
-    "q=ncaa&" +
-    "sortBy=popularity&" +
-    "apiKey=94b9c0081ebf421b89233a87e38b17ef";
-
-  var nhl =
-    "https://newsapi.org/v2/top-headlines?" +
-    "country=us&" +
-    "category=sports&" +
-    "q=nhl&" +
-    "sortBy=popularity&" +
-    "apiKey=94b9c0081ebf421b89233a87e38b17ef";
 
   async function scrapeNFL() {
     await fetch(`${baseURL}/scraper/nfl-articles`)
@@ -125,39 +94,6 @@ export default function Dashboard() {
         console.log("podcast script", podcastScript);
       });
   }
-
-  async function scrapeMLB() {
-    await fetch(mlb)
-      .then((response) => response.json())
-      .then((json) => console.log(json));
-  }
-
-  async function scrapeNBA() {
-    await fetch(nba)
-      .then((response) => response.json())
-      .then((json) => console.log(json));
-    // try {
-    //   console.log("scraping")
-    //   const response = await axios.get(`/api/nba/${nba}`);
-    //   setNewsContent(response.data.content);
-    //   console.log(response.data.content);
-    // } catch (error) {
-    //   setError('Failed to fetch news content');
-    // }
-  }
-
-  async function scrapeNCAA() {
-    await fetch(ncaa)
-      .then((response) => response.json())
-      .then((json) => console.log(json));
-  }
-
-  async function scrapeNHL() {
-    await fetch(nhl)
-      .then((response) => response.json())
-      .then((json) => console.log(json));
-  }
-
 
   return (
     <div className="font-display">
@@ -224,12 +160,8 @@ export default function Dashboard() {
            </div>
         </div>
         <div className="flex flex-col justify-center w-7/12 mb-44 mt-24 gap-7 self-center">
-          <div onClick={scrapeNFL}>Scrape NFL</div>
+          <div >Scrape NFL</div>
           {podcastScript !== "" && <div>Podcast Script: {podcastScript}</div>}
-          <div onClick={scrapeMLB}>Scrape MLB *** not working </div>
-          <div onClick={scrapeNBA}>Scrape NBA</div>
-          <div onClick={scrapeNCAA}>Scrape NCAA</div>
-          <div onClick={scrapeNHL}>Scrape NHL</div>
 
           <div className="font-bold text-3xl text-orange-900">Today's Byte</div>
           <div className="px-28 py-20 bg-orange-50 text-gray-900 rounded-md shadow-lg">
