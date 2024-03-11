@@ -3,6 +3,8 @@ const app = express();
 
 const usersModel = require("../models/Users");
 
+let articleUrls = [];
+
 var nfl =
   "https://newsapi.org/v2/top-headlines?" +
   "country=us&" +
@@ -12,7 +14,7 @@ var nfl =
   "apiKey=94b9c0081ebf421b89233a87e38b17ef";
 
 //TEST URL
-app.get("/nfl-articles", async (req, res) => {
+app.get("/nfl-article-urls", async (req, res) => {
   try {
     const response = await fetch(nfl);
     if (!response.ok) {
@@ -20,37 +22,34 @@ app.get("/nfl-articles", async (req, res) => {
       throw new Error("Network response was not ok");
     }
     const newsContent = await response.json();
+    console.log("news content", newsContent);
 
-    const extractedNewsInfo = extractTitlesAndDescription(newsContent);
+    newsContent.articles.forEach((article) => {
+      articleUrls.push(article.url);
+      console.log(article.url);
+    });
 
-    const summaryUrl = "http://localhost:5001/chat/summary";
-    try {
-      const summaryResponse = await fetch(summaryUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ message: extractedNewsInfo }),
-      });
+    // const extractedNewsInfo = extractTitlesAndDescription(newsContent);
 
-      const summaryJson = await summaryResponse.json();
-      res.send(summaryJson);
-    } catch (error) {
-      console.error("Error fetching summary", error);
-    }
+    // const summaryUrl = "http://localhost:5001/chat/summary";
+    // try {
+    //   const summaryResponse = await fetch(summaryUrl, {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({ message: extractedNewsInfo }),
+    //   });
+
+    //   const summaryJson = await summaryResponse.json();
+    //   res.send(summaryJson);
+    // } catch (error) {
+    //   console.error("Error fetching summary", error);
+    // }
   } catch (e) {
-    res.status(500).send("Error fetching NFL articles,", e);
+    res.status(500).send("Error fetching NFL articles urls,", e);
   }
 });
-
-function extractTitlesAndDescription(newsContent) {
-  const articleInfo = newsContent.articles.map((article) => {
-    return `${article.title}, ${article.description}`;
-  });
-
-  const concatenatedString = articleInfo.join("\n\n");
-  return concatenatedString;
-}
 
 module.exports = app;
 
