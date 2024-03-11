@@ -143,9 +143,8 @@ app.get("/getUserPodcasts", async (req, resp) => {
   }
 });
 
-/*
 //ADDING PODCAST TO TABLE
-app.post("/addPodcast", upload.single("audio_file"), async (req, resp) => {
+app.post("/addPodcast", async (req, resp) => {
   const { topic_1, topic_2, topic_3, length } = req.body;
   const audio_file = req.file; // Assuming 'audio_file' is the name of the form field for the uploaded file
 
@@ -207,7 +206,7 @@ app.post("/addPodcast", upload.single("audio_file"), async (req, resp) => {
       topic_2,
       topic_3,
       length,
-      audio_file,
+      audio_file_ref,
       corresponding_users: correspondingUsersEmails,
     });
 
@@ -219,6 +218,5 @@ app.post("/addPodcast", upload.single("audio_file"), async (req, resp) => {
     resp.status(500).send("Server error while adding the podcast");
   }
 });
-*/
 
 module.exports = app;

@@ -37,8 +37,10 @@ const topicModels = {};
 
 // Convert topic to a valid collection name
 topics.forEach((topic) => {
-  topicModels[modelName] = mongoose.model(modelName, TopicTableSchema);
+  const collectionName = topic;
+  topicModels[topic] = mongoose.model(topic, TopicTableSchema, collectionName);
 });
+
 Object.values(topicModels).forEach((model) => model.createIndexes());
 
 module.exports = topicModels;
