@@ -115,7 +115,7 @@ function Profile() {
 
   return (
     <div className="flex flex-col min-h-screen font-display px-72 py-20 text-orange-900 ">
-      <div className="h-20font-bold flex justify-end">
+      <div className="font-bold flex justify-end">
         <button onClick={navDash}>Dashboard</button>
       </div>
       <div className="flex flex-col gap-12 justify-center items-center my-20">
