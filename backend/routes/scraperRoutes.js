@@ -1,9 +1,10 @@
 const express = require("express");
 const app = express();
+const cheerio = require("cheerio");
 
 const usersModel = require("../models/Users");
 
-let articleUrls = [];
+let urlsToScrape = [];
 
 var nfl =
   "https://newsapi.org/v2/top-headlines?" +
@@ -25,9 +26,11 @@ app.get("/nfl-article-urls", async (req, res) => {
     console.log("news content", newsContent);
 
     newsContent.articles.forEach((article) => {
-      articleUrls.push(article.url);
+      urlsToScrape.push(article.url);
       console.log(article.url);
     });
+
+    handleScrapeUrls();
 
     // const extractedNewsInfo = extractTitlesAndDescription(newsContent);
 
@@ -50,6 +53,31 @@ app.get("/nfl-article-urls", async (req, res) => {
     res.status(500).send("Error fetching NFL articles urls,", e);
   }
 });
+
+async function handleScrapeUrls() {
+  const results = [];
+
+  for (const url of urlsToScrape) {
+    try {
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch ${url}: ${response.statusText}`);
+      }
+
+      const data = await response.text();
+      console.log("data", data);
+
+      const $ = cheerio.load(data);
+      const articleText = $("p").text();
+      articleTexts.push({ url, articleText });
+      console.log("article textssss", articleTexts);
+    } catch (e) {
+      console.error(`Error fetching ${url}:`, e.message);
+      results.push({ url, error: e.message });
+    }
+  }
+}
 
 module.exports = app;
 
