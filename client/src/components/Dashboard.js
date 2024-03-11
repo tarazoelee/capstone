@@ -133,7 +133,7 @@ export default function Dashboard() {
   }
 
   async function scrapeNBA() {
-    await fetch( `${baseURL}/scraper/nba`)
+    await fetch(nba)
       .then((response) => response.json())
       .then((json) => console.log(json));
     // try {
