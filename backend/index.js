@@ -1,29 +1,11 @@
-// To connect with your mongoDB database
-const mongoose = require("mongoose");
-mongoose
-  .connect(
-    "mongodb+srv://azhitkev:dltImV1IGgFvxXje@capstone.8mdcviu.mongodb.net/",
-    {
-      dbName: "capstoneDB",
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
-  .then(() => console.log("Connected Successfully"))
-
-  .catch((err) => {
-    console.error(err);
-  });
-
-// For backend and express
 const express = require("express");
-const app = express();
 const cors = require("cors");
-
-console.log("App listen at port 5001");
-
-app.use(express.json());
-app.use(cors());
+const crypto = require("crypto");
+const path = require("path");
+const mongoose = require("mongoose");
+const multer = require("multer");
+const { GridFsStorage } = require("multer-gridfs-storage");
+const Grid = require("gridfs-stream");
 
 // Import routes
 const userRoutes = require("./routes/userRoutes");
@@ -31,8 +13,86 @@ const topicRoutes = require("./routes/topicRoutes");
 const prefRoutes = require("./routes/preferencesRoutes");
 const scraperRoutes = require("./routes/scraperRoutes");
 const chatbotRoutes = require("./routes/chatbotRoutes");
+const { sendContactEmail } = require("./contactFormHandler");
 
-// ... other app setup code (like middleware)
+const app = express();
+
+// Middlewares
+app.use(express.json());
+app.use(cors());
+
+// MongoDB URI
+const mongoURI =
+  "mongodb+srv://azhitkev:dltImV1IGgFvxXje@capstone.8mdcviu.mongodb.net/capstoneDB";
+
+// Connect to MongoDB with the default connection
+mongoose
+  .connect(mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("Connected to MongoDB with default connection");
+    // All Mongoose operations will use this default connection.
+
+    // Init gfs using the default connection
+    const db = mongoose.connection.db;
+    gfs = Grid(db, mongoose.mongo);
+    gfs.collection("uploads");
+
+    // Start the Express server after the database connection is open
+    app.listen(5001, () => {
+      console.log("Server started on port 5001");
+    });
+  })
+  .catch(console.error);
+
+// Create storage engine
+const storage = new GridFsStorage({
+  url: mongoURI,
+  //options: { useNewUrlParser: true, useUnifiedTopology: true }, // These options are sometimes required inside options object.
+  file: (req, file) => {
+    return new Promise((resolve, reject) => {
+      crypto.randomBytes(16, (err, buf) => {
+        if (err) {
+          return reject(err);
+        }
+        const filename = buf.toString("hex") + path.extname(file.originalname);
+        const fileInfo = {
+          filename: filename,
+          bucketName: "uploads", // Make sure this is the name of your GridFS bucket
+        };
+        resolve(fileInfo);
+      });
+    });
+  },
+});
+const upload = multer({ storage });
+
+// Contact form endpoint
+app.post("/send-contact-email", async (req, res) => {
+  try {
+    const result = await sendContactEmail(req.body.email, req.body.message);
+    res.status(result.status === "success" ? 200 : 500).send(result.message);
+  } catch (error) {
+    res.status(500).send("Server error");
+  }
+});
+
+// Audio upload endpoint
+app.post("/upload", upload.single("file"), async (req, res, next) => {
+  if (!req.file) {
+    return res.status(400).send("No file uploaded.");
+  }
+
+  try {
+    // If you need to perform any async operation with req.file, do it here.
+    // Otherwise, just send the response.
+    res.status(200).json({ file: req.file });
+  } catch (error) {
+    next(error); // Pass errors to the error handling middleware
+  }
+});
 
 // Use routes
 app.use("/users", userRoutes);
@@ -41,21 +101,7 @@ app.use("/pref", prefRoutes);
 app.use("/scraper", scraperRoutes);
 app.use("/chat", chatbotRoutes);
 
-app.listen(5001);
-
-const { sendContactEmail } = require("./contactFormHandler");
-
-//-----------CONTACT FORM ENDPOINT--------
-app.post("/send-contact-email", async (req, res) => {
-  console.log("Received data:", req.body);
-  try {
-    const result = await sendContactEmail(req.body.email, req.body.message);
-    if (result.status === "success") {
-      res.status(200).send(result.message);
-    } else {
-      res.status(500).send(result.message);
-    }
-  } catch (error) {
-    res.status(500).send("Server error");
-  }
+// Error handling for unsupported routes
+app.use((req, res, next) => {
+  res.status(404).send("Sorry can't find that!");
 });

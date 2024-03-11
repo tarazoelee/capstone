@@ -2,11 +2,12 @@ const express = require("express");
 const app = express();
 
 const usersModel = require("../models/Users");
+const podcastsModel = require("../models/Podcasts");
 
 //ADDING USER PREFERNECES TO USER ON SIGNUP
 app.post("/postPrefs", async (req, resp) => {
   try {
-    console.log("here")
+    console.log("here");
     var topic1 = req.body.topic1;
     var topic2 = req.body.topic2;
     var topic3 = req.body.topic3;
@@ -50,7 +51,10 @@ app.get("/getUserLengthAndPreferences", async (req, res) => {
       return res.status(400).send("Email is required");
     }
 
-    const user = await usersModel.findOne({ email: userEmail }, "length topic_1 topic_2 topic_3");
+    const user = await usersModel.findOne(
+      { email: userEmail },
+      "length topic_1 topic_2 topic_3"
+    );
 
     if (!user) {
       return res.status(404).send("User not found");
@@ -64,8 +68,8 @@ app.get("/getUserLengthAndPreferences", async (req, res) => {
     if (length == null) {
       return res.status(404).send("Length not set for user");
     }
-    
-    if (topic1 == null){
+
+    if (topic1 == null) {
       return res.status(404).send("Preference #1 not set for user");
     }
     if (topic2 == null) {
@@ -75,7 +79,12 @@ app.get("/getUserLengthAndPreferences", async (req, res) => {
       return res.status(404).send("Preference #3 not set for user");
     }
 
-    res.json({ length: length, topic1: topic1, topic2: topic2, topic3: topic3 });
+    res.json({
+      length: length,
+      topic1: topic1,
+      topic2: topic2,
+      topic3: topic3,
+    });
   } catch (error) {
     res.status(500).send("Server error");
   }
@@ -107,5 +116,109 @@ app.post("/updatePreferences", async (req, resp) => {
     resp.status(500).send("Server error");
   }
 });
+
+//BACKEND TO GET USER PODCASTS
+app.get("/getUserPodcasts", async (req, resp) => {
+  const { email } = req.query; // Changed from req.body to req.query for a GET request
+
+  if (!email) {
+    return resp.status(400).send("Email is required.");
+  }
+
+  try {
+    // Find all podcasts that have the user's email in the corresponding_users array
+    const podcasts = await podcastsModel
+      .find({ corresponding_users: email }, "date_created topics -_id")
+      .exec();
+
+    if (podcasts.length === 0) {
+      return resp.status(404).send("No podcasts found for the given user.");
+    }
+
+    // Return the podcasts and their creation dates
+    return resp.status(200).json(podcasts);
+  } catch (error) {
+    console.error(error);
+    return resp.status(500).send("Server error");
+  }
+});
+
+/*
+//ADDING PODCAST TO TABLE
+app.post("/addPodcast", upload.single("audio_file"), async (req, resp) => {
+  const { topic_1, topic_2, topic_3, length } = req.body;
+  const audio_file = req.file; // Assuming 'audio_file' is the name of the form field for the uploaded file
+
+  try {
+    const interestedUsers = await usersModel.find({
+      $or: [
+        {
+          $and: [
+            { topic_1: topic_1 },
+            { topic_2: topic_2 },
+            { topic_3: topic_3 },
+          ],
+        },
+        {
+          $and: [
+            { topic_1: topic_1 },
+            { topic_2: topic_3 },
+            { topic_3: topic_2 },
+          ],
+        },
+        {
+          $and: [
+            { topic_1: topic_2 },
+            { topic_2: topic_1 },
+            { topic_3: topic_3 },
+          ],
+        },
+        {
+          $and: [
+            { topic_1: topic_2 },
+            { topic_2: topic_3 },
+            { topic_3: topic_1 },
+          ],
+        },
+        {
+          $and: [
+            { topic_1: topic_3 },
+            { topic_2: topic_1 },
+            { topic_3: topic_2 },
+          ],
+        },
+        {
+          $and: [
+            { topic_1: topic_3 },
+            { topic_2: topic_2 },
+            { topic_3: topic_1 },
+          ],
+        },
+      ],
+    });
+
+    //Extract user emails
+    const correspondingUsersEmails = interestedUsers.map((user) => user.email);
+
+    //Create a new podcast instance with the found corresponding users
+    const newPodcast = new podcastsModel({
+      date_created: new Date(),
+      topic_1,
+      topic_2,
+      topic_3,
+      length,
+      audio_file,
+      corresponding_users: correspondingUsersEmails,
+    });
+
+    const savedPodcast = await newPodcast.save();
+
+    resp.status(201).json(savedPodcast);
+  } catch (error) {
+    console.error(error);
+    resp.status(500).send("Server error while adding the podcast");
+  }
+});
+*/
 
 module.exports = app;
