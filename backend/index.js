@@ -108,5 +108,5 @@ app.use("/chat", chatbotRoutes);
 
 // Error handling for unsupported routes
 app.use((req, res, next) => {
-  res.status(404).send("Sorry can't find that!");
+  res.status(404).send("Request Not Found");
 });

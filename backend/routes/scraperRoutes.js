@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const cheerio = require("cheerio");
-const usersModel = require("../models/Users");
 const axios = require("axios");
 const { JSDOM } = require("jsdom");
 const { Readability } = require("@mozilla/readability");
