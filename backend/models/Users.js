@@ -1,37 +1,24 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 const UserSchema = new mongoose.Schema({
-	email:{
-		type:String,
-		required:true
-	},
-    topic_1:{
-		type:String,
-		required:false
-	},
-    topic_2:{
-		type:String,
-		required:false
-	},
-    topic_3:{
-		type:String,
-		required:false
-	},
-	topic_4:{
-		type:String,
-		required:false
-	},
-	topic_5:{
-		type:String,
-		required:false
-	},
-	length:{
-		type:String,
-		required:false
-	}
-})
+  email: {
+    type: String,
+    required: true,
+  },
+  topics: [
+    {
+      type: String,
+      required: false,
+    },
+  ],
+  length: {
+    type: String,
+    required: false,
+  },
+});
 
-const Users = mongoose.model('users', UserSchema)
-Users.createIndexes();
+const Users = mongoose.model("users", UserSchema);
+Users.createIndexes(); // Ensure any indexes are created, especially if you are using the topics field in queries
 
 module.exports = Users;
