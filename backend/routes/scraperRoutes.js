@@ -41,7 +41,16 @@ const topicUrls = {
     "q=nhl&" +
     "sortBy=popularity&" +
     "apiKey=94b9c0081ebf421b89233a87e38b17ef",
-};
+
+   mlb:
+    "https://newsapi.org/v2/top-headlines?" +
+    "country=us&" +
+    "category=sports&" +
+    "q=baseball&" +
+    "sortBy=popularity&" +
+    "apiKey=94b9c0081ebf421b89233a87e38b17ef",
+}
+
 
 app.get("/nba", async (req, res) => {
   scrape(nba);

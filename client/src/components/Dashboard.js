@@ -85,37 +85,6 @@ export default function Dashboard() {
   // 'sortBy=popularity&' +
   // 'apiKey=94b9c0081ebf421b89233a87e38b17ef';
 
-  var mlb =
-    "https://newsapi.org/v2/top-headlines?" +
-    "country=us&" +
-    "category=sports&" +
-    "q=baseball&" +
-    "sortBy=popularity&" +
-    "apiKey=94b9c0081ebf421b89233a87e38b17ef";
-
-  var nba =
-    "https://newsapi.org/v2/top-headlines?" +
-    "country=us&" +
-    "category=sports&" +
-    "q=NBA&" +
-    "sortBy=popularity&" +
-    "apiKey=94b9c0081ebf421b89233a87e38b17ef";
-
-  var ncaa =
-    "https://newsapi.org/v2/top-headlines?" +
-    "country=us&" +
-    "category=sports&" +
-    "q=ncaa&" +
-    "sortBy=popularity&" +
-    "apiKey=94b9c0081ebf421b89233a87e38b17ef";
-
-  var nhl =
-    "https://newsapi.org/v2/top-headlines?" +
-    "country=us&" +
-    "category=sports&" +
-    "q=nhl&" +
-    "sortBy=popularity&" +
-    "apiKey=94b9c0081ebf421b89233a87e38b17ef";
 
   async function scrapeNFL() {
     await fetch(`${baseURL}/scraper/nfl-articles`)
@@ -126,110 +95,58 @@ export default function Dashboard() {
       });
   }
 
-  async function scrapeMLB() {
-    await fetch(mlb)
-      .then((response) => response.json())
-      .then((json) => console.log(json));
-  }
-
-  async function scrapeNBA() {
-    await fetch(nba)
-      .then((response) => response.json())
-      .then((json) => console.log(json));
-    // try {
-    //   console.log("scraping")
-    //   const response = await axios.get(`/api/nba/${nba}`);
-    //   setNewsContent(response.data.content);
-    //   console.log(response.data.content);
-    // } catch (error) {
-    //   setError('Failed to fetch news content');
-    // }
-  }
-
-  async function scrapeNCAA() {
-    await fetch(ncaa)
-      .then((response) => response.json())
-      .then((json) => console.log(json));
-  }
-
-  async function scrapeNHL() {
-    await fetch(nhl)
-      .then((response) => response.json())
-      .then((json) => console.log(json));
-  }
-
-
   return (
     <div className="font-display">
       <div className="flex h-full flex-col">
-        <div className="bg-orange-950 py-20 px-56 shadow-lg flex-col">
+        <div className="bg-orange-950 py-24 px-72 shadow-lgflex-col">
             <div
-                className="font-bold justify-self-end self-end flex-col gap-3 h-20 text-sm text-orange-200 mb-8"
+                className="font-bold flex-col h-20 text-sm text-orange-200 mb-8 flex justify-self-end float-right w-20"
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
               >
-                <div className="decoration-none hover:no-underline cursor-pointer text-base">
+                <div className="decoration-none hover:no-underline cursor-pointer text-base mb-0" >
                   {currentUser.email}
                 </div>
-                <div>
-                  {isDropdownVisible && (
-                    <div>
-                      <div
-                        onClick={navProfile}
-                        className="hover:text-orange-100  ease-linear transition duration-100 hover:cursor-pointer mt-1"
-                      >
-                        Profile
-                      </div>
+                    {isDropdownVisible && (
                       <div>
+                        <div
+                          onClick={navProfile}
+                          className="hover:text-orange-100 ease-linear transition duration-100 hover:cursor-pointer mt-1"
+                        >
+                          Profile
+                        </div>
+                        <div>
+                          <button
+                            onClick={navContactPage}
+                            className="hover:text-orange-100 ease-linear transition duration-100 mt-1"
+                          >
+                            Contact Us
+                          </button>
+                        </div>
                         <button
-                          onClick={navContactPage}
+                          onClick={handleLogout}
                           className="hover:text-orange-100 ease-linear transition duration-100 mt-1"
                         >
-                          Contact Us
+                          Log Out
                         </button>
                       </div>
-                      <button
-                        onClick={handleLogout}
-                        className="hover:text-orange-100 ease-linear transition duration-100 mt-1"
-                      >
-                        Log Out
-                      </button>
-                    </div>
                   )}
-                </div>
           </div>
-          <div className="text-6xl font-bold text-left text-orange-200 w-3/5 pb-6 px-16">
+          <div className="text-6xl font-bold text-left text-orange-200 w-3/5 h-40 pt-10">
               <Typewriter
             onInit={(typewriter) => {
               typewriter.typeString(' Listen to the news like never before.')
                 .callFunction(() => {
                   console.log('String typed out!');
                 })
-                //.pauseFor(5)
-                // .deleteAll()
-                .callFunction(() => {
-                  console.log('All strings were deleted');
-                })
                 .start();
             }}
           />
-          {/* <Typewriter
-            options={{
-              strings: ['Listen to the news like never before.'],
-              //autoStart: true,
-              pauseFor:1500,
-              //loop: true,
-            }}
-          /> */}
            </div>
         </div>
         <div className="flex flex-col justify-center w-7/12 mb-44 mt-24 gap-7 self-center">
-          <div onClick={scrapeNFL}>Scrape NFL</div>
+          <div >Scrape NFL</div>
           {podcastScript !== "" && <div>Podcast Script: {podcastScript}</div>}
-          <div onClick={scrapeMLB}>Scrape MLB *** not working </div>
-          <div onClick={scrapeNBA}>Scrape NBA</div>
-          <div onClick={scrapeNCAA}>Scrape NCAA</div>
-          <div onClick={scrapeNHL}>Scrape NHL</div>
 
           <div className="font-bold text-3xl text-orange-900">Today's Byte</div>
           <div className="px-28 py-20 bg-orange-50 text-gray-900 rounded-md shadow-lg">
