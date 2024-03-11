@@ -1,10 +1,77 @@
 const express = require("express");
 const app = express();
 const cheerio = require("cheerio");
+const scrapeNewsContent = require('./scrape')
 
 const usersModel = require("../models/Users");
 
 let urlsToScrape = [];
+
+// app.get('/api/nba/:url', async (req, res) => {
+//   const url = req.params.url;
+//   console.log(url);
+
+//   if (!url) {
+//     return res.status(400).json({ error: 'URL parameter is required' });
+//   }
+//   console.log('here')
+
+//   const newsContent = await scrapeNewsContent(url);
+
+//   if (newsContent) {
+//     res.json({ content: newsContent });
+//   } else {
+//     res.status(500).json({ error: 'Failed to scrape news content' });
+//   }
+// });
+
+// we need axios to make HTTP requests
+const axios = require('axios');
+
+// and we need jsdom and Readability to parse the article HTML
+const { JSDOM } = require('jsdom');
+const { Readability } = require('@mozilla/readability');
+
+
+//GETTING ALL TOPICS
+app.get("/test", async (req, res) => {
+  try {
+   res.send("success")
+  } catch (e) {
+    console.log("unable to test");
+  }
+});
+
+  app.get('/nba', async (req, res) => {
+      const url = "https://newsapi.org/v2/top-headlines?" +
+    "country=us&" +
+    "category=sports&" +
+    "q=NBA&" +
+    "sortBy=popularity&" +
+    "apiKey=94b9c0081ebf421b89233a87e38b17ef";
+    // Make the request with axios' get() function
+    await axios.get(url).then(function(r1) {
+
+      // At this point we will have some search results from the API. Take the first search result...
+      let firstResult = r1.data.articles[0];
+
+      // ...and download the HTML for it, again with axios
+      axios.get(firstResult.url).then(function(r2) {
+
+        // We now have the article HTML, but before we can use Readability to locate the article content we need jsdom to convert it into a DOM object
+        let dom = new JSDOM(r2.data, {
+          url: firstResult.url
+        });
+
+        // now pass the DOM document into readability to parse
+        let article = new Readability(dom.window.document).parse();
+
+        // Done! The article content is in the textContent property
+        res.send(article.textContent)
+        console.log(article.textContent);
+      })
+    })
+})
 
 var nfl =
   "https://newsapi.org/v2/top-headlines?" +

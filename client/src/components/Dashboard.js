@@ -7,9 +7,14 @@ import "rsuite/dist/rsuite.min.css";
 import user from "../images/user.png";
 import { baseURL } from "../config.js";
 import Typewriter from 'typewriter-effect';
+//import { response } from "../../../backend/routes/scraperRoutes.js";
+
+const axios = require('axios');
+const cheerio = require('cheerio');
 
 export default function Dashboard() {
   const [error, setError] = useState("");
+    const [newsContent, setNewsContent] = useState('');
   const [podcastScript, setPodcastScript] = useState("");
   const { currentUser, logout } = useAuth();
   const nav = useNavigate();
@@ -114,7 +119,7 @@ export default function Dashboard() {
 
   async function scrapeNFL() {
     await fetch(`${baseURL}/scraper/nfl-articles`)
-      .then((response) => response.json())
+      .then((res) => res.json())
       .then((data) => {
         setPodcastScript(data.choices[0].message.content);
         console.log("podcast script", podcastScript);
@@ -128,9 +133,17 @@ export default function Dashboard() {
   }
 
   async function scrapeNBA() {
-    await fetch(nba)
+    await fetch( `${baseURL}/scraper/nba`)
       .then((response) => response.json())
       .then((json) => console.log(json));
+    // try {
+    //   console.log("scraping")
+    //   const response = await axios.get(`/api/nba/${nba}`);
+    //   setNewsContent(response.data.content);
+    //   console.log(response.data.content);
+    // } catch (error) {
+    //   setError('Failed to fetch news content');
+    // }
   }
 
   async function scrapeNCAA() {
@@ -144,6 +157,7 @@ export default function Dashboard() {
       .then((response) => response.json())
       .then((json) => console.log(json));
   }
+
 
   return (
     <div className="font-display">
