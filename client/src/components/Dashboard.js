@@ -98,43 +98,41 @@ export default function Dashboard() {
   return (
     <div className="font-display">
       <div className="flex h-full flex-col">
-        <div className="bg-orange-950 py-20 px-56 shadow-lg flex-col">
+        <div className="bg-orange-950 py-24 px-72 shadow-lgflex-col">
             <div
-                className="font-bold justify-self-end self-end flex-col gap-3 h-20 text-sm text-orange-200 mb-8"
+                className="font-bold flex-col h-20 text-sm text-orange-200 mb-8 flex justify-self-end float-right"
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
               >
-                <div className="decoration-none hover:no-underline cursor-pointer text-base">
+                <div className="decoration-none hover:no-underline cursor-pointer text-base mb-0" >
                   {currentUser.email}
                 </div>
-                <div>
-                  {isDropdownVisible && (
-                    <div>
-                      <div
-                        onClick={navProfile}
-                        className="hover:text-orange-100  ease-linear transition duration-100 hover:cursor-pointer mt-1"
-                      >
-                        Profile
-                      </div>
+                    {isDropdownVisible && (
                       <div>
+                        <div
+                          onClick={navProfile}
+                          className="hover:text-orange-100 ease-linear transition duration-100 hover:cursor-pointer mt-1"
+                        >
+                          Profile
+                        </div>
+                        <div>
+                          <button
+                            onClick={navContactPage}
+                            className="hover:text-orange-100 ease-linear transition duration-100 mt-1"
+                          >
+                            Contact Us
+                          </button>
+                        </div>
                         <button
-                          onClick={navContactPage}
+                          onClick={handleLogout}
                           className="hover:text-orange-100 ease-linear transition duration-100 mt-1"
                         >
-                          Contact Us
+                          Log Out
                         </button>
                       </div>
-                      <button
-                        onClick={handleLogout}
-                        className="hover:text-orange-100 ease-linear transition duration-100 mt-1"
-                      >
-                        Log Out
-                      </button>
-                    </div>
                   )}
-                </div>
           </div>
-          <div className="text-6xl font-bold text-left text-orange-200 w-3/5 h-40">
+          <div className="text-6xl font-bold text-left text-orange-200 w-3/5 h-40 pt-10">
               <Typewriter
             onInit={(typewriter) => {
               typewriter.typeString(' Listen to the news like never before.')
