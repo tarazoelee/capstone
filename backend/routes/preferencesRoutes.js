@@ -4,46 +4,42 @@ const app = express();
 const usersModel = require("../models/Users");
 const podcastsModel = require("../models/Podcasts");
 
-//ADDING USER PREFERNECES TO USER ON SIGNUP
-app.post("/postPrefs", async (req, resp) => {
+//ADD USER PREFERENCES
+app.post("/postPrefs", async (req, res) => {
   try {
-    console.log("here");
-    var topic1 = req.body.topic1;
-    var topic2 = req.body.topic2;
-    var topic3 = req.body.topic3;
-    var topic4 = req.body.topic4;
-    var topic5 = req.body.topic5;
-    var length = req.body.length;
-    var email = req.body.email;
-    String(topic1);
-    String(topic2);
-    String(topic3);
-    String(length);
-    String(email);
+    // Gather topic names into an array, remove any falsy values, and sort them alphabetically
+    const topics = [req.body.topic1, req.body.topic2, req.body.topic3]
+      .filter(Boolean)
+      .sort();
+
+    const length = String(req.body.length);
+    const email = String(req.body.email);
 
     const query = { email: email };
-    const options = { upsert: true };
+    const update = {
+      $set: {
+        topics: topics,
+        length: length,
+      },
+    };
 
-    //setting preferences
-    (
-      await usersModel.updateMany(
-        query,
-        {
-          $set: {
-            topic_1: topic1,
-            topic_2: topic2,
-            topic_3: topic3,
-            length: length,
-          },
-        },
-        options
-      )
-    ).then(console.log("updated topics successfully"));
+    // Attempt to update the user
+    const result = await usersModel.updateOne(query, update);
+
+    // Check if the user was found and updated
+    if (result.matchedCount === 0) {
+      // No user was found
+      return res.status(404).send("User not found");
+    }
+
+    res.status(200).send("User Preferences Added Successfully");
   } catch (e) {
-    resp.send("Unable to add topic");
+    console.error(e);
+    res.status(500).send("Unable to add topics");
   }
 });
 
+//GET USER PREFERENCES
 app.get("/getUserLengthAndPreferences", async (req, res) => {
   try {
     const userEmail = req.query.email;
@@ -53,7 +49,7 @@ app.get("/getUserLengthAndPreferences", async (req, res) => {
 
     const user = await usersModel.findOne(
       { email: userEmail },
-      "length topic_1 topic_2 topic_3"
+      "length topics"
     );
 
     if (!user) {
@@ -61,23 +57,23 @@ app.get("/getUserLengthAndPreferences", async (req, res) => {
     }
 
     const length = user.length;
-    const topic1 = user.topic_1;
-    const topic2 = user.topic_2;
-    const topic3 = user.topic_3;
+    const topic1 = user.topics[0];
+    const topic2 = user.topics[1];
+    const topic3 = user.topics[2];
 
-    if (length == null) {
-      return res.status(404).send("Length not set for user");
-    }
+    // if (length == null) {
+    //   return res.status(404).send("Length not set for user");
+    // }
 
-    if (topic1 == null) {
-      return res.status(404).send("Preference #1 not set for user");
-    }
-    if (topic2 == null) {
-      return res.status(404).send("Preference #2 not set for user");
-    }
-    if (topic3 == null) {
-      return res.status(404).send("Preference #3 not set for user");
-    }
+    // if (topic1 == null) {
+    //   return res.status(404).send("Preference #1 not set for user");
+    // }
+    // if (topic2 == null) {
+    //   return res.status(404).send("Preference #2 not set for user");
+    // }
+    // if (topic3 == null) {
+    //   return res.status(404).send("Preference #3 not set for user");
+    // }
 
     res.json({
       length: length,
@@ -90,6 +86,7 @@ app.get("/getUserLengthAndPreferences", async (req, res) => {
   }
 });
 
+//UPDATE USER PREFERENCES
 app.post("/updatePreferences", async (req, resp) => {
   const { email, topic1, topic2, topic3, length } = req.body;
 
@@ -97,15 +94,17 @@ app.post("/updatePreferences", async (req, resp) => {
     return resp.status(400).send("All fields are required.");
   }
 
+  const topicsArray = [req.body.topic1, req.body.topic2, req.body.topic3]
+    .filter(Boolean)
+    .sort();
+
   try {
     const user = await usersModel.findOne({ email: email });
     if (!user) {
       return resp.status(404).send("User not found");
     }
 
-    user.topic_1 = topic1;
-    user.topic_2 = topic2;
-    user.topic_3 = topic3;
+    user.topics = topicsArray;
     user.length = length;
 
     await user.save();
@@ -117,6 +116,7 @@ app.post("/updatePreferences", async (req, resp) => {
   }
 });
 
+/*
 //BACKEND TO GET USER PODCASTS
 app.get("/getUserPodcasts", async (req, resp) => {
   const { email } = req.query; // Changed from req.body to req.query for a GET request
@@ -143,9 +143,8 @@ app.get("/getUserPodcasts", async (req, resp) => {
   }
 });
 
-/*
 //ADDING PODCAST TO TABLE
-app.post("/addPodcast", upload.single("audio_file"), async (req, resp) => {
+app.post("/addPodcast", async (req, resp) => {
   const { topic_1, topic_2, topic_3, length } = req.body;
   const audio_file = req.file; // Assuming 'audio_file' is the name of the form field for the uploaded file
 
@@ -207,7 +206,7 @@ app.post("/addPodcast", upload.single("audio_file"), async (req, resp) => {
       topic_2,
       topic_3,
       length,
-      audio_file,
+      audio_file_ref,
       corresponding_users: correspondingUsersEmails,
     });
 

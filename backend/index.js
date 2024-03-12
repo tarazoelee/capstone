@@ -50,17 +50,17 @@ mongoose
 // Create storage engine
 const storage = new GridFsStorage({
   url: mongoURI,
-  //options: { useNewUrlParser: true, useUnifiedTopology: true }, // These options are sometimes required inside options object.
   file: (req, file) => {
     return new Promise((resolve, reject) => {
       crypto.randomBytes(16, (err, buf) => {
         if (err) {
           return reject(err);
         }
+        //this is where we are going to need to add fields for corresponding users & topics
         const filename = buf.toString("hex") + path.extname(file.originalname);
         const fileInfo = {
           filename: filename,
-          bucketName: "uploads", // Make sure this is the name of your GridFS bucket
+          bucketName: "podcastData",
         };
         resolve(fileInfo);
       });
@@ -94,6 +94,11 @@ app.post("/upload", upload.single("file"), async (req, res, next) => {
   }
 });
 
+//find a podcasts
+app.get("/find", (req, res) => {
+  //
+});
+
 // Use routes
 app.use("/users", userRoutes);
 app.use("/topics", topicRoutes);
@@ -103,5 +108,5 @@ app.use("/chat", chatbotRoutes);
 
 // Error handling for unsupported routes
 app.use((req, res, next) => {
-  res.status(404).send("Sorry can't find that!");
+  res.status(404).send("Request Not Found");
 });
