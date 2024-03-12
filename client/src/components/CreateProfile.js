@@ -122,7 +122,7 @@ function CreateProfile() {
           {topics.map((t) => (
             <div
               id={t.topic}
-              className="bg-orange-200 w-32 px-6 py-2 text-center rounded-med rounded cursor-pointer"
+              className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded hover:bg-orange-200 cursor-pointer ease-linear transition duration-100"
               onClick={() => selectTopic(t.topic)}
             >
               {t.topic}
@@ -137,7 +137,7 @@ function CreateProfile() {
         </div>
         <div className="flex gap-10 flex-wrap items-center justify-center text-gray-700">
           <div
-            className="bg-orange-400 w-32 px-6 py-2 text-center rounded-med rounded hover:bg-orange-300 cursor-pointer ease-linear transition duration-100"
+            className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded hover:bg-orange-200 cursor-pointer ease-linear transition duration-100"
             id="2 min"
             onClick={() => selectLength("2 min")}
           >
@@ -145,7 +145,7 @@ function CreateProfile() {
             2 min
           </div>
           <div
-            className="bg-orange-200 w-32 px-6 py-2 text-center rounded-med rounded hover:bg-orange-300 cursor-pointer ease-linear transition duration-100"
+            className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded hover:bg-orange-200 cursor-pointer ease-linear transition duration-100"
             id="5 min"
             onClick={() => selectLength("5 min")}
           >
@@ -153,14 +153,14 @@ function CreateProfile() {
             5 min{" "}
           </div>
           <div
-            className="bg-orange-200 w-32 px-6 py-2 text-center rounded-med rounded hover:bg-orange-300 cursor-pointer ease-linear transition duration-100"
+            className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded hover:bg-orange-200 cursor-pointer ease-linear transition duration-100"
             id="10 min"
             onClick={() => selectLength("10 min")}
           >
             10 min
           </div>
           <div
-            className="bg-orange-200 w-32 px-6 py-2 text-center rounded-med rounded hover:bg-orange-300 cursor-pointer ease-linear transition duration-100"
+            className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded hover:bg-orange-200 cursor-pointer ease-linear transition duration-100"
             id="20 min"
             onClick={() => selectLength("20 min")}
           >
