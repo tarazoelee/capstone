@@ -98,7 +98,7 @@ export default function Signup() {
             Sign Up
           </button>
           <button
-            className="text-center mt-2 text-xs hover:text-gray-800 ease-linear transition duration-100"
+            className="text-center mt-2 text-xs hover:text-gray-800 ease-linear transition duration-100 underline"
             type="submit"
             onClick={goBack}
           >

@@ -26,7 +26,7 @@ export default function Login() {
     result = await result.json();
     console.warn(result);
     if (result) {
-      alert("Data saved succesfully");
+      //alert("Data saved succesfully");
       setEmail("");
       setName("");
     }
