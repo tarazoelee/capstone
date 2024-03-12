@@ -62,7 +62,6 @@ export default function Signup() {
         <div className="text-3xl text-orange-900">
           Create your account
         </div>
-        <div>Continue with Google</div>
         <div> {error}</div>
         <div className="flex flex-col">
           <input

@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { GoogleButton } from "react-google-button";
 import { baseURL } from "../config.js";
 
 export default function Login() {

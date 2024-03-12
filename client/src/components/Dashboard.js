@@ -145,8 +145,6 @@ export default function Dashboard() {
            </div>
         </div>
         <div className="flex flex-col justify-center w-7/12 mb-44 mt-24 gap-7 self-center">
-          {/* <div >Scrape NFL</div>
-          {podcastScript !== "" && <div>Podcast Script: {podcastScript}</div>} */}
 
           <div className="font-bold text-3xl text-orange-900">Today's Byte</div>
           <div className="px-28 py-20 bg-orange-50 text-gray-900 rounded-md shadow-lg">

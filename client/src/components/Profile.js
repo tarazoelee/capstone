@@ -3,6 +3,9 @@ import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { baseURL } from "../config.js";
 import Footer from "./Footer.js";
+import Modal from '@mui/material/Modal';
+import { Box } from "@mui/material";
+
 
 function Profile() {
   const nav = useNavigate();
@@ -10,6 +13,29 @@ function Profile() {
   const [userTopics, setUserTopics] = useState([]);
   const [selectedLength, setSelectedLength] = useState("");
   const { currentUser } = useAuth();
+  const [openModal, setOpenModal] = useState(false);
+  const [modalText, setModalText] = useState('');
+
+
+  /** -----MODAL STYLING------ */
+  const modalStyle = {
+    position: "absolute",
+    top: "10%",
+    borderRadius: '10px',
+    left: "50%",
+    textAlign:'center',
+    transform: "translate(-50%, -50%)",
+    width: 300,
+    bgcolor: "background.paper",
+    boxShadow: 10,
+    p:4,
+    fontFamily:'display',
+};
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setModalText('');
+  };
 
   /**GETTING TOPICS ON FIRST LOAD */
   useEffect(() => {
@@ -35,10 +61,19 @@ function Profile() {
     )
       .then((response) => response.json())
       .then((data) => {
-        const topics = [data.topic1, data.topic2, data.topic3];
+        const topics = [];
 
-        setSelectedLength(data.length);
-        setUserTopics(topics);
+        // Loop through each property in the data object
+        for (const key in data) {
+          // Check if the property starts with 'topic' and is not a function
+          if (key.startsWith('topic') && typeof data[key] !== 'function') {
+            // Push the topic value into the topics array
+            topics.push(data[key]);
+          }
+        }
+
+      setSelectedLength(data.length); // Assuming the length is determined by the number of topics
+      setUserTopics(topics);
       });
   }
 
@@ -52,7 +87,7 @@ function Profile() {
   };
 
   const handleLengthClick = (lengthValue) => {
-    // Set the selected length to the clicked value
+    console.log(selectedLength)
     setSelectedLength(lengthValue);
   };
 
@@ -60,14 +95,12 @@ function Profile() {
     setUserTopics((prevTopics) => {
       if (prevTopics.includes(topicName)) {
         // Remove the topic if it's already in the array
-        return prevTopics.filter((topic) => topic !== topicName);
+      return prevTopics.filter((topic) => topic !== topicName);
       } else {
-        // Check if there are already 3 topics selected
-        if (prevTopics.length >= 3) {
-          // Display an error message and don't add the new topic
-          alert(
-            "You can only select up to 3 topics. Please deselect one before adding another."
-          );
+          // Check if there are already 3 topics selected
+          if (prevTopics.length >= 3) {
+           setOpenModal(true);
+           setModalText('Select a maximum of 3 topics.')
           return prevTopics;
         }
         // Add the topic if it's not in the array and there are less than 3 topics already selected
@@ -77,8 +110,12 @@ function Profile() {
   };
 
   async function saveChanges() {
-    try {
-      if (userTopics.length === 3) {
+    try{
+    if (userTopics && userTopics.length <=0) {
+        setOpenModal(true);
+        setModalText('Select at least one topic.')
+      } 
+      else {
         await fetch(`${baseURL}/pref/updatePreferences`, {
           method: "POST",
           body: JSON.stringify({
@@ -92,21 +129,28 @@ function Profile() {
             "Content-Type": "application/json",
           },
         });
-      } else {
-        alert("Select 3 Topics");
+      }}
+      catch(e){
+        setOpenModal(true);
+        setModalText('Unable to update user preferences')
       }
-      alert("User Preferences Updated Successfully");
-    } catch (e) {
-      alert("Unable to Update User Preferences");
-    }
+    
   }
 
   return (
     <div className="flex flex-col min-h-screen font-display text-yellow-900 ">
+      <Modal 
+        open={openModal} 
+        onClose={handleCloseModal} 
+        aria-describedby="modal-modal-title">
+          <Box sx={modalStyle}>
+            <p>{modalText}</p> 
+          </Box>
+        </Modal>
       <div className="font-bold flex justify-end px-72 pt-24 hover:text-yellow-700 ease-linear transition duration-100">
         <button onClick={navDash}>Dashboard</button>
       </div>
-      <div className="flex flex-col gap-12 justify-center items-center my-20 py-12 px-72 ">
+      <div className="flex flex-col gap-12 self-center items-center my-20 py-12 w-2/3">
         <div className="flex gap-10 text-yellow-900 font-bold ">
           <div className="font-bold text-base">User since November 2023</div>
         </div>
@@ -117,14 +161,8 @@ function Profile() {
             {currentUser.email}
           </div>
         </div>
-        <div className="flex gap-10 items-center">
-          <div className="font-bold text-base"> Podcast Email</div>
-          <div className="bg-gray-100 rounded-md px-28 py-2 text-xs">
-            podcast@email.com
-          </div>
-        </div>
 
-        <div className="flex gap-10 justify-center items-center flex-wrap mt-14 px-28">
+        <div className="flex gap-10 justify-center items-center flex-wrap mt-10 px-28">
           <div className="font-bold text-base">Your Interests</div>
           <div className="flex gap-10 flex-wrap justify-center items-center">
             {topics.map((topicObj, index) => {
