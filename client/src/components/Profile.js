@@ -13,7 +13,7 @@ function Profile() {
   /**GETTING TOPICS ON FIRST LOAD */
   useEffect(() => {
     getTopics();
-    getUserLength();
+    getUserLengthandPrefs();
     //getUserTopics();
   }, []);
 
@@ -26,21 +26,8 @@ function Profile() {
       });
   }
 
-  // /**GETTING USERS SELECTED TOPICS*/
-  // async function getUserTopics() {
-  //   await fetch(
-  //     `${baseURL}/topics/getUserLengthAndPreferences?email=${encodeURIComponent(
-  //       currentUser.email
-  //     )}`
-  //   )
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setSelectedLength(data.length); 
-  //     });
-  // }
-
   /**GETTING USERS SELECTED LENGTH*/
-  async function getUserLength() {
+  async function getUserLengthandPrefs() {
     await fetch(
       `${baseURL}/pref/getUserLengthAndPreferences?email=${encodeURIComponent(
         currentUser.email
@@ -48,9 +35,9 @@ function Profile() {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data)
+        const topics = [data.topic1, data.topic2, data.topic3];
+
         setSelectedLength(data.length); 
-        const topics = [data.topic1, data.topic2, data.topic3]
         setUserTopics(topics);
       });
   }
