@@ -31,7 +31,7 @@ app.post("/postPrefs", async (req, res) => {
       return res.status(404).send("User not found");
     }
     res.status(200).send("User Preferences Added Successfully");
-    
+
   } catch (e) {
     console.error(e);
     res.status(500).send("Unable to add topics");
@@ -88,6 +88,7 @@ app.get("/getUserLengthAndPreferences", async (req, res) => {
 //UPDATE USER PREFERENCES
 app.post("/updatePreferences", async (req, resp) => {
   const { email, topic1, topic2, topic3, length } = req.body;
+  console.log(req.body);
 
   if (!email || !topic1 || !topic2 || !topic3 || !length) {
     return resp.status(400).send("All fields are required.");

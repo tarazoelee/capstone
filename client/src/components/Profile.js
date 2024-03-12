@@ -82,10 +82,10 @@ function Profile() {
         await fetch(`${baseURL}/pref/updatePreferences`, {
           method: "POST",
           body: JSON.stringify({
+            email: currentUser.email,
             topic1: userTopics[0],
             topic2: userTopics[1],
             topic3: userTopics[2],
-            email: currentUser.email,
             length: selectedLength,
           }),
           headers: {

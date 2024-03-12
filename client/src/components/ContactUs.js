@@ -44,12 +44,12 @@ function ContactUs() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen font-display  py-20 text-orange-900 ">
-      <div className="font-bold flex justify-end px-72">
+    <div className="w-screen h-screen font-display flex-col">
+      <div className="pl-16 gap-3 my-20 h-20 text-yellow-900 font-bold border ">
         <button onClick={navDash}>Dashboard</button>
       </div>
-      <div className="flex h-full flex-col items-center my-40">
-        <div className="flex flex-col justify-center mb-44 gap-7 ">
+      <div className="flex h-full flex-col items-center">
+        <div className="flex flex-col justify-center w-7/12 mb-44 gap-7 ">
           <div className="font-bold text-3xl text-yellow-900">Contact Us</div>
           <div className="flex flex-row font-bold text-lg text-yellow-900">
             We'd love to help. Reach out and we'll get in touch within 24 hours.{" "}
