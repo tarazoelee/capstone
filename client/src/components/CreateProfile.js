@@ -2,6 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { baseURL } from "../config.js";
+import Modal from '@mui/material/Modal';
+import { Box } from "@mui/material";
+import Typography from "@mui/material/Typography";
+
+
 
 function CreateProfile() {
   const nav = useNavigate();
@@ -9,6 +14,21 @@ function CreateProfile() {
   const [selectedTopics, setSelectedTopics] = useState([]);
   const {currentUser, logout } = useAuth();
   const [length, setLength] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
+
+  const style = {
+    position: "absolute",
+    top: "10%",
+    borderRadius: '10px',
+    left: "50%",
+    textAlign:'center',
+    transform: "translate(-50%, -50%)",
+    width: 300,
+    bgcolor: "background.paper",
+    boxShadow: 10,
+    p:4,
+    fontFamily:'display',
+};
 
   //NAVIGATION FUNCTIONS
   async function goBack() {
@@ -33,7 +53,7 @@ function CreateProfile() {
       });
   }
 
-  //---TOPIC 1 IS SELECTED-----
+  //---TOPIC IS SELECTED-----
   async function selectTopic(topic) {
     //UNSELECT SAME TOPIC
     if (selectedTopics.includes(topic)) {
@@ -47,19 +67,24 @@ function CreateProfile() {
       console.log("selected: " + topic)
     }
     else{
-      alert("Can only select 3 topics")
+      setOpenModal(true); // Open the modal
+     // console.log("Can only select 3 topics");
     }
   }
 
-  //---- SELECT NEW TOPIC 1 AND CHANGE COLOR TO DISPLAY SELECTION----
+  const handleCloseModal = () => {
+    setOpenModal(false); // Close the modal
+  };
+
+  //---- SELECT NEW TOPIC AND CHANGE COLOR TO DISPLAY SELECTION----
   async function showTopicSelect(topic) {
     const newtopicDiv = document.getElementById(`${topic}`);
-    newtopicDiv.style.backgroundColor = "rgb(251 146 60)";
+    newtopicDiv.style.backgroundColor = "rgb(253 186 116)";
   }
 
   async function unshowTopicSelect(topic){
     const newtopicDiv = document.getElementById(`${topic}`);
-    newtopicDiv.style.backgroundColor = "rgb(254 215 170)";
+    newtopicDiv.style.backgroundColor = "rgb(255 237 213)";
   }
 
   //-----SELECT LENGTH -----
@@ -81,7 +106,7 @@ function CreateProfile() {
   async function submitPrefs() {
     console.log(selectedTopics)
     if (length.length <= 0) {
-      alert("Please select a podcast length");
+      setOpenModal(true);
     } else {
       postPrefs();
     }
@@ -106,6 +131,17 @@ function CreateProfile() {
 
   return (
     <div className="flex flex-col justify-center items-center min-h-full gap-12 py-24 font-display">
+      <Modal 
+        open={openModal} 
+        onClose={handleCloseModal} 
+        aria-describedby="modal-modal-title">
+          <Box sx={style}>
+            <Typography id="modal-modal-title" sx={{ mt: 2 }}>
+             Select a maximum of 3 topics.
+            </Typography>
+          </Box>
+        </Modal>
+
       <button
         className="flex justify-start self-start pl-40 pt-9 cursor-pointer font-bold text-orange-900 hover:text-orange-950 ease-linear transition duration-100"
         onClick={goBack}
@@ -117,7 +153,7 @@ function CreateProfile() {
         <div className="font-bold text-orange-900 text-xl">
           What Topics Interest You?
         </div>
-        <div className="italic">Select up to 5</div>
+        <div className="italic">Select up to 3</div>
         <div className="flex gap-10 flex-wrap items-center justify-center text-gray-700">
           {topics.map((t) => (
             <div
