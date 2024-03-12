@@ -15,6 +15,8 @@ function CreateProfile() {
   const {currentUser, logout } = useAuth();
   const [length, setLength] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const [modalText, setModalText] = useState('');
+
 
   const style = {
     position: "absolute",
@@ -67,13 +69,14 @@ function CreateProfile() {
       console.log("selected: " + topic)
     }
     else{
-      setOpenModal(true); // Open the modal
-     // console.log("Can only select 3 topics");
+      setOpenModal(true); 
+      setModalText('Select a maximum of 3 topics.')
     }
   }
 
   const handleCloseModal = () => {
-    setOpenModal(false); // Close the modal
+    setOpenModal(false);
+    setModalText('');
   };
 
   //---- SELECT NEW TOPIC AND CHANGE COLOR TO DISPLAY SELECTION----
@@ -107,6 +110,7 @@ function CreateProfile() {
     console.log(selectedTopics)
     if (length.length <= 0) {
       setOpenModal(true);
+      setModalText('Select a podcast length.');
     } else {
       postPrefs();
     }
@@ -136,9 +140,7 @@ function CreateProfile() {
         onClose={handleCloseModal} 
         aria-describedby="modal-modal-title">
           <Box sx={style}>
-            <Typography id="modal-modal-title" sx={{ mt: 2 }}>
-             Select a maximum of 3 topics.
-            </Typography>
+            <p>{modalText}</p> 
           </Box>
         </Modal>
 
