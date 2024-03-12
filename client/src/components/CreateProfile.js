@@ -88,7 +88,7 @@ function CreateProfile() {
   }
 
   async function postPrefs() {
-   console.log("posting");
+   console.log("posting here");
     await fetch(`${baseURL}/pref/postPrefs`, {
       method: "post",
       body: JSON.stringify({

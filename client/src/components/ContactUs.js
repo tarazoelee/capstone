@@ -44,8 +44,8 @@ function ContactUs() {
   }
 
   return (
-    <div className="w-screen h-screen font-display">
-      <div className="self-start pl-16 gap-3 my-20 h-20 text-yellow-900 font-bold">
+    <div className="w-screen h-screen font-display flex-col">
+      <div className="pl-16 gap-3 my-20 h-20 text-yellow-900 font-bold border ">
         <button onClick={navDash}>Dashboard</button>
       </div>
       <div className="flex h-full flex-col items-center">
