@@ -59,7 +59,15 @@ async function getTopicCombinations() {
 
       // Add the unique key to the map if it doesn't exist
       if (!combinations.has(key)) {
-        combinations.set(key, { topics: sortedTopics, length: user.length });
+        combinations.set(key, {
+          topics: sortedTopics,
+          length: user.length,
+          users: [user.email],
+        });
+      } else {
+        //If the key already exists, add the current user to the users array of the existing object
+        const uniqueKey = combinations.get(key);
+        uniqueKey.users.push(user.email);
       }
     });
 
