@@ -150,7 +150,7 @@ function Profile() {
       <div className="font-bold flex justify-end px-72 pt-24 hover:text-yellow-700 ease-linear transition duration-100">
         <button onClick={navDash}>Dashboard</button>
       </div>
-      <div className="flex flex-col gap-12 justify-center items-center my-20 py-12 px-72 ">
+      <div className="flex flex-col gap-12 self-center items-center my-20 py-12 w-2/3">
         <div className="flex gap-10 text-yellow-900 font-bold ">
           <div className="font-bold text-base">User since November 2023</div>
         </div>
@@ -161,14 +161,8 @@ function Profile() {
             {currentUser.email}
           </div>
         </div>
-        <div className="flex gap-10 items-center">
-          <div className="font-bold text-base"> Podcast Email</div>
-          <div className="bg-gray-100 rounded-md px-28 py-2 text-xs">
-            podcast@email.com
-          </div>
-        </div>
 
-        <div className="flex gap-10 justify-center items-center flex-wrap mt-14 px-28">
+        <div className="flex gap-10 justify-center items-center flex-wrap mt-10 px-28">
           <div className="font-bold text-base">Your Interests</div>
           <div className="flex gap-10 flex-wrap justify-center items-center">
             {topics.map((topicObj, index) => {
