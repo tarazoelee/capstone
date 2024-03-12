@@ -41,13 +41,13 @@ function CreateProfile() {
       unshowTopicSelect(topic)
       console.log("unselected: " + topic)
     }
-    else if(selectedTopics.length < 5){
+    else if(selectedTopics.length < 3){
       setSelectedTopics((prevSelectedTopics) => [...prevSelectedTopics, topic]);
       showTopicSelect(topic);
       console.log("selected: " + topic)
     }
     else{
-      alert("Can only select 5 topics")
+      alert("Can only select 3 topics")
     }
   }
 
@@ -95,8 +95,6 @@ function CreateProfile() {
         topic1: selectedTopics[0],
         topic2: selectedTopics[1],
         topic3: selectedTopics[2],
-        topic4: selectedTopics[3],
-        topic5: selectedTopics[4],
         email: currentUser.email,
         length: length,
       }),
