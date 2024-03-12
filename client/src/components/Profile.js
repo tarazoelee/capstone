@@ -72,7 +72,7 @@ function Profile() {
           }
         }
 
-      setSelectedLength(topics.length); // Assuming the length is determined by the number of topics
+      setSelectedLength(data.length); // Assuming the length is determined by the number of topics
       setUserTopics(topics);
       });
   }
@@ -87,6 +87,7 @@ function Profile() {
   };
 
   const handleLengthClick = (lengthValue) => {
+    console.log(selectedLength)
     setSelectedLength(lengthValue);
   };
 
@@ -109,8 +110,12 @@ function Profile() {
   };
 
   async function saveChanges() {
-    try {
-      if (userTopics.length === 3) {
+    try{
+    if (userTopics && userTopics.length <=0) {
+        setOpenModal(true);
+        setModalText('Select at least one topic.')
+      } 
+      else {
         await fetch(`${baseURL}/pref/updatePreferences`, {
           method: "POST",
           body: JSON.stringify({
@@ -124,13 +129,12 @@ function Profile() {
             "Content-Type": "application/json",
           },
         });
-      } else {
-        alert("Select 3 Topics");
+      }}
+      catch(e){
+        setOpenModal(true);
+        setModalText('Unable to update user preferences')
       }
-      alert("User Preferences Updated Successfully");
-    } catch (e) {
-      alert("Unable to Update User Preferences");
-    }
+    
   }
 
   return (

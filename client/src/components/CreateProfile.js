@@ -104,8 +104,11 @@ function CreateProfile() {
 
   //WHEN DONE IS CLICKED CHECK PREFS THEN SUBMIT THEM
   async function submitPrefs() {
-    console.log(selectedTopics)
-    if (length.length <= 0) {
+    if(selectedTopics.length <=0 ){
+      setOpenModal(true);
+      setModalText('Select at least one topic.');
+    }
+    else if (length.length <= 0) {
       setOpenModal(true);
       setModalText('Select a podcast length.');
     } else {
