@@ -15,6 +15,13 @@ function Profile() {
   const { currentUser } = useAuth();
   const [openModal, setOpenModal] = useState(false);
   const [modalText, setModalText] = useState('');
+  const [accountYear, setAccountYear] = useState('');
+  const [accountMonth, setAccountMonth] = useState('');
+  const monthNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
 
 
   /** -----MODAL STYLING------ */
@@ -32,6 +39,12 @@ function Profile() {
     fontFamily:'display',
 };
 
+function getMonthName(monthNumber) {
+  // Subtracting 1 as month numbers are 1-indexed
+  const index = monthNumber - 1;
+  return monthNames[index];
+}
+
   const handleCloseModal = () => {
     setOpenModal(false);
     setModalText('');
@@ -41,6 +54,7 @@ function Profile() {
   useEffect(() => {
     getTopics();
     getUserLengthandPrefs();
+    getUserCreationDate();
   }, []);
 
   /**GETTING ALL TOPICS FROM THE TOPICS COLLECTION */
@@ -76,6 +90,21 @@ function Profile() {
       setUserTopics(topics);
       });
   }
+
+   /**GETTING USERS ACCOUNT CREATION DATE*/
+  async function getUserCreationDate() {
+    await fetch(
+      `${baseURL}/pref/getUserCreationDate?email=${encodeURIComponent(
+        currentUser.email
+      )}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setAccountYear(data.year);
+        setAccountMonth(getMonthName(data.month));
+      });
+  }
+
 
   function navDash() {
     nav("/dashboard");
@@ -152,7 +181,7 @@ function Profile() {
       </div>
       <div className="flex flex-col gap-12 self-center items-center my-20 py-12 w-2/3">
         <div className="flex gap-10 text-yellow-900 font-bold ">
-          <div className="font-bold text-base">User since November 2023</div>
+          <div className="font-bold text-base">User since {accountMonth} {accountYear} </div>
         </div>
 
         <div className="flex gap-10 items-center">
