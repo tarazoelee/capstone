@@ -13,7 +13,7 @@ export default function Login() {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  
+
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     let result = await fetch(`${baseURL}/register`, {
@@ -56,18 +56,18 @@ export default function Login() {
     setLoading(false);
   }
 
-  async function handleGoogleSignIn(e) {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      setError("");
-      await googleSignIn();
-    } catch (error) {
-      setError("Failed to Login");
-    } finally {
-      setLoading(false);
-    }
-  }
+  // async function handleGoogleSignIn(e) {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   try {
+  //     setError("");
+  //     await googleSignIn();
+  //   } catch (error) {
+  //     setError("Failed to Login");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }
 
   return (
     <div className="flex h-full font-display">
@@ -81,13 +81,7 @@ export default function Login() {
         <div className="text-3xl text-orange-900 py-4">
           Welcome to DailyBytes
         </div>
-        <div>
-          {" "}
-          <GoogleButton 
-            onClick={handleGoogleSignIn}
-            type="dark"
-          />
-        </div>
+
         <div> {error}</div>
         <div className="flex flex-col">
           <input
