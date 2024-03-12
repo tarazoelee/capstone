@@ -27,9 +27,9 @@ export default function Footer(){
  return(
      <div className='bg-orange-50 pt-16 pb-12 px-32 flex justify-between text-orange-950'>
         <div class="flex gap-4 content-center">
-            <div class="hover:cursor-pointer" onClick={navContactPage}>Contact Us</div>
-            <div class="hover:cursor-pointer" onClick={navProfile}>Profile</div>
-            <div class="hover:cursor-pointer" onClick={handleLogout}>Logout</div>
+            <div class="hover:cursor-pointer hover:text-orange-800 ease-linear transition duration-100" onClick={navContactPage}>Contact Us</div>
+            <div class="hover:cursor-pointer hover:text-orange-800 ease-linear transition duration-100" onClick={navProfile}>Profile</div>
+            <div class="hover:cursor-pointer hover:text-orange-800 ease-linear transition duration-100" onClick={handleLogout}>Logout</div>
         </div>
         <div class="">
                 Made in London &#x1F9E1;

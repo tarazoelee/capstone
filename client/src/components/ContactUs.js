@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Textarea, useToast } from "@chakra-ui/react";
 import { useAuth } from "../contexts/AuthContext";
 import { baseURL } from "../config.js";
+import Footer from "./Footer.js";
 
 function ContactUs() {
   const nav = useNavigate();
@@ -44,12 +45,12 @@ function ContactUs() {
   }
 
   return (
-    <div className="w-screen h-screen font-display flex-col">
-      <div className="pl-16 gap-3 my-20 h-20 text-yellow-900 font-bold border ">
+    <div className="w-screen h-screen font-display flex-col flex">
+      <div className=" gap-3 my-20 h-20 px-72 place-self-end text-yellow-900 font-bold hover:text-yellow-700 ease-linear transition duration-100">
         <button onClick={navDash}>Dashboard</button>
       </div>
       <div className="flex h-full flex-col items-center">
-        <div className="flex flex-col justify-center w-7/12 mb-44 gap-7 ">
+        <div className="flex flex-col justify-center w-7/12 gap-7 ">
           <div className="font-bold text-3xl text-yellow-900">Contact Us</div>
           <div className="flex flex-row font-bold text-lg text-yellow-900">
             We'd love to help. Reach out and we'll get in touch within 24 hours.{" "}
@@ -72,6 +73,7 @@ function ContactUs() {
           </form>
         </div>
       </div>
+      <Footer></Footer>
     </div>
   );
 }

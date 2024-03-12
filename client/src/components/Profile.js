@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { baseURL } from "../config.js";
+import Footer from "./Footer.js";
 
 function Profile() {
   const nav = useNavigate();
@@ -101,12 +102,12 @@ function Profile() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen font-display px-72 py-20 text-orange-900 ">
-      <div className="font-bold flex justify-end">
+    <div className="flex flex-col min-h-screen font-display text-yellow-900 ">
+      <div className="font-bold flex justify-end px-72 pt-24 hover:text-yellow-700 ease-linear transition duration-100">
         <button onClick={navDash}>Dashboard</button>
       </div>
-      <div className="flex flex-col gap-12 justify-center items-center my-20">
-        <div className="flex gap-10 text-yellow-900 font-bold">
+      <div className="flex flex-col gap-12 justify-center items-center my-20 py-12 px-72 ">
+        <div className="flex gap-10 text-yellow-900 font-bold ">
           <div className="font-bold">User since November 2023</div>
         </div>
 
@@ -176,6 +177,7 @@ function Profile() {
           </button>
         </div>
       </div>
+      <Footer></Footer>
     </div>
   );
 }
