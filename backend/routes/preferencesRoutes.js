@@ -25,14 +25,13 @@ app.post("/postPrefs", async (req, res) => {
 
     // Attempt to update the user
     const result = await usersModel.updateOne(query, update);
-
     // Check if the user was found and updated
     if (result.matchedCount === 0) {
       // No user was found
       return res.status(404).send("User not found");
     }
-
     res.status(200).send("User Preferences Added Successfully");
+    
   } catch (e) {
     console.error(e);
     res.status(500).send("Unable to add topics");
