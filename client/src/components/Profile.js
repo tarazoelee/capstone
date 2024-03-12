@@ -108,24 +108,24 @@ function Profile() {
       </div>
       <div className="flex flex-col gap-12 justify-center items-center my-20 py-12 px-72 ">
         <div className="flex gap-10 text-yellow-900 font-bold ">
-          <div className="font-bold">User since November 2023</div>
+          <div className="font-bold text-base">User since November 2023</div>
         </div>
 
         <div className="flex gap-10 items-center">
-          <div className="font-bold">Account Email</div>
+          <div className="font-bold text-base">Account Email</div>
           <div className="bg-gray-100 rounded-md px-28 py-2 text-xs">
             {currentUser.email}
           </div>
         </div>
         <div className="flex gap-10 items-center">
-          <div className="font-bold "> Podcast Email</div>
+          <div className="font-bold text-base"> Podcast Email</div>
           <div className="bg-gray-100 rounded-md px-28 py-2 text-xs">
             podcast@email.com
           </div>
         </div>
 
         <div className="flex gap-10 justify-center items-center flex-wrap mt-14 px-28">
-          <div className="font-bold  ">Your Interests</div>
+          <div className="font-bold text-base">Your Interests</div>
           <div className="flex gap-10 flex-wrap justify-center items-center">
             {topics.map((topicObj, index) => {
               const topicName = topicObj.topic;
@@ -137,7 +137,7 @@ function Profile() {
               return (
                 <div
                   key={index}
-                  className={`${topicClass} w-32 px-6 py-2 align-middle text-center rounded-med rounded hover:bg-orange-200 ease-linear transition duration-100`}
+                  className={`${topicClass} w-32 px-6 py-2 align-middle text-center text-xs rounded-med rounded hover:bg-orange-200 ease-linear transition duration-100`}
                   onClick={() => handleTopicClick(topicName)}
                 >
                   {topicName}
@@ -148,7 +148,7 @@ function Profile() {
         </div>
 
         <div className="flex gap-10 justify-center items-center flex-col mt-14">
-          <div className="font-bold ">Podcast Length</div>
+          <div className="font-bold text-base">Podcast Length</div>
           <div className="flex gap-10 flex-wrap justify-center">
             {["2 min", "5 min", "10 min", "20 min"].map(
               (lengthValue, index) => (
@@ -158,7 +158,7 @@ function Profile() {
                     selectedLength === lengthValue
                       ? "bg-orange-300"
                       : "bg-orange-100"
-                  } w-32 px-6 py-2 text-center rounded-med rounded cursor-pointer hover:bg-orange-200 ease-linear transition duration-100`}
+                  } w-32 px-6 py-2 text-center text-xs rounded-med rounded cursor-pointer hover:bg-orange-200 ease-linear transition duration-100`}
                   onClick={() => handleLengthClick(lengthValue)}
                 >
                   {lengthValue}
@@ -171,7 +171,7 @@ function Profile() {
         <div className="">
           <button
             onClick={saveChanges}
-            className="bg-orange-900 text-gray-100 mt-10 px-10 py-2 rounded-md"
+            className="bg-orange-900 text-gray-100 mt-10 px-10 py-2 rounded-md hover:bg-yellow-700 ease-linear transition duration-100"
           >
             Save
           </button>
