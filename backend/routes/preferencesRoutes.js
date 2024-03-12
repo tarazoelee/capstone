@@ -38,6 +38,39 @@ app.post("/postPrefs", async (req, res) => {
   }
 });
 
+//get user profile creation date
+
+app.get("/getUserCreationDate", async (req, res) => {
+  try {
+    const userEmail = req.query.email;
+    if (!userEmail) {
+      return res.status(400).send("require user email");
+    }
+
+    const user = await usersModel.findOne(
+      { email: userEmail },
+      "_id"
+    );
+
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    const insertionDate = user._id.getTimestamp();
+    // Get the year and month
+    const year = insertionDate.getFullYear();
+    const month = insertionDate.getMonth() + 1; // Adding 1 to convert from 0-indexed to 1-indexed month
+
+    res.json({
+      year: year, 
+      month: month
+    });
+
+  } catch (error) {
+    res.status(500).send("Server error");
+  }
+});
+
 //GET USER PREFERENCES
 app.get("/getUserLengthAndPreferences", async (req, res) => {
   try {
@@ -59,20 +92,6 @@ app.get("/getUserLengthAndPreferences", async (req, res) => {
     const topic1 = user.topics[0];
     const topic2 = user.topics[1];
     const topic3 = user.topics[2];
-
-    // if (length == null) {
-    //   return res.status(404).send("Length not set for user");
-    // }
-
-    // if (topic1 == null) {
-    //   return res.status(404).send("Preference #1 not set for user");
-    // }
-    // if (topic2 == null) {
-    //   return res.status(404).send("Preference #2 not set for user");
-    // }
-    // if (topic3 == null) {
-    //   return res.status(404).send("Preference #3 not set for user");
-    // }
 
     res.json({
       length: length,
