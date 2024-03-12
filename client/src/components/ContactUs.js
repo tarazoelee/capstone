@@ -4,6 +4,8 @@ import { Textarea, useToast } from "@chakra-ui/react";
 import { useAuth } from "../contexts/AuthContext";
 import { baseURL } from "../config.js";
 import Footer from "./Footer.js";
+import Modal from '@mui/material/Modal';
+import { Box } from "@mui/material";
 
 function ContactUs() {
   const nav = useNavigate();
@@ -13,6 +15,28 @@ function ContactUs() {
     message: "",
   });
   const toast = useToast();
+  const [openModal, setOpenModal] = useState(false);
+  const [modalText, setModalText] = useState('');
+    /** -----MODAL STYLING------ */
+    const modalStyle = {
+      position: "absolute",
+      top: "10%",
+      borderRadius: '10px',
+      left: "50%",
+      textAlign:'center',
+      transform: "translate(-50%, -50%)",
+      width: 300,
+      bgcolor: "background.paper",
+      boxShadow: 10,
+      p:4,
+      fontFamily:'display',
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setModalText('');
+  };
+
 
   useEffect(() => {
     console.log(formData); // This will log formData every time it changes
@@ -39,13 +63,22 @@ function ContactUs() {
     result = await result.json();
     console.warn(result);
     if (result) {
-      alert("Email was sent successfully");
+      setOpenModal(true);
+      setModalText("Email was sent successfully.")
     }
     setFormData({ email: currentUser, message: "" });
   }
 
   return (
     <div className="w-screen h-screen font-display flex-col flex">
+      <Modal 
+        open={openModal} 
+        onClose={handleCloseModal} 
+        aria-describedby="modal-modal-title">
+          <Box sx={modalStyle}>
+            <p>{modalText}</p> 
+          </Box>
+        </Modal>
       <div className=" gap-3 my-20 h-20 px-72 place-self-end text-yellow-900 font-bold hover:text-yellow-700 ease-linear transition duration-100">
         <button onClick={navDash}>Dashboard</button>
       </div>
