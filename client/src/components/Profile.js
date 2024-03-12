@@ -14,7 +14,6 @@ function Profile() {
   useEffect(() => {
     getTopics();
     getUserLengthandPrefs();
-    //getUserTopics();
   }, []);
 
   /**GETTING ALL TOPICS FROM THE TOPICS COLLECTION */
@@ -37,7 +36,7 @@ function Profile() {
       .then((data) => {
         const topics = [data.topic1, data.topic2, data.topic3];
 
-        setSelectedLength(data.length); 
+        setSelectedLength(data.length);
         setUserTopics(topics);
       });
   }
