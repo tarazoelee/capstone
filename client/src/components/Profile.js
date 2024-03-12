@@ -3,6 +3,9 @@ import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { baseURL } from "../config.js";
 import Footer from "./Footer.js";
+import Modal from '@mui/material/Modal';
+import { Box } from "@mui/material";
+
 
 function Profile() {
   const nav = useNavigate();
@@ -10,6 +13,24 @@ function Profile() {
   const [userTopics, setUserTopics] = useState([]);
   const [selectedLength, setSelectedLength] = useState("");
   const { currentUser } = useAuth();
+  const [openModal, setOpenModal] = useState(false);
+  const [modalText, setModalText] = useState('');
+
+
+  /** -----MODAL STYLING------ */
+  const modalStyle = {
+    position: "absolute",
+    top: "10%",
+    borderRadius: '10px',
+    left: "50%",
+    textAlign:'center',
+    transform: "translate(-50%, -50%)",
+    width: 300,
+    bgcolor: "background.paper",
+    boxShadow: 10,
+    p:4,
+    fontFamily:'display',
+};
 
   /**GETTING TOPICS ON FIRST LOAD */
   useEffect(() => {
