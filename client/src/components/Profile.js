@@ -32,6 +32,11 @@ function Profile() {
     fontFamily:'display',
 };
 
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setModalText('');
+  };
+
   /**GETTING TOPICS ON FIRST LOAD */
   useEffect(() => {
     getTopics();
@@ -56,10 +61,19 @@ function Profile() {
     )
       .then((response) => response.json())
       .then((data) => {
-        const topics = [data.topic1, data.topic2, data.topic3];
+        const topics = [];
 
-        setSelectedLength(data.length);
-        setUserTopics(topics);
+        // Loop through each property in the data object
+        for (const key in data) {
+          // Check if the property starts with 'topic' and is not a function
+          if (key.startsWith('topic') && typeof data[key] !== 'function') {
+            // Push the topic value into the topics array
+            topics.push(data[key]);
+          }
+        }
+
+      setSelectedLength(topics.length); // Assuming the length is determined by the number of topics
+      setUserTopics(topics);
       });
   }
 
@@ -73,7 +87,6 @@ function Profile() {
   };
 
   const handleLengthClick = (lengthValue) => {
-    // Set the selected length to the clicked value
     setSelectedLength(lengthValue);
   };
 
@@ -81,14 +94,12 @@ function Profile() {
     setUserTopics((prevTopics) => {
       if (prevTopics.includes(topicName)) {
         // Remove the topic if it's already in the array
-        return prevTopics.filter((topic) => topic !== topicName);
+      return prevTopics.filter((topic) => topic !== topicName);
       } else {
-        // Check if there are already 3 topics selected
-        if (prevTopics.length >= 3) {
-          // Display an error message and don't add the new topic
-          alert(
-            "You can only select up to 3 topics. Please deselect one before adding another."
-          );
+          // Check if there are already 3 topics selected
+          if (prevTopics.length >= 3) {
+           setOpenModal(true);
+           setModalText('Select a maximum of 3 topics.')
           return prevTopics;
         }
         // Add the topic if it's not in the array and there are less than 3 topics already selected
@@ -124,6 +135,14 @@ function Profile() {
 
   return (
     <div className="flex flex-col min-h-screen font-display text-yellow-900 ">
+      <Modal 
+        open={openModal} 
+        onClose={handleCloseModal} 
+        aria-describedby="modal-modal-title">
+          <Box sx={modalStyle}>
+            <p>{modalText}</p> 
+          </Box>
+        </Modal>
       <div className="font-bold flex justify-end px-72 pt-24 hover:text-yellow-700 ease-linear transition duration-100">
         <button onClick={navDash}>Dashboard</button>
       </div>
