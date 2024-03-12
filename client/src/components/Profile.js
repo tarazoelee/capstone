@@ -124,7 +124,7 @@ function Profile() {
           </div>
         </div>
 
-        <div className="flex gap-10 justify-center items-center flex-wrap">
+        <div className="flex gap-10 justify-center items-center flex-wrap mt-14 px-28">
           <div className="font-bold  ">Your Interests</div>
           <div className="flex gap-10 flex-wrap justify-center items-center">
             {topics.map((topicObj, index) => {
@@ -147,7 +147,7 @@ function Profile() {
           </div>
         </div>
 
-        <div className="flex gap-10 justify-center items-center flex-wrap">
+        <div className="flex gap-10 justify-center items-center flex-col mt-14">
           <div className="font-bold ">Podcast Length</div>
           <div className="flex gap-10 flex-wrap justify-center">
             {["2 min", "5 min", "10 min", "20 min"].map(
