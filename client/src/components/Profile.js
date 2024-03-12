@@ -154,11 +154,10 @@ function Profile() {
               (lengthValue, index) => (
                 <div
                   key={index}
-                  className={`${
-                    selectedLength === lengthValue
+                  className={`${selectedLength === lengthValue
                       ? "bg-orange-300"
                       : "bg-orange-100"
-                  } w-32 px-6 py-2 text-center text-xs rounded-med rounded cursor-pointer hover:bg-orange-200 ease-linear transition duration-100`}
+                    } w-32 px-6 py-2 text-center text-xs rounded-med rounded cursor-pointer hover:bg-orange-200 ease-linear transition duration-100`}
                   onClick={() => handleLengthClick(lengthValue)}
                 >
                   {lengthValue}
