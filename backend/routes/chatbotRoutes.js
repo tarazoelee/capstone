@@ -4,6 +4,7 @@ const OpenAI = require("openai");
 require("dotenv").config();
 
 const usersModel = require("../models/Users");
+let uniqueTopicsSet = new Set();
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -35,7 +36,11 @@ app.post("/summary", async (req, res) => {
 
 app.get("/test", async (req, res) => {
   getTopicCombinations()
-    .then((combinations) => console.log(combinations))
+    .then((result) => {
+      console.log(result);
+      console.log(uniqueTopicsSet);
+      getDailyScripts();
+    })
     .catch((error) => console.error(error));
   res.status(200).send("Console Has The Array Displayed");
 });
@@ -53,6 +58,9 @@ async function getTopicCombinations() {
     users.forEach((user) => {
       // Sort topics to ensure that the order is consistent for comparison
       const sortedTopics = user.topics.sort();
+
+      //adds only unique topics to the set of topics
+      user.topics.forEach((topic) => uniqueTopicsSet.add(topic));
 
       // Create a unique key by joining sorted topics and length
       const key = `${sortedTopics.join("|")}|${user.length}`;
@@ -76,6 +84,14 @@ async function getTopicCombinations() {
   } catch (error) {
     console.error(error);
     throw new Error("Unable to get topic combinations");
+  }
+}
+
+function getDailyScripts() {
+  try {
+  } catch (e) {
+    console.error(error);
+    throw new Error("Unable to fetch topic scripts");
   }
 }
 
