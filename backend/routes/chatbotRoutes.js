@@ -4,7 +4,16 @@ const OpenAI = require("openai");
 require("dotenv").config();
 
 const usersModel = require("../models/Users");
+const topicTablesModel = require("../models/TopicTables");
+
+//set of unique topics selected across all the users
 let uniqueTopicsSet = new Set();
+
+//maps topics and their daily new article - key: topic, value: dailyScrapedNews
+const newsArticleMap = new Map();
+
+// Map to store unique combinations of topics and length
+const combinations = new Map();
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -35,14 +44,16 @@ app.post("/summary", async (req, res) => {
 });
 
 app.get("/test", async (req, res) => {
-  getTopicCombinations()
-    .then((result) => {
-      console.log(result);
-      console.log(uniqueTopicsSet);
-      getDailyScripts();
-    })
-    .catch((error) => console.error(error));
-  res.status(200).send("Console Has The Array Displayed");
+  try {
+    const result = await getTopicCombinations();
+    console.log(result);
+    await getDailyScripts(uniqueTopicsSet);
+    createScript();
+    res.status(200).send("Console Has The Array Displayed");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("An error occurred");
+  }
 });
 
 //Get all combinations of topics + length for user podcasts
@@ -50,9 +61,6 @@ async function getTopicCombinations() {
   try {
     //fetch all users
     const users = await usersModel.find({});
-
-    // Map to store unique combinations of topics and length
-    const combinations = new Map();
 
     // Iterate over each user
     users.forEach((user) => {
@@ -87,12 +95,58 @@ async function getTopicCombinations() {
   }
 }
 
-function getDailyScripts() {
+async function getDailyScripts(uniqueTopicsSet) {
+  //FIX: THIS IS HARD CODED FOR TESTING - change to get everyday's current date
+  const todaysDate = new Date("2024-03-11T04:00:00.000Z");
   try {
+    //convert set to array to be able to access elements
+    const uniqueTopicsArray = [...uniqueTopicsSet];
+
+    for (let i = 0; i < uniqueTopicsArray.length; i++) {
+      const topicName = uniqueTopicsArray[i].toLowerCase();
+      const topicModel = topicTablesModel[topicName];
+      console.log("Topic model", topicModel);
+
+      if (!topicModel) {
+        console.log(`No model found for topic: ${topicName}`);
+        continue;
+      }
+
+      try {
+        const todaysScript = await topicModel.findOne({
+          date: todaysDate,
+        });
+        if (todaysScript) {
+          //add to the map that contains key of topic and value of todaysScript text
+          newsArticleMap.set(topicName, todaysScript.data);
+          console.log(`Documents for topic '${topicName}':`, todaysScript);
+        } else {
+          console.log("No document matches the specific date.");
+        }
+      } catch (error) {
+        console.error(
+          `Error querying documents for topic '${topicName}':`,
+          error
+        );
+      }
+    }
   } catch (e) {
-    console.error(error);
+    console.error(e);
     throw new Error("Unable to fetch topic scripts");
   }
+}
+
+async function createScript() {
+  combinations.forEach((value, key) => {
+    value.topics.forEach((topic) => {
+      //for each topic, use it to get corresponding values from topicsMap
+      const topicNewsData = newsArticleMap.get(topic);
+
+      if (topicNewsData) {
+        console.log("DATA FOR TOPIC", topicNewsData);
+      }
+    });
+  });
 }
 
 module.exports = app;
