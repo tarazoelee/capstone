@@ -42,7 +42,7 @@ const endOfDay = new Date(
 
 app.get("/", async (req, res) => {
   try {
-    const scripts = await scriptsModel.find({});
+    const scripts = await scriptsModel.find();
     // {
     //   date: {
     //     $gte: startOfDay,

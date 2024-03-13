@@ -15,6 +15,7 @@ const prefRoutes = require("./routes/preferencesRoutes");
 const scraperRoutes = require("./routes/scraperRoutes");
 const chatbotRoutes = require("./routes/chatbotRoutes");
 const { sendContactEmail } = require("./contactFormHandler");
+const scriptRoutes = require('./routes/scriptRoutes')
 
 // Middlewares
 app.use(express.json());
@@ -133,3 +134,4 @@ app.use("/topics", topicRoutes);
 app.use("/pref", prefRoutes);
 app.use("/scraper", scraperRoutes);
 app.use("/chat", chatbotRoutes);
+app.use("/scripts", scriptRoutes);
