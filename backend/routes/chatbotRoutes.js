@@ -5,6 +5,7 @@ require("dotenv").config();
 
 const usersModel = require("../models/Users");
 const topicTablesModel = require("../models/TopicTables");
+const podcastScriptsModel = require("../models/PodcastScripts");
 
 //set of unique topics selected across all the users
 let uniqueTopicsSet = new Set();
@@ -157,18 +158,33 @@ async function createScript() {
     const message =
       `CONTEXT: Put the following articles into an interesting news format that summarizes the articles and can be read by one person and should span ${combination.length} long. This is the information that you must summarize:` +
       aggregatedNewsData;
-    const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      messages: [
-        {
-          role: "system",
-          content: message,
-        },
-      ],
-      temperature: 0,
-      max_tokens: 1000,
-    });
-    console.log("RESPONSE FROM CHAT", response.choices[0].message.content);
+
+    try {
+      const response = await openai.chat.completions.create({
+        model: "gpt-3.5-turbo",
+        messages: [
+          {
+            role: "system",
+            content: message,
+          },
+        ],
+        temperature: 0,
+        max_tokens: 1000,
+      });
+
+      const todaysDate = new Date().toISOString().split("T")[0];
+
+      const newScript = new podcastScriptsModel({
+        script: response.choices[0].message.content,
+        date: todaysDate,
+        users: combination.users,
+      });
+
+      await newScript.save(); // Save the document to the database
+      console.log("New script saved successfully!");
+    } catch (error) {
+      console.error("Error saving script to database:", error);
+    }
   });
 }
 
