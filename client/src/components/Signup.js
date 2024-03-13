@@ -18,13 +18,14 @@ export default function Signup() {
 
   //ADD USER TO MONGODB
   function addUser(email) {
-    fetch(`${baseURL}/users/addUser`, {
+    const response = fetch(`${baseURL}/users/addUser`, {
       method: "post",
       body: JSON.stringify({ email }),
       headers: {
         "Content-Type": "application/json",
       },
     });
+    return response;
   }
 
   async function handleSubmit(e) {
@@ -38,9 +39,12 @@ export default function Signup() {
       setError("");
       setLoading(true);
 
-      //adding user to mongo
-      console.log(emailRef.current.value);
-      addUser(emailRef.current.value);
+      // Await the addUser response
+      const addUserResponse = await addUser(emailRef.current.value);
+
+      if (addUserResponse.status === 400) {
+        throw new Error("Failed to Signup");
+      }
 
       await signup(emailRef.current.value, passwordRef.current.value).then(
         nav("/createProfile")
@@ -59,10 +63,7 @@ export default function Signup() {
         </div>
       </div>
       <div className="flex flex-col w-2/3 gap-6 justify-center items-center">
-        <div className="text-3xl text-orange-900">
-          Create your account
-        </div>
-        <div>Continue with Google</div>
+        <div className="text-3xl text-orange-900">Create your account</div>
         <div> {error}</div>
         <div className="flex flex-col">
           <input
