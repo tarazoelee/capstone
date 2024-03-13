@@ -105,7 +105,6 @@ async function getDailyScripts(uniqueTopicsSet) {
     for (let i = 0; i < uniqueTopicsArray.length; i++) {
       const topicName = uniqueTopicsArray[i].toLowerCase();
       const topicModel = topicTablesModel[topicName];
-      console.log("Topic model", topicModel);
 
       if (!topicModel) {
         console.log(`No model found for topic: ${topicName}`);
@@ -119,7 +118,6 @@ async function getDailyScripts(uniqueTopicsSet) {
         if (todaysScript) {
           //add to the map that contains key of topic and value of todaysScript text
           newsArticleMap.set(topicName, todaysScript.data);
-          console.log(`Documents for topic '${topicName}':`, todaysScript);
         } else {
           console.log("No document matches the specific date.");
         }
@@ -138,9 +136,7 @@ async function getDailyScripts(uniqueTopicsSet) {
 }
 
 async function createScript() {
-  combinations.forEach((combination, key) => {
-    console.log(`Combination Key: ${key}`);
-
+  combinations.forEach(async (combination, key) => {
     // Initialize a variable to hold the news data from the article map
     let aggregatedNewsData = "";
 
@@ -151,18 +147,28 @@ async function createScript() {
       const topicNewsData = newsArticleMap.get(lowerCaseTopic);
 
       if (topicNewsData) {
-        // If there's news data for the topic, append it to the aggregated news data string
-        console.log(`Found data for topic: ${topic}`);
         aggregatedNewsData += topicNewsData + "\n";
       } else {
         console.log(`No data found for topic: ${topic}`);
       }
     });
 
-    // Here, you could do something with the aggregatedNewsData like saving it to a database, logging it, or processing it further.
-    // For demonstration, let's log the aggregated news data.
-    console.log(`Aggregated News Data for Combination [${key}]:`);
-    console.log(aggregatedNewsData);
+    //the prompt that is being passed into chatgpt
+    const message =
+      `CONTEXT: Put the following articles into an interesting news format that summarizes the articles and can be read by one person and should span ${combination.length} long. This is the information that you must summarize:` +
+      aggregatedNewsData;
+    const response = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages: [
+        {
+          role: "system",
+          content: message,
+        },
+      ],
+      temperature: 0,
+      max_tokens: 1000,
+    });
+    console.log("RESPONSE FROM CHAT", response.choices[0].message.content);
   });
 }
 
