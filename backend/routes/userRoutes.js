@@ -6,25 +6,24 @@ const usersModel = require("../models/Users");
 app.post("/addUser", async (req, res) => {
   const userEmail = req.body.email;
 
-  var checkEmail = usersModel.find({ email: userEmail });
-
   try {
-    var user = new usersModel({
-      email: userEmail,
-    });
-    if ((await checkEmail).length <= 0) {
-      user
-        .save()
-        .then(() => {
-          res.status(200).send(userEmail + " added to Users Table");
-        })
-        .catch((err) => {
-          res.status(400).send(userEmail + " could not be created");
-        });
+    // Use findOne to check if the email already exists
+    const userExists = await usersModel.findOne({ email: userEmail });
+
+    if (!userExists) {
+      // If the user doesn't exist, create and save the new user
+      const user = new usersModel({
+        email: userEmail,
+      });
+
+      await user.save();
+      res.status(200).send(userEmail + " added to Users Table");
     } else {
+      // If the user already exists, send a 400 response
       res.status(400).send(userEmail + " already exists");
     }
-  } catch (e) {
+  } catch (err) {
+    console.error(err); // It's a good practice to log the error
     res.status(500).send("Server Error");
   }
 });
