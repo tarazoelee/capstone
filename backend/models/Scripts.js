@@ -15,6 +15,6 @@ const PodcastScripts = new mongoose.Schema({
   }
 });
 
-const Scripts = mongoose.model("podcastSCripts", PodcastScripts);
+const Scripts = mongoose.model("scripts", PodcastScripts);
 
 module.exports = Scripts;

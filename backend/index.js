@@ -13,6 +13,7 @@ const topicRoutes = require("./routes/topicRoutes");
 const prefRoutes = require("./routes/preferencesRoutes");
 const scraperRoutes = require("./routes/scraperRoutes");
 const chatbotRoutes = require("./routes/chatbotRoutes");
+const scriptRoutes = require("./routes/scriptRoutes");
 const { sendContactEmail } = require("./contactFormHandler");
 
 const app = express();
@@ -105,6 +106,7 @@ app.use("/topics", topicRoutes);
 app.use("/pref", prefRoutes);
 app.use("/scraper", scraperRoutes);
 app.use("/chat", chatbotRoutes);
+app.use("/scripts", scriptRoutes);
 
 // Error handling for unsupported routes
 app.use((req, res, next) => {

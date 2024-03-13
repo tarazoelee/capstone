@@ -2,33 +2,49 @@ const express = require("express");
 const app = express();
 const axios = require("axios");
 
-const scripts = require("../models/PodcastScripts")
+const scriptsModel = require("../models/Scripts")
 
-app.post("/addScript", async(req,res)=>{
-    const script = req.body.script;
-    const users = req.body.users;
+// app.post("/addScript", async(req,res)=>{
+//    try{ 
+//     const script = req.body.script;
+//     const users = req.body.users; //this needs to be an array
+//     const date = Date();
 
+//     const newScript = {
+//       $set: {
+//         script: script,
+//         date: date,
+//         users: users,
+//       },
+//     };
     
+//     // Attempt to update the user
+//     const posting = await scriptsModel.insertOne(newScript);
+//     await posting.save();
 
-})
+//     } catch(e){
+//         res.status(400).send("could not post")
+//     }
+
+// })
 
 //get scripts from today 
 app.get("/", async(req,res)=>{
-
-    try{
-
-
-    }
-    catch(e){
-        res.status(400).send("Cannot get scripts");
-    }
+    console.log('here')
+try {
+    const scripts = await scriptsModel.find();
+    res.send(scripts);
+  } catch (e) {
+    res.send("unable to find")
+    console.log("unable to get topics");
+  }
 })
 
 //create audio file of text
 app.post("/synthesize", async (req,res)=>{
     const text = req.body.text;
     const apikey = "AIzaSyA888cSZgCc2lMDxqy7g4r7byJOsGfi8GA"
-    const endpoint =    `https://texttospeech.googleapis.com/v1beta1/text:synthesize?key=${AIzaSyA888cSZgCc2lMDxqy7g4r7byJOsGfi8GA}`
+    const endpoint =`https://texttospeech.googleapis.com/v1beta1/text:synthesize?key=${apikey}`
     const payload = 
         {
             "audioConfig": {
