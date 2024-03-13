@@ -47,7 +47,7 @@ app.post("/summary", async (req, res) => {
 app.get("/test", async (req, res) => {
   try {
     const result = await getTopicCombinations();
-    console.log(result);
+    //console.log(result);
     await getDailyScripts(uniqueTopicsSet);
     createScript();
     res.status(200).send("Console Has The Array Displayed");
