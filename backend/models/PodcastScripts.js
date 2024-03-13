@@ -1,15 +1,15 @@
 const mongoose = require("mongoose");
 
 const PodcastScripts = new mongoose.Schema({
-  Script: {
+  lcript: {
     type: String,
     required: true,
   },
-  Date:{
+  date:{
     type:Date,
     required:true,
   },
-  CorrespondingUsers:{
+  users:{
     type:Array,
     required:false,
   }
