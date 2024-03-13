@@ -130,6 +130,7 @@ async function getDailyScripts(uniqueTopicsSet) {
         );
       }
     }
+    return newsArticleMap;
   } catch (e) {
     console.error(e);
     throw new Error("Unable to fetch topic scripts");
@@ -137,15 +138,31 @@ async function getDailyScripts(uniqueTopicsSet) {
 }
 
 async function createScript() {
-  combinations.forEach((value, key) => {
-    value.topics.forEach((topic) => {
-      //for each topic, use it to get corresponding values from topicsMap
-      const topicNewsData = newsArticleMap.get(topic);
+  combinations.forEach((combination, key) => {
+    console.log(`Combination Key: ${key}`);
+
+    // Initialize a variable to hold the news data from the article map
+    let aggregatedNewsData = "";
+
+    // Iterate through each topic in the combination's topics array
+    combination.topics.forEach((topic) => {
+      let lowerCaseTopic = topic.toLowerCase();
+      // Retrieve the news article for the topic
+      const topicNewsData = newsArticleMap.get(lowerCaseTopic);
 
       if (topicNewsData) {
-        console.log("DATA FOR TOPIC", topicNewsData);
+        // If there's news data for the topic, append it to the aggregated news data string
+        console.log(`Found data for topic: ${topic}`);
+        aggregatedNewsData += topicNewsData + "\n";
+      } else {
+        console.log(`No data found for topic: ${topic}`);
       }
     });
+
+    // Here, you could do something with the aggregatedNewsData like saving it to a database, logging it, or processing it further.
+    // For demonstration, let's log the aggregated news data.
+    console.log(`Aggregated News Data for Combination [${key}]:`);
+    console.log(aggregatedNewsData);
   });
 }
 
