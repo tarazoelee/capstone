@@ -9,13 +9,10 @@ import { baseURL } from "../config.js";
 import Typewriter from 'typewriter-effect';
 //import { response } from "../../../backend/routes/scraperRoutes.js";
 
-const axios = require('axios');
-const cheerio = require('cheerio');
-
 export default function Dashboard() {
   const [error, setError] = useState("");
-    const [newsContent, setNewsContent] = useState('');
-  const [podcastScript, setPodcastScript] = useState("");
+  const [newsContent, setNewsContent] = useState('');
+  const [podcastScript, setPodcastScript] = useState([]);
   const { currentUser, logout } = useAuth();
   const nav = useNavigate();
   const [isDropdownVisible, setDropdownVisible] = useState(false);
@@ -23,34 +20,16 @@ export default function Dashboard() {
   const year = today.getFullYear();
   const month = today.getMonth() + 1;
   const day = today.getDate();
+
+  /**GETTING SCRIPTS ON FIRST LOAD */
+  useEffect(() => {
+    getTodaysScript();
+  }, []);
+
   // Format the date as "YYYY-MM-DD"
   const formattedDate = `${year}-${month < 10 ? "0" + month : month}-${
     day < 10 ? "0" + day : day
   }`;
-  const todays_string = `Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like`
 
   async function handleLogout() {
     setError("");
@@ -77,21 +56,13 @@ export default function Dashboard() {
     setDropdownVisible(false);
   };
 
-  //---------SCRAPING URLS -------
-  // var nfl = 'https://newsapi.org/v2/top-headlines?' +
-  // 'country=us&' +
-  // 'category=sports&' +
-  // 'q=NFL&' +
-  // 'sortBy=popularity&' +
-  // 'apiKey=94b9c0081ebf421b89233a87e38b17ef';
 
-
-  async function scrapeNFL() {
-    await fetch(`${baseURL}/scraper/nfl-articles`)
+  async function getTodaysScript() {
+    await fetch(`${baseURL}/scripts`)
       .then((res) => res.json())
       .then((data) => {
-        setPodcastScript(data.choices[0].message.content);
-        console.log("podcast script", podcastScript);
+        const userScript = data.filter(item => item.users[0] === currentUser.email);
+        setPodcastScript(userScript[0].script);
       });
   }
 
@@ -148,34 +119,7 @@ export default function Dashboard() {
 
           <div className="font-bold text-3xl text-orange-900">Today's Byte</div>
           <div className="px-28 py-20 bg-orange-50 text-gray-900 rounded-md shadow-lg">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like
-            <br />
-            <br />
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like
-            <br />
-            <br />
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like
+            {podcastScript}
           </div>
         </div>
 

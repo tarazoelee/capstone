@@ -29,7 +29,7 @@ app.get("/", async (req, res) => {
     //   }
     // }
     res.send(scripts);
-    synthesize(scripts); //turn them into audio files
+   // synthesize(scripts); //turn them into audio files
 
     //console.log(scripts);
   } catch (e) {
