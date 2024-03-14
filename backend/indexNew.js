@@ -52,7 +52,6 @@ connection.on("open", () => {
 
   app.post("/upload", upload.single("file"), async (req, res) => {
     let { file } = req;
-    console.log(file);
 
     let { fieldname, originalname, mimetype, buffer } = file;
 

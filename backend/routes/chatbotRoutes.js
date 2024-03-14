@@ -48,8 +48,7 @@ app.post("/summary", async (req, res) => {
 
 app.get("/test", async (req, res) => {
   try {
-    const result = await getTopicCombinations();
-    //console.log(result);
+    getTopicCombinations(); 
     await getDailyScripts(uniqueTopicsSet);
     createScript();
     res.status(200).send("Console Has The Array Displayed");
@@ -62,8 +61,7 @@ app.get("/test", async (req, res) => {
 //Get all combinations of topics + length for user podcasts
 async function getTopicCombinations() {
   try {
-    //fetch all users
-    const users = await usersModel.find({});
+    const users = await usersModel.find({});    //fetch all users
 
     // Iterate over each user
     users.forEach((user) => {

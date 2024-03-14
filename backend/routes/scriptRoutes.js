@@ -20,7 +20,6 @@ app.get("/", async (req, res) => {
   }
 });
 
-
 //------GETTING TODAY'S SCRIPTS--------
 app.get("/todaysScript", async (req, res) => {
   try {
@@ -28,7 +27,7 @@ app.get("/todaysScript", async (req, res) => {
       date: todaysDate
     });
     res.send(scripts);
-    synthesize(scripts); //THIS WILL PROBS HAVE TO BE MOVED OR ELSE IT WILL CREATE A NEW ONE EACH TIME
+    //synthesize(scripts); //THIS WILL PROBS HAVE TO BE MOVED OR ELSE IT WILL CREATE A NEW ONE EACH TIME
   } catch (e) {
     res.status(500).send("Unable to find scripts");
     console.error("Error occurred while retrieving scripts:", e);
