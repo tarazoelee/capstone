@@ -6,7 +6,7 @@ const { JSDOM } = require("jsdom");
 const { Readability } = require("@mozilla/readability");
 const topicModels = require("../models/TopicTables");
 
-const apiKey="94b9c0081ebf421b89233a87e38b17ef"
+const apiKey="apiKey=94b9c0081ebf421b89233a87e38b17ef"
 
 function getTodaysDate() {
   const today = new Date();
