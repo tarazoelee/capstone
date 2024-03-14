@@ -19,15 +19,28 @@ const endOfDay = new Date(
   today.getDate() + 1
 );
 
+//------GETTING ALL SCRIPTS--------
 app.get("/", async (req, res) => {
   try {
     const scripts = await scriptsModel.find();
-    // {
-    //   date: {
-    //     $gte: startOfDay,
-    //     $lt: endOfDay
-    //   }
-    // }
+    res.send(scripts);
+
+  } catch (e) {
+    res.status(500).send("Unable to find scripts");
+    console.error("Error occurred while retrieving scripts:", e);
+  }
+});
+
+
+//------GETTING TODAY'S SCRIPTS--------
+app.get("/todaysScript", async (req, res) => {
+  try {
+    const scripts = await scriptsModel.find(  {
+      date: {
+        $gte: startOfDay,
+        $lt: endOfDay
+      }
+    });
     res.send(scripts);
    // synthesize(scripts); //turn them into audio files
 

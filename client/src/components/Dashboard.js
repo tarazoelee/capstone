@@ -12,7 +12,7 @@ import Typewriter from 'typewriter-effect';
 export default function Dashboard() {
   const [error, setError] = useState("");
   const [newsContent, setNewsContent] = useState('');
-  const [podcastScript, setPodcastScript] = useState([]);
+  const [podcastScript, setPodcastScript] = useState("");
   const { currentUser, logout } = useAuth();
   const nav = useNavigate();
   const [isDropdownVisible, setDropdownVisible] = useState(false);
@@ -26,10 +26,19 @@ export default function Dashboard() {
     getTodaysScript();
   }, []);
 
-  // Format the date as "YYYY-MM-DD"
-  const formattedDate = `${year}-${month < 10 ? "0" + month : month}-${
-    day < 10 ? "0" + day : day
-  }`;
+  async function getTodaysScript() {
+    await fetch(`${baseURL}/scripts/todaysScript`)
+      .then((res) => res.json())
+      .then((data) => {
+        const userScript = data.filter(item => item.users[0] === currentUser.email);
+        if(userScript.length >0){
+          setPodcastScript(userScript[0].script);
+        }
+        else{
+          setPodcastScript("No byte today... :(");
+        }
+      });
+  }
 
   async function handleLogout() {
     setError("");
@@ -55,16 +64,6 @@ export default function Dashboard() {
   const handleMouseLeave = () => {
     setDropdownVisible(false);
   };
-
-
-  async function getTodaysScript() {
-    await fetch(`${baseURL}/scripts`)
-      .then((res) => res.json())
-      .then((data) => {
-        const userScript = data.filter(item => item.users[0] === currentUser.email);
-        setPodcastScript(userScript[0].script);
-      });
-  }
 
   return (
     <div className="font-display">
