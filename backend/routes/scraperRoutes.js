@@ -51,21 +51,21 @@ const topicUrls = {
     "sortBy=popularity&" +
     `${apiKey}`,
 
-    cadPolitics:
+    canadianpolitics:
     "https://newsapi.org/v2/top-headlines?" +
     "country=ca&" +
     "q=politics&" +
     "sortBy=popularity&" +
     `${apiKey}`,
 
-    cadSports:
+    canadiansports:
     "https://newsapi.org/v2/top-headlines?" +
     "country=ca&" +
     "category=sports&" +
     "sortBy=popularity&" +
     `${apiKey}`,
 
-    collegeBall:
+    collegebasketball:
     "https://newsapi.org/v2/top-headlines?" +
     "country=us&" +
     "q=college basketball" +
@@ -73,7 +73,7 @@ const topicUrls = {
     "sortBy=popularity&" +
     `${apiKey}`,
 
-    collegeFootball:
+    collegefootball:
     "https://newsapi.org/v2/top-headlines?" +
     "country=us&" +
     "q=college football" +
