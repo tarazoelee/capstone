@@ -43,8 +43,6 @@ app.get("/todaysScript", async (req, res) => {
     });
     res.send(scripts);
    // synthesize(scripts); //turn them into audio files
-
-    //console.log(scripts);
   } catch (e) {
     res.status(500).send("Unable to find scripts");
     console.error("Error occurred while retrieving scripts:", e);

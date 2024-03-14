@@ -4,43 +4,159 @@ const cheerio = require("cheerio");
 const axios = require("axios");
 const { JSDOM } = require("jsdom");
 const { Readability } = require("@mozilla/readability");
-
 const topicModels = require("../models/TopicTables");
 
-let urlsToScrape = [];
+const apiKey="94b9c0081ebf421b89233a87e38b17ef"
+
+function getTodaysDate() {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Set hours, minutes, seconds, and milliseconds to zero
+  return today;
+}
+
+function getTodaysDateInISO() {
+  const today = new Date();
+  const isoDate = today.toISOString().split('T')[0]; // Extract only the date part
+  return isoDate;
+}
+
+function getLastWeekDate() {
+  const today = new Date();
+  const oneWeekAgo = new Date(today.getTime() - (7 * 24 * 60 * 60 * 1000)); // Subtract 7 days
+  const isoDate = oneWeekAgo.toISOString().split('T')[0]; // Extract only the date part
+  return isoDate;
+}
 
 const topicUrls = {
-  nba:
+   arts:
+    "https://newsapi.org/v2/top-headlines?" +
+    "country=us&" +
+    "category=entertainment&" +
+    "q=arts&" +
+    "sortBy=popularity&" +
+    `${apiKey}`,
+    
+    breakingnews: //idk if 2 countries will work 
+    "https://newsapi.org/v2/top-headlines?" +
+    "country=us&" +
+    "country=ca&"+
+    "category=general&" +
+    "sortBy=popularity&" +
+    `${apiKey}`,
+
+    business:
+    "https://newsapi.org/v2/top-headlines?" +
+    "country=us&" +
+    "category=business&" +
+    "sortBy=popularity&" +
+    `${apiKey}`,
+
+    cadPolitics:
+    "https://newsapi.org/v2/top-headlines?" +
+    "country=ca&" +
+    "q=politics&" +
+    "sortBy=popularity&" +
+    `${apiKey}`,
+
+    cadSports:
+    "https://newsapi.org/v2/top-headlines?" +
+    "country=ca&" +
+    "category=sports&" +
+    "sortBy=popularity&" +
+    `${apiKey}`,
+
+    collegeBall:
+    "https://newsapi.org/v2/top-headlines?" +
+    "country=us&" +
+    "q=college basketball" +
+    "category=sports&" +
+    "sortBy=popularity&" +
+    `${apiKey}`,
+
+    collegeFootball:
+    "https://newsapi.org/v2/top-headlines?" +
+    "country=us&" +
+    "q=college football" +
+    "category=sports&" +
+    `${apiKey}`,
+
+    economy:
+    "https://newsapi.org/v2/everything?" +
+    "q=economy OR finance" +
+     "language=en&" +
+    `from=${getLastWeekDate()}&` +
+    `to=${getTodaysDateInISO()}&` +
+    "sortBy=popularity&" +
+    `${apiKey}`,
+
+    health:
+    "https://newsapi.org/v2/top-headlines?" +
+     "category=health&" +
+     "country=us&"+
+    `${apiKey}`,
+
+    international:
+    "https://newsapi.org/v2/everything?" +
+     "q=international OR world&" +
+      "sortBy=popularity&" +
+      "language=en&" +
+      `from=${getLastWeekDate()}&` +
+      `to=${getTodaysDateInISO()}&` +
+    `${apiKey}`,
+
+    mlb:
+    "https://newsapi.org/v2/top-headlines?" +
+    "country=us&" +
+    "category=sports&" +
+    "q=baseball&" +
+    `${apiKey}`,
+
+    nba:
     "https://newsapi.org/v2/top-headlines?" +
     "country=us&" +
     "category=sports&" +
     "q=NBA&" +
-    "sortBy=popularity&" +
-    "apiKey=94b9c0081ebf421b89233a87e38b17ef",
+    `${apiKey}`,
 
-  ncaa:
-    "https://newsapi.org/v2/top-headlines?" +
-    "country=us&" +
-    "category=sports&" +
-    "q=ncaa&" +
-    "sortBy=popularity&" +
-    "apiKey=94b9c0081ebf421b89233a87e38b17ef",
+    ncaa: //searching in all fields for ncaa
+      "https://newsapi.org/v2/everything?" +
+      "q=ncaa&" +
+      "sortBy=popularity&" +
+      "language=en&" +
+      `from=${getLastWeekDate()}&` +
+      `to=${getTodaysDateInISO()}&` +
+      `${apiKey}`,
 
   nhl:
     "https://newsapi.org/v2/top-headlines?" +
     "country=us&" +
     "category=sports&" +
     "q=nhl&" +
-    "sortBy=popularity&" +
-    "apiKey=94b9c0081ebf421b89233a87e38b17ef",
+    `${apiKey}`,
 
-  mlb:
+  nfl:
     "https://newsapi.org/v2/top-headlines?" +
     "country=us&" +
     "category=sports&" +
-    "q=baseball&" +
-    "sortBy=popularity&" +
-    "apiKey=94b9c0081ebf421b89233a87e38b17ef",
+    "q=nfl&" +
+    `${apiKey}`,
+
+    tech:
+    "https://newsapi.org/v2/top-headlines?" +
+    "country=us&" +
+    "category=technology&" +
+    `${apiKey}`,
+
+    topStories:
+    "https://newsapi.org/v2/top-headlines?" +
+    "country=us&"+
+    `${apiKey}`,
+
+    usPolitics:
+    "https://newsapi.org/v2/top-headlines?" +
+    "country=us&"+
+    "q=politics&"+
+    `${apiKey}`,
 };
 
 //topic (:t) in url param needs to be an exact match of the table name (all lowercase)
@@ -106,11 +222,7 @@ async function putScrapedNewsIntoDB(
   }
 }
 
-function getTodaysDate() {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0); // Set hours, minutes, seconds, and milliseconds to zero
-  return today;
-}
+
 
 // app.get("/nhl/today", async (req, res) => {
 //   const today = getTodaysDate();
@@ -141,7 +253,7 @@ function getTodaysDate() {
 //   "category=sports&" +
 //   "q=NFL&" +
 //   "sortBy=popularity&" +
-//   "apiKey=94b9c0081ebf421b89233a87e38b17ef";
+//   `${apiKey}`;
 
 // //TEST URL
 // app.get("/nfl-article-urls", async (req, res) => {

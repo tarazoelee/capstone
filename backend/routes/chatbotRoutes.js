@@ -98,7 +98,8 @@ async function getTopicCombinations() {
 
 async function getDailyScripts(uniqueTopicsSet) {
   //FIX: THIS IS HARD CODED FOR TESTING - change to get everyday's current date
-  const todaysDate = new Date("2024-03-11T04:00:00.000Z");
+  const todaysDate = new Date();
+  console.log(todaysDate);
   try {
     //convert set to array to be able to access elements
     const uniqueTopicsArray = [...uniqueTopicsSet];
