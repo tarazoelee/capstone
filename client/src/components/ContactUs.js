@@ -4,7 +4,7 @@ import { Textarea, useToast } from "@chakra-ui/react";
 import { useAuth } from "../contexts/AuthContext";
 import { baseURL } from "../config.js";
 import Footer from "./Footer.js";
-import Modal from '@mui/material/Modal';
+import Modal from "@mui/material/Modal";
 import { Box } from "@mui/material";
 
 function ContactUs() {
@@ -16,27 +16,26 @@ function ContactUs() {
   });
   const toast = useToast();
   const [openModal, setOpenModal] = useState(false);
-  const [modalText, setModalText] = useState('');
-    /** -----MODAL STYLING------ */
-    const modalStyle = {
-      position: "absolute",
-      top: "10%",
-      borderRadius: '10px',
-      left: "50%",
-      textAlign:'center',
-      transform: "translate(-50%, -50%)",
-      width: 300,
-      bgcolor: "background.paper",
-      boxShadow: 10,
-      p:4,
-      fontFamily:'display',
+  const [modalText, setModalText] = useState("");
+  /** -----MODAL STYLING------ */
+  const modalStyle = {
+    position: "absolute",
+    top: "10%",
+    borderRadius: "10px",
+    left: "50%",
+    textAlign: "center",
+    transform: "translate(-50%, -50%)",
+    width: 300,
+    bgcolor: "background.paper",
+    boxShadow: 10,
+    p: 4,
+    fontFamily: "display",
   };
 
   const handleCloseModal = () => {
     setOpenModal(false);
-    setModalText('');
+    setModalText("");
   };
-
 
   useEffect(() => {
     console.log(formData); // This will log formData every time it changes
@@ -53,32 +52,46 @@ function ContactUs() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    let result = await fetch(`${baseURL}/send-contact-email`, {
-      method: "post",
-      body: JSON.stringify(formData),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    result = await result.json();
-    console.warn(result);
-    if (result) {
+    try {
+      let response = await fetch(`${baseURL}/send-contact-email`, {
+        method: "POST",
+        body: JSON.stringify(formData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      let resultMessage = await response.text(); // Assuming the server always sends a text message
+
+      if (response.ok) {
+        // HTTP status code 200 indicates success
+        setOpenModal(true);
+        setModalText(resultMessage); // Display success message from the server
+        setFormData({ email: currentUser.email, message: "" }); // Clear message field
+      } else {
+        // Handle server-side failure (e.g., status code 500)
+        setOpenModal(true);
+        setModalText(resultMessage); // Display error message from the server
+      }
+    } catch (error) {
+      console.error("Error sending email:", error);
+      // Handle client-side error
       setOpenModal(true);
-      setModalText("Email was sent successfully.")
+      setModalText("An error occurred. Please try again.");
     }
-    setFormData({ email: currentUser, message: "" });
   }
 
   return (
     <div className="w-screen h-screen font-display flex-col flex">
-      <Modal 
-        open={openModal} 
-        onClose={handleCloseModal} 
-        aria-describedby="modal-modal-title">
-          <Box sx={modalStyle}>
-            <p>{modalText}</p> 
-          </Box>
-        </Modal>
+      <Modal
+        open={openModal}
+        onClose={handleCloseModal}
+        aria-describedby="modal-modal-title"
+      >
+        <Box sx={modalStyle}>
+          <p>{modalText}</p>
+        </Box>
+      </Modal>
       <div className=" gap-3 my-20 h-20 px-72 place-self-end text-yellow-900 font-bold hover:text-yellow-700 ease-linear transition duration-100">
         <button onClick={navDash}>Dashboard</button>
       </div>

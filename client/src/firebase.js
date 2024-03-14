@@ -11,5 +11,11 @@ const app = firebase.initializeApp({
   measurementId: "G-76NS7Y260R",
 });
 
+if (!firebase.apps.length) {
+  firebase.initializeApp({});
+} else {
+  firebase.app(); // if already initialized, use that one
+}
+
 export const auth = app.auth();
 export default app;

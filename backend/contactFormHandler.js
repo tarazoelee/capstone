@@ -1,14 +1,16 @@
 const nodemailer = require("nodemailer");
+require("dotenv").config();
 
 // Function to send email
 async function sendContactEmail(formEmail, formMessage) {
   // Set up Nodemailer transporter
   const transporter = nodemailer.createTransport({
-     service: 'Gmail',
-     auth: {
-      user: 'dailybytes.contact@gmail.com',
-      pass: 'udcv zwdz msng cnjm' // Use the App Password generated in step 2
-    }
+    service: "Gmail",
+    auth: {
+      user: "dailybytes.contact@gmail.com",
+      pass: process.env.NODEMAILER_PASS,
+      // Use the App Password generated in step 2
+    },
     // service: "gmail",
     // auth: {
     //   type: "OAuth2",
