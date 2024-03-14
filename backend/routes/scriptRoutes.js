@@ -6,18 +6,7 @@ const scriptsModel = require("../models/PodcastScripts");
 const fs = require('fs');
 const path = require('path');
 
-/**GET ALL SCRIPTS CREATED TODAY */
-const today = new Date();
-const startOfDay = new Date(
-  today.getFullYear(),
-  today.getMonth(),
-  today.getDate()
-);
-const endOfDay = new Date(
-  today.getFullYear(),
-  today.getMonth(),
-  today.getDate() + 1
-);
+const todaysDate = new Date().toISOString().split("T")[0];
 
 //------GETTING ALL SCRIPTS--------
 app.get("/", async (req, res) => {
@@ -36,10 +25,7 @@ app.get("/", async (req, res) => {
 app.get("/todaysScript", async (req, res) => {
   try {
     const scripts = await scriptsModel.find(  {
-      date: {
-        $gte: startOfDay,
-        $lt: endOfDay
-      }
+      date: todaysDate
     });
     res.send(scripts);
    // synthesize(scripts); //turn them into audio files

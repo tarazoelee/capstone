@@ -6,6 +6,7 @@ require("dotenv").config();
 const usersModel = require("../models/Users");
 const topicTablesModel = require("../models/TopicTables");
 const podcastScriptsModel = require("../models/PodcastScripts");
+const todaysDate = new Date().toISOString().split("T")[0];
 
 //set of unique topics selected across all the users
 let uniqueTopicsSet = new Set();
@@ -19,6 +20,7 @@ const combinations = new Map();
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
+
 
 app.post("/summary", async (req, res) => {
   try {
@@ -97,9 +99,6 @@ async function getTopicCombinations() {
 }
 
 async function getDailyScripts(uniqueTopicsSet) {
-  //FIX: THIS IS HARD CODED FOR TESTING - change to get everyday's current date
-  const todaysDate = new Date();
-  console.log(todaysDate);
   try {
     //convert set to array to be able to access elements
     const uniqueTopicsArray = [...uniqueTopicsSet];
@@ -172,8 +171,6 @@ async function createScript() {
         temperature: 0,
         max_tokens: 1000,
       });
-
-      const todaysDate = new Date().toISOString().split("T")[0];
 
       const newScript = new podcastScriptsModel({
         script: response.choices[0].message.content,

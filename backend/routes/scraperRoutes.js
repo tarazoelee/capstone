@@ -5,8 +5,8 @@ const axios = require("axios");
 const { JSDOM } = require("jsdom");
 const { Readability } = require("@mozilla/readability");
 const topicModels = require("../models/TopicTables");
-
 const apiKey="apiKey=94b9c0081ebf421b89233a87e38b17ef"
+const todaysDate = new Date().toISOString().split("T")[0];
 
 function getTodaysDate() {
   const today = new Date();
@@ -141,7 +141,7 @@ const topicUrls = {
     "q=nfl&" +
     `${apiKey}`,
 
-    tech:
+    technology:
     "https://newsapi.org/v2/top-headlines?" +
     "country=us&" +
     "category=technology&" +
@@ -179,7 +179,7 @@ app.get("/topic/:t", async (req, res) => {
       const readabilityArticle = new Readability(dom.window.document).parse();
       articleContents.push(readabilityArticle.textContent);
     }
-    const todaysDate = getTodaysDate();
+    const todaysDate = new Date().toISOString().split("T")[0];
     putScrapedNewsIntoDB(topic, articleContents, todaysDate);
     res.send(articleContents);
   } catch (error) {
@@ -188,13 +188,7 @@ app.get("/topic/:t", async (req, res) => {
   }
 });
 
-async function putScrapedNewsIntoDB(
-  collectionName,
-
-  articleContents,
-
-  contentDate
-) {
+async function putScrapedNewsIntoDB(collectionName,articleContents,contentDate) {
   try {
     if (!topicModels[collectionName]) {
       console.log(`No model found for collection: ${collectionName}`);
