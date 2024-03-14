@@ -1,10 +1,10 @@
 const express = require("express");
 const app = express();
 const axios = require("axios");
-const FormData = require('form-data');
+const FormData = require("form-data");
 const scriptsModel = require("../models/PodcastScripts");
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 const todaysDate = new Date().toISOString().split("T")[0];
 
@@ -13,7 +13,6 @@ app.get("/", async (req, res) => {
   try {
     const scripts = await scriptsModel.find();
     res.send(scripts);
-
   } catch (e) {
     res.status(500).send("Unable to find scripts");
     console.error("Error occurred while retrieving scripts:", e);
@@ -23,11 +22,29 @@ app.get("/", async (req, res) => {
 //------GETTING TODAY'S SCRIPTS--------
 app.get("/todaysScript", async (req, res) => {
   try {
-    const scripts = await scriptsModel.find(  {
-      date: todaysDate
+    const scripts = await scriptsModel.find({
+      date: todaysDate,
     });
     res.send(scripts);
     //synthesize(scripts); //THIS WILL PROBS HAVE TO BE MOVED OR ELSE IT WILL CREATE A NEW ONE EACH TIME
+  } catch (e) {
+    res.status(500).send("Unable to find scripts");
+    console.error("Error occurred while retrieving scripts:", e);
+  }
+});
+
+app.get("/todaysScript/:user", async (req, res) => {
+  try {
+    // Extract user email from request parameters
+    const userEmail = req.params.user;
+
+    // Find scripts that match today's date and include the specific user in the users array
+    const scripts = await scriptsModel.find({
+      date: todaysDate,
+      users: userEmail, // This will match any documents where the users array contains the userEmail
+    });
+
+    res.send(scripts);
   } catch (e) {
     res.status(500).send("Unable to find scripts");
     console.error("Error occurred while retrieving scripts:", e);
@@ -43,57 +60,53 @@ async function synthesize(s) {
   const uploadEndpoint = "http://localhost:5001/upload";
 
   for (const item of s) {
-
     const script = item.script;
-      const payload = {
-        audioConfig: {
-          audioEncoding: "MP3",
-          effectsProfileId: ["small-bluetooth-speaker-class-device"],
-          pitch: 0,
-          speakingRate: 1,
+    const payload = {
+      audioConfig: {
+        audioEncoding: "MP3",
+        effectsProfileId: ["small-bluetooth-speaker-class-device"],
+        pitch: 0,
+        speakingRate: 1,
+      },
+      input: {
+        text: script,
+      },
+      voice: {
+        languageCode: "en-US",
+        name: "en-US-Standard-A",
+      },
+    };
+    try {
+      const response = await axios.post(endpoint, payload);
+      const audioContent = response.data.audioContent;
+      const audioBuffer = Buffer.from(audioContent, "base64");
+
+      const formData = new FormData();
+      formData.append("file", audioBuffer, "audio.mp3"); // 'audio.mp3' is the filename
+
+      const uploadResponse = await axios.post(uploadEndpoint, formData, {
+        headers: {
+          ...formData.getHeaders(),
         },
-        input: {
-          text: script,
-        },
-        voice: {
-          languageCode: "en-US",
-          name: "en-US-Standard-A",
-        },
-      };
-      try {
-        const response = await axios.post(endpoint, payload);
-        const audioContent = response.data.audioContent;
-        const audioBuffer = Buffer.from(audioContent, 'base64');
+      });
 
-        const formData = new FormData();
-        formData.append('file', audioBuffer, 'audio.mp3'); // 'audio.mp3' is the filename
+      console.log("Upload response:", uploadResponse.data);
 
-        const uploadResponse = await axios.post(uploadEndpoint, formData, {
-          headers: {
-            ...formData.getHeaders(),
-          },
-        });
-
-          console.log('Upload response:', uploadResponse.data);
-
-        /**-------FOR TESTING THE MP3 FILES----- */
-        // const response = await axios.post(endpoint, payload);
-        // const audioData = response.data.audioContent;
-        // // Generate a unique file name based on timestamp
-        // const fileName = `audio_${Date.now()}.mp3`;
-        // // Write the audio data to a file
-        // const filePath = path.join(__dirname, fileName);
-        // fs.writeFileSync(filePath, Buffer.from(audioData, 'base64'));
-        // filePaths.push(filePath);
-
-      } catch (error) {
-        console.error("Error occurred while synthesizing audio:", error);
-        // Handle error if necessary
-      }
+      /**-------FOR TESTING THE MP3 FILES----- */
+      // const response = await axios.post(endpoint, payload);
+      // const audioData = response.data.audioContent;
+      // // Generate a unique file name based on timestamp
+      // const fileName = `audio_${Date.now()}.mp3`;
+      // // Write the audio data to a file
+      // const filePath = path.join(__dirname, fileName);
+      // fs.writeFileSync(filePath, Buffer.from(audioData, 'base64'));
+      // filePaths.push(filePath);
+    } catch (error) {
+      console.error("Error occurred while synthesizing audio:", error);
+      // Handle error if necessary
+    }
   }
   return audioResponses;
 }
-
-
 
 module.exports = app;
