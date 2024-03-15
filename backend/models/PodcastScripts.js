@@ -13,6 +13,10 @@ const PodcastScripts = new mongoose.Schema({
     type: Array,
     required: false,
   },
+  refID: {
+    type: String,
+    required: false,
+  },
 });
 
 const Scripts = mongoose.model("podcastScripts", PodcastScripts);
