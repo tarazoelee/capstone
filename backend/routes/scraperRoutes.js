@@ -54,35 +54,6 @@ const topicUrls = {
   // worldnews: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&search="world"&published_after=2024-03-14`,
 };
 
-//topic (:t) in url param needs to be an exact match of the table name (all lowercase)
-// app.get("/topic/:t", async (req, res) => {
-//   const topic = req.params.t;
-
-//   // Check if the requested topic is valid
-//   if (!topicUrls.hasOwnProperty(topic)) {
-//     return res.status(404).send("Invalid topic");
-//   }
-
-//   try {
-//     const response = await axios.get(topicUrls[topic]);
-//     const articles = response.data.articles.slice(0, 3); // Take only the first three articles
-
-//     const articleContents = [];
-//     for (const article of articles) {
-//       const articleResponse = await axios.get(article.url);
-//       const dom = new JSDOM(articleResponse.data, { url: article.url });
-//       const readabilityArticle = new Readability(dom.window.document).parse();
-//       articleContents.push(readabilityArticle.textContent);
-//     }
-//     const todaysDate = new Date().toISOString().split("T")[0];
-//     putScrapedNewsIntoDB(topic, articleContents, todaysDate);
-//     res.send(articleContents);
-//   } catch (error) {
-//     console.error("Error fetching and parsing articles:", error);
-//     res.status(500).send("Internal server error");
-//   }
-// });
-
 async function scrapeURLs() {
   //for loop for each topic and url
   for (let [topic, url] of Object.entries(topicUrls)) {
@@ -140,37 +111,6 @@ async function putScrapedNewsIntoDB(
     console.error("Error saving data to database:", error);
   }
 }
-
-// app.get("/nhl/today", async (req, res) => {
-//   const today = getTodaysDate();b
-//   const nhlModel = topicModels["nhl"]; // Ensure 'nhl' is correctly defined in your topicModels
-
-//   try {
-//     const todaysContent = await nhlModel.find({
-//       date: {
-//         $gte: today,
-//         $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000), // Less than tomorrow's date
-//       },
-//     });
-
-//     if (todaysContent.length === 0) {
-//       return res.status(404).send("No content found for today.");
-//     }
-
-//     res.json(todaysContent);
-//   } catch (error) {
-//     console.error("Error fetching today's content:", error);
-//     res.status(500).send("Internal server error");
-//   }
-// });
-
-// var nfl =
-//   "https://newsapi.org/v2/top-headlines?" +
-//   "country=us&" +
-//   "category=sports&" +
-//   "q=NFL&" +
-//   "sortBy=popularity&" +
-//   `${apiKey}`;
 
 // //TEST URL
 // app.get("/nfl-article-urls", async (req, res) => {
