@@ -8,6 +8,26 @@ const path = require("path");
 
 const todaysDate = new Date().toISOString().split("T")[0];
 
+const voiceTypes ={
+  standardMaleUS: {
+    audioConfig: {
+      audioEncoding: "MP3",
+      effectsProfileId: ["small-bluetooth-speaker-class-device"],
+      pitch: 0,
+      speakingRate: 1,
+    },
+    input: {
+      text: "Script goes here", //Assuming script will be updated when synthesize is called 
+    },
+    voice: {
+      languageCode: "en-US",
+      name: "en-US-Wavenet-D",
+    },
+  },
+
+
+}
+
 //------GETTING ALL SCRIPTS--------
 app.get("/", async (req, res) => {
   try {
@@ -28,7 +48,8 @@ app.get("/todaysPodcasts", async (req, res) => {
     // Iterate over each script and convert it to audio, then update the document with the gridFsFileId
     for (const script of scripts) {
       try {
-        const reference = await synthesize(script);
+        const standardVoice = voiceTypes.standardMaleUS;
+        const reference = await synthesize(script, standardVoice);
 
         // Directly find one script and update it with the new gridFsFileId
         const updatedScript = await scriptsModel.findOneAndUpdate(
@@ -47,18 +68,18 @@ app.get("/todaysPodcasts", async (req, res) => {
       }
     }
 
-    // After all scripts have been processed, send a response
-    res.send({ message: "All scripts have been processed and updated" });
+    res.send({ message: "All scripts have been processed and updated" });     // After all scripts have been processed, send a response
   } catch (e) {
     res.status(500).send("Unable to process scripts");
     console.error("Error occurred while retrieving and processing scripts:", e);
   }
 });
 
+
+/**----GETTING TODAYS SCRIPT FOR A SPECIFIC USER ------ */
 app.get("/todaysScript/:user", async (req, res) => {
   try {
-    // Extract user email from request parameters
-    const userEmail = req.params.user;
+    const userEmail = req.params.user; //getting email
 
     // Find scripts that match today's date and include the specific user in the users array
     const scripts = await scriptsModel.find({
@@ -73,27 +94,15 @@ app.get("/todaysScript/:user", async (req, res) => {
   }
 });
 
-/// Create audio file of text for a single script
-async function synthesize(script) {
+
+/** ------Create audio file of text for a single script------ */ 
+async function synthesize(script, voiceOption) {
   const apikey = "AIzaSyA888cSZgCc2lMDxqy7g4r7byJOsGfi8GA";
   const endpoint = `https://texttospeech.googleapis.com/v1beta1/text:synthesize?key=${apikey}`;
   const uploadEndpoint = "http://localhost:5001/upload";
 
-  const payload = {
-    audioConfig: {
-      audioEncoding: "MP3",
-      effectsProfileId: ["small-bluetooth-speaker-class-device"],
-      pitch: 0,
-      speakingRate: 1,
-    },
-    input: {
-      text: script.script, // Assuming 'script' is an object with a 'script' property containing the text
-    },
-    voice: {
-      languageCode: "en-US",
-      name: "en-US-Standard-A",
-    },
-  };
+  const payload = voiceOption; //getting passed in the voice type that the user sets
+  voiceOption.input.text = script; //setting the script text for the API 
 
   try {
     // Post request to synthesize text
