@@ -73,21 +73,6 @@ export default function Dashboard() {
     getPodcast();
   }, [podcastRefID]);
 
-  function downloadBlob(blob, filename) {
-    // Create a URL for the blob
-    const url = window.URL.createObjectURL(blob);
-    // Create a new anchor element
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename || "file.mp3";
-    // Append anchor to body
-    document.body.appendChild(a);
-    a.click();
-    // Remove anchor from body
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
-  }
-
   async function handleLogout() {
     setError("");
     try {
@@ -168,13 +153,6 @@ export default function Dashboard() {
           <div className="px-28 py-20 bg-orange-50 text-gray-900 rounded-md shadow-lg">
             {podcastScript}
           </div>
-          <button
-            type="submit"
-            onClick={getPodcast}
-            className="px-6 py-3 bg-orange-600 text-white font-bold rounded-md hover:bg-orange-700 transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50 shadow-lg"
-          >
-            Get Your Personal Byte for Today!
-          </button>
         </div>
         <div className="audio-player-container">
           <audio controls ref={audioRef}>
