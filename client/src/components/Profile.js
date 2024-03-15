@@ -171,6 +171,7 @@ function getMonthName(monthNumber) {
             topic2: userTopics[1],
             topic3: userTopics[2],
             length: selectedLength,
+            voice: selectedVoice,
           }),
           headers: {
             "Content-Type": "application/json",

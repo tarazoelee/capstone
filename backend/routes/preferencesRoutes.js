@@ -107,10 +107,10 @@ app.get("/getUserLengthAndPreferences", async (req, res) => {
 
 //UPDATE USER PREFERENCES
 app.post("/updatePreferences", async (req, resp) => {
-  const { email, topic1, topic2, topic3, length } = req.body;
-  console.log(req.body);
+  const { email, topic1, topic2, topic3, length, voice} = req.body;
+  console.log("prefs updated: "+req.body);
 
-  if (!email || !topic1 || !topic2 || !topic3 || !length) {
+  if (!email || !topic1 || !topic2 || !topic3 || !length || !voice) {
     return resp.status(400).send("All fields are required.");
   }
 
@@ -126,6 +126,7 @@ app.post("/updatePreferences", async (req, resp) => {
 
     user.topics = topicsArray;
     user.length = length;
+    user.voice = voice;
 
     await user.save();
 
