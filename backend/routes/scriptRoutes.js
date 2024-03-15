@@ -5,104 +5,64 @@ const FormData = require("form-data");
 const scriptsModel = require("../models/PodcastScripts");
 const fs = require("fs");
 const path = require("path");
+const usersModel = require("../models/Users")
 
 const todaysDate = new Date().toISOString().split("T")[0];
 
+// standardMaleUS: {
+//     audioConfig: {
+//       audioEncoding: "MP3",
+//       effectsProfileId: ["small-bluetooth-speaker-class-device"],
+//       pitch: 0,
+//       speakingRate: 1,
+//     },
+//     input: {
+//       text: "Script goes here", //Assuming script will be updated when synthesize is called 
+//     },
+//     voice: {
+//       languageCode: "en-US",
+//       name: "en-US-Wavenet-J",
+//     },
+//   },
+
 const voiceTypes = {
   standardMaleUS: {
-    audioConfig: {
-      audioEncoding: "MP3",
-      effectsProfileId: ["small-bluetooth-speaker-class-device"],
-      pitch: 0,
-      speakingRate: 1,
-    },
-    input: {
-      text: "Script goes here", //Assuming script will be updated when synthesize is called 
-    },
     voice: {
       languageCode: "en-US",
       name: "en-US-Wavenet-J",
-    },
+    }
   },
   standardFemaleUS: {
-    audioConfig: {
-      audioEncoding: "MP3",
-      effectsProfileId: ["small-bluetooth-speaker-class-device"],
-      pitch: 0,
-      speakingRate: 1,
-    },
-    input: {
-      text: "Script goes here", //Assuming script will be updated when synthesize is called 
-    },
     voice: {
       languageCode: "en-US",
       name: "en-US-Wavenet-F",
-    },
+    }
   },
   standardMaleAUS: {
-    audioConfig: {
-      audioEncoding: "MP3",
-      effectsProfileId: ["small-bluetooth-speaker-class-device"],
-      pitch: 0,
-      speakingRate: 1,
-    },
-    input: {
-      text: "Script goes here", //Assuming script will be updated when synthesize is called 
-    },
     voice: {
       "languageCode": "en-AU",
       "name": "en-AU-Wavenet-B"
-    },
+    }
   },
   standardFemaleAUS: {
-    audioConfig: {
-      audioEncoding: "MP3",
-      effectsProfileId: ["small-bluetooth-speaker-class-device"],
-      pitch: 0,
-      speakingRate: 1,
-    },
-    input: {
-      text: "Script goes here", //Assuming script will be updated when synthesize is called 
-    },
     voice: {
       "languageCode": "en-AU",
       "name": "en-AU-Wavenet-C"
-    },
+    }
   },
   standardMaleGB: {
-    audioConfig: {
-      audioEncoding: "MP3",
-      effectsProfileId: ["small-bluetooth-speaker-class-device"],
-      pitch: 0,
-      speakingRate: 1,
-    },
-    input: {
-      text: "Script goes here", //Assuming script will be updated when synthesize is called 
-    },
     voice: {
       "languageCode": "en-GB",
       "name": "en-GB-Wavenet-B"
-    },
+    }
   },
   standardFemaleGB: {
-    audioConfig: {
-      audioEncoding: "MP3",
-      effectsProfileId: ["small-bluetooth-speaker-class-device"],
-      pitch: 0,
-      speakingRate: 1,
-    },
-    input: {
-      text: "Script goes here", //Assuming script will be updated when synthesize is called 
-    },
     voice: {
       "languageCode": "en-GB",
       "name": "en-GB-Wavenet-A"
-    },
+    }
   },
-
-
-}
-
+  }
 //------GETTING ALL SCRIPTS--------
 app.get("/", async (req, res) => {
   try {
@@ -114,6 +74,11 @@ app.get("/", async (req, res) => {
   }
 });
 
+async function getUserVoice(u){
+  const user = await usersModel.find({ email: u});
+  return user[0].voice;
+}
+
 //------GETTING TODAY'S SCRIPTS AND CREATING PODCASTS--------
 app.get("/todaysPodcasts", async (req, res) => {
   try {
@@ -123,8 +88,11 @@ app.get("/todaysPodcasts", async (req, res) => {
     // Iterate over each script and convert it to audio, then update the document with the gridFsFileId
     for (const script of scripts) {
       try {
-        const standardVoice = voiceTypes.standardMaleAUS;
-        const reference = await synthesize(script, standardVoice);
+        //const standardVoice = voiceTypes.standardFemaleAUS;
+        const user = script.users[0]; //get the first user since they all have the same voice 
+        const voice = await getUserVoice(user);
+        console.log("voice "+voice)
+        const reference = await synthesize(script, voice);
 
         // Directly find one script and update it with the new gridFsFileId
         const updatedScript = await scriptsModel.findOneAndUpdate(
@@ -176,8 +144,26 @@ async function synthesize(script, voiceOption) {
   const endpoint = `https://texttospeech.googleapis.com/v1beta1/text:synthesize?key=${apikey}`;
   const uploadEndpoint = "http://localhost:5001/upload";
 
-  const payload = {...voiceOption}; //getting passed in the voice type that the user sets
-  voiceOption.input.text = script; //setting the script text for the API 
+  const selectedVoice = voiceTypes[voiceOption]
+  console.log("voice"+ selectedVoice)
+
+  const payload = 
+  {
+    audioConfig: {
+      audioEncoding: "MP3",
+      effectsProfileId: ["small-bluetooth-speaker-class-device"],
+      pitch: 0,
+      speakingRate: 1,
+    },
+    input: {
+      text: script.script, //Assuming script will be updated when synthesize is called 
+    },
+    voice: {
+      // languageCode: "en-US",
+      // name: "en-US-Wavenet-J",
+      ...selectedVoice.voice
+    },
+  }
 
   try {
     // Post request to synthesize text
