@@ -29,40 +29,39 @@ const voiceTypes = {
     voice: {
       languageCode: "en-US",
       name: "en-US-Wavenet-J",
-    },
+    }
   },
   standardFemaleUS: {
     voice: {
       languageCode: "en-US",
       name: "en-US-Wavenet-F",
-    },
+    }
   },
   standardMaleAUS: {
     voice: {
       "languageCode": "en-AU",
       "name": "en-AU-Wavenet-B"
-    },
+    }
   },
   standardFemaleAUS: {
     voice: {
       "languageCode": "en-AU",
       "name": "en-AU-Wavenet-C"
-    },
+    }
   },
   standardMaleGB: {
     voice: {
       "languageCode": "en-GB",
       "name": "en-GB-Wavenet-B"
-    },
+    }
   },
   standardFemaleGB: {
     voice: {
       "languageCode": "en-GB",
       "name": "en-GB-Wavenet-A"
-    },
+    }
   },
-}
-
+  }
 //------GETTING ALL SCRIPTS--------
 app.get("/", async (req, res) => {
   try {
@@ -83,7 +82,7 @@ app.get("/todaysPodcasts", async (req, res) => {
     // Iterate over each script and convert it to audio, then update the document with the gridFsFileId
     for (const script of scripts) {
       try {
-        const standardVoice = voiceTypes.standardMaleAUS;
+        const standardVoice = voiceTypes.standardFemaleAUS;
         const reference = await synthesize(script, standardVoice);
 
         // Directly find one script and update it with the new gridFsFileId
@@ -136,8 +135,23 @@ async function synthesize(script, voiceOption) {
   const endpoint = `https://texttospeech.googleapis.com/v1beta1/text:synthesize?key=${apikey}`;
   const uploadEndpoint = "http://localhost:5001/upload";
 
-  const payload = {...voiceOption}; //getting passed in the voice type that the user sets
-  voiceOption.input.text = script; //setting the script text for the API 
+  const payload = 
+  {
+    audioConfig: {
+      audioEncoding: "MP3",
+      effectsProfileId: ["small-bluetooth-speaker-class-device"],
+      pitch: 0,
+      speakingRate: 1,
+    },
+    input: {
+      text: script.script, //Assuming script will be updated when synthesize is called 
+    },
+    voice: {
+      // languageCode: "en-US",
+      // name: "en-US-Wavenet-J",
+      ...voiceOption.voice
+    },
+  }
 
   try {
     // Post request to synthesize text
