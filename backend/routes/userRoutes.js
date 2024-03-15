@@ -28,15 +28,4 @@ app.post("/addUser", async (req, res) => {
   }
 });
 
-app.get("/getVoiceTypes", async (req,res)=>{
-  try{
-    const voiceTypes = await usersModel.find({
-      
-    });
-  }
-  catch(e){
-    res.status(400).send("Cannot get voice types from db")
-  }
-})
-
 module.exports = app;

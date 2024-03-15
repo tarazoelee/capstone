@@ -3,6 +3,7 @@ const app = express();
 
 const usersModel = require("../models/Users");
 const podcastsModel = require("../models/Podcasts");
+const voiceTypes = require("../models/VoiceTypes");
 
 //ADD USER PREFERENCES
 app.post("/postPrefs", async (req, res) => {
@@ -134,6 +135,18 @@ app.post("/updatePreferences", async (req, resp) => {
     resp.status(500).send("Server error");
   }
 });
+
+/**----GETTING VOICE TYPES----- */
+app.get("/getVoiceTypes", async (req,res)=>{
+  try{
+    const voices = await voiceTypes.find();
+    res.send(voices);
+  }
+  catch(e){
+    res.status(400).send("Cannot get voice types from db")
+  }
+})
+
 
 /*
 //BACKEND TO GET USER PODCASTS
