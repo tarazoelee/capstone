@@ -4,7 +4,6 @@ const mongoose = require("mongoose");
 const Grid = require("gridfs-stream");
 const multer = require("multer");
 const { Readable } = require("stream");
-const File = require("./models/Image");
 
 const app = express();
 
@@ -14,8 +13,9 @@ const topicRoutes = require("./routes/topicRoutes");
 const prefRoutes = require("./routes/preferencesRoutes");
 const scraperRoutes = require("./routes/scraperRoutes");
 const chatbotRoutes = require("./routes/chatbotRoutes");
+const scriptRoutes = require("./routes/scriptRoutes");
+
 const { sendContactEmail } = require("./contactFormHandler");
-const scriptRoutes = require('./routes/scriptRoutes')
 
 // Middlewares
 app.use(express.json());
@@ -52,14 +52,15 @@ connection.on("open", () => {
 
   app.post("/upload", upload.single("file"), async (req, res) => {
     let { file } = req;
+    // console.log(file);
 
-    let { fieldname, originalname, mimetype, buffer } = file;
+    let { fieldname, originalname, mimetype, buffer, encoding } = file;
 
-    let newFile = new File({
-      filename: file.originalname,
-      contentType: file.mimetype,
-      length: buffer.length,
-    });
+    // let newFile = new File({
+    //   filename: file.originalname,
+    //   contentType: file.mimetype,
+    //   length: buffer.length,
+    // });
 
     try {
       let uploadStream = bucket.openUploadStream(fieldname, {
@@ -79,13 +80,17 @@ connection.on("open", () => {
           .on("error", reject("error occured while creating stream"));
       });
 
-      newFile.id = uploadStream.id;
-      let savedFile = await newFile.save();
-      if (!savedFile) {
-        return res.status(404).send("error occured while saving our work");
-      }
+      //newFile.id = uploadStream.id;
+      //let savedFile = await newFile.save();
+      // if (!savedFile) {
+      //   return res.status(404).send("error occured while saving our work");
+      // }
       return res.send({
-        file: savedFile,
+        fileId: uploadStream.id, // This is the _id in the fs.files collection
+        fieldname: file.fieldname,
+        originalname: file.originalname,
+        mimetype: file.mimetype,
+
         message: "file uploaded successfully",
       });
     } catch (err) {

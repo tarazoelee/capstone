@@ -13,6 +13,7 @@ export default function Dashboard() {
   const [error, setError] = useState("");
   const [newsContent, setNewsContent] = useState("");
   const [podcastScript, setPodcastScript] = useState("");
+  const [podcastRefID, setPodcastRefID] = useState("");
   const { currentUser, logout } = useAuth();
   const nav = useNavigate();
   const [isDropdownVisible, setDropdownVisible] = useState(false);
@@ -35,10 +36,44 @@ export default function Dashboard() {
         );
         if (userScript.length > 0) {
           setPodcastScript(userScript[0].script);
+          setPodcastRefID(userScript[0].refID);
         } else {
           setPodcastScript("No byte today... :(");
         }
       });
+  }
+
+  async function getPodcast() {
+    try {
+      const response = await fetch(
+        `http://localhost:5001/image/${podcastRefID}`
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.blob();
+      downloadBlob(data, "downloadedAudio.mp3");
+    } catch (error) {
+      console.error(
+        "There has been a problem with your fetch operation:",
+        error
+      );
+    }
+  }
+
+  function downloadBlob(blob, filename) {
+    // Create a URL for the blob
+    const url = window.URL.createObjectURL(blob);
+    // Create a new anchor element
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename || "file.mp3";
+    // Append anchor to body
+    document.body.appendChild(a);
+    a.click();
+    // Remove anchor from body
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
   }
 
   async function handleLogout() {
@@ -121,6 +156,13 @@ export default function Dashboard() {
           <div className="px-28 py-20 bg-orange-50 text-gray-900 rounded-md shadow-lg">
             {podcastScript}
           </div>
+          <button
+            type="submit"
+            onClick={getPodcast}
+            className="px-6 py-3 bg-orange-600 text-white font-bold rounded-md hover:bg-orange-700 transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50 shadow-lg"
+          >
+            Get Your Personal Byte for Today!
+          </button>
         </div>
 
         <div className="flex flex-col justify-center w-7/12 mb-44 gap-7 self-center">
