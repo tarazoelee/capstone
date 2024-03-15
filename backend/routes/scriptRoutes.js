@@ -21,7 +21,82 @@ const voiceTypes ={
     },
     voice: {
       languageCode: "en-US",
-      name: "en-US-Wavenet-D",
+      name: "en-US-Wavenet-J",
+    },
+  },
+  standardFemaleUS: {
+    audioConfig: {
+      audioEncoding: "MP3",
+      effectsProfileId: ["small-bluetooth-speaker-class-device"],
+      pitch: 0,
+      speakingRate: 1,
+    },
+    input: {
+      text: "Script goes here", //Assuming script will be updated when synthesize is called 
+    },
+    voice: {
+      languageCode: "en-US",
+      name: "en-US-Wavenet-F",
+    },
+  },
+  standardMaleAUS: {
+    audioConfig: {
+      audioEncoding: "MP3",
+      effectsProfileId: ["small-bluetooth-speaker-class-device"],
+      pitch: 0,
+      speakingRate: 1,
+    },
+    input: {
+      text: "Script goes here", //Assuming script will be updated when synthesize is called 
+    },
+    voice: {
+      "languageCode": "en-AU",
+      "name": "en-AU-Wavenet-B"
+    },
+  },
+  standardFemaleAUS: {
+    audioConfig: {
+      audioEncoding: "MP3",
+      effectsProfileId: ["small-bluetooth-speaker-class-device"],
+      pitch: 0,
+      speakingRate: 1,
+    },
+    input: {
+      text: "Script goes here", //Assuming script will be updated when synthesize is called 
+    },
+    voice: {
+      "languageCode": "en-AU",
+      "name": "en-AU-Wavenet-C"
+    },
+  },
+  standardMaleGB: {
+    audioConfig: {
+      audioEncoding: "MP3",
+      effectsProfileId: ["small-bluetooth-speaker-class-device"],
+      pitch: 0,
+      speakingRate: 1,
+    },
+    input: {
+      text: "Script goes here", //Assuming script will be updated when synthesize is called 
+    },
+    voice: {
+      "languageCode": "en-GB",
+      "name": "en-GB-Wavenet-B"
+    },
+  },
+  standardFemaleGB: {
+    audioConfig: {
+      audioEncoding: "MP3",
+      effectsProfileId: ["small-bluetooth-speaker-class-device"],
+      pitch: 0,
+      speakingRate: 1,
+    },
+    input: {
+      text: "Script goes here", //Assuming script will be updated when synthesize is called 
+    },
+    voice: {
+      "languageCode": "en-GB",
+      "name": "en-GB-Wavenet-A"
     },
   },
 
