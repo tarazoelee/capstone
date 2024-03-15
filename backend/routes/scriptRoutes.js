@@ -5,6 +5,7 @@ const FormData = require("form-data");
 const scriptsModel = require("../models/PodcastScripts");
 const fs = require("fs");
 const path = require("path");
+const usersModel = require("../models/Users")
 
 const todaysDate = new Date().toISOString().split("T")[0];
 
@@ -73,6 +74,11 @@ app.get("/", async (req, res) => {
   }
 });
 
+async function getUserVoice(u){
+  const user = await usersModel.find({ email: u});
+  return user[0].voice;
+}
+
 //------GETTING TODAY'S SCRIPTS AND CREATING PODCASTS--------
 app.get("/todaysPodcasts", async (req, res) => {
   try {
@@ -82,8 +88,11 @@ app.get("/todaysPodcasts", async (req, res) => {
     // Iterate over each script and convert it to audio, then update the document with the gridFsFileId
     for (const script of scripts) {
       try {
-        const standardVoice = voiceTypes.standardFemaleAUS;
-        const reference = await synthesize(script, standardVoice);
+        //const standardVoice = voiceTypes.standardFemaleAUS;
+        const user = script.users[0]; //get the first user since they all have the same voice 
+        const voice = await getUserVoice(user);
+        console.log("voice "+voice)
+        const reference = await synthesize(script, voice);
 
         // Directly find one script and update it with the new gridFsFileId
         const updatedScript = await scriptsModel.findOneAndUpdate(
@@ -135,6 +144,9 @@ async function synthesize(script, voiceOption) {
   const endpoint = `https://texttospeech.googleapis.com/v1beta1/text:synthesize?key=${apikey}`;
   const uploadEndpoint = "http://localhost:5001/upload";
 
+  const selectedVoice = voiceTypes[voiceOption]
+  console.log("voice"+ selectedVoice)
+
   const payload = 
   {
     audioConfig: {
@@ -149,7 +161,7 @@ async function synthesize(script, voiceOption) {
     voice: {
       // languageCode: "en-US",
       // name: "en-US-Wavenet-J",
-      ...voiceOption.voice
+      ...selectedVoice.voice
     },
   }
 
