@@ -130,13 +130,17 @@ function CreateProfile() {
     else if (length.length <= 0) {
       setOpenModal(true);
       setModalText('Select a podcast length.');
-    } else {
+    }
+  else if(!selectedVoice){
+      setOpenModal(true);
+      setModalText('Select a voice.');
+    }
+    else {
       postPrefs();
     }
   }
 
   async function postPrefs() {
-   console.log("posting here");
     await fetch(`${baseURL}/pref/postPrefs`, {
       method: "post",
       body: JSON.stringify({
@@ -145,6 +149,7 @@ function CreateProfile() {
         topic3: selectedTopics[2],
         email: currentUser.email,
         length: length,
+        voice: selectedVoice,
       }),
       headers: {
         "Content-Type": "application/json",

@@ -15,12 +15,14 @@ app.post("/postPrefs", async (req, res) => {
 
     const length = String(req.body.length);
     const email = String(req.body.email);
+    const voice = String(req.body.voice);
 
     const query = { email: email };
     const update = {
       $set: {
         topics: topics,
         length: length,
+        voice: voice,
       },
     };
 
