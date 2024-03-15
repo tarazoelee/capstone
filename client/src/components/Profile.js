@@ -133,7 +133,7 @@ function getMonthName(monthNumber) {
     setSelectedLength(lengthValue);
   };
 
-  const voiceClick = (voice) => {
+  const handleVoiceClick = (voice) => {
     console.log(voice)
     setSelectedLength(voice);
   };
@@ -257,11 +257,11 @@ function getMonthName(monthNumber) {
             {voiceTypes.map((type, index)=>(
               <div 
                 key={index}
-                className={`${selectedVoice === type.voicetypes
+                className={`${selectedVoice == type.voicetypes
                       ? "bg-orange-300"
                       : "bg-orange-100"
-                    } w-32 px-6 py-2 text-center text-xs rounded-med rounded cursor-pointer hover:bg-orange-200 ease-linear transition duration-100`}
-              onClick={() => handleTopicClick(type.voicetypes)}
+                    } w-40 px-6 py-4 text-center text-xs rounded-med rounded cursor-pointer hover:bg-orange-200 ease-linear transition duration-100`}
+                onClick={() => handleVoiceClick(type.voicetypes)}
               >
                 {type.voicetypes}
               </div>
