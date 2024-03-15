@@ -9,10 +9,13 @@ function CreateProfile() {
   const nav = useNavigate();
   const [topics, setTopics] = useState([]);
   const [selectedTopics, setSelectedTopics] = useState([]);
+  const [selectedVoice, setSelectedVoice] = useState("");
   const {currentUser, logout } = useAuth();
   const [length, setLength] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [modalText, setModalText] = useState('');
+  const [voiceTypes, setVoiceTypes] = useState([]);
+  
 
 
   const style = {
@@ -41,6 +44,7 @@ function CreateProfile() {
   /**GETTING TOPICS ON FIRST LOAD */
   useEffect(() => {
     getTopics();
+    getVoiceTypes();
   }, []);
 
   /**GETTING ALL TOPICS FROM THE TOPICS COLLECTION */
@@ -51,6 +55,21 @@ function CreateProfile() {
         setTopics(data);
       });
   }
+
+  async function getVoiceTypes(){
+     await fetch(`${baseURL}/pref/getVoiceTypes`)
+      .then((res) => res.json())
+      .then((data) => {
+        setVoiceTypes(data);
+        console.log(voiceTypes)
+      });
+  
+  }
+
+    const handleVoiceClick = (voice) => {
+      console.log(voice)
+      setSelectedVoice(voice);
+    };
 
   //---TOPIC IS SELECTED-----
   async function selectTopic(topic) {
@@ -206,6 +225,27 @@ function CreateProfile() {
           </div>
         </div>
       </div>
+
+      <div className="flex gap-10 justify-center items-center flex-col mt-14 w-1/2">
+          <div className="font-bold text-xl text-orange-900">Voice Types</div>
+           <div className="flex gap-10 flex-wrap justify-center">
+            {voiceTypes.map((type, index)=>(
+              <div 
+                key={index}
+                className={`${selectedVoice == type.voicetypes
+                      ? "bg-orange-300"
+                      : "bg-orange-100"
+                    } w-40 px-6 py-4 text-center text-xs rounded-med rounded cursor-pointer hover:bg-orange-200 ease-linear transition duration-100`}
+                onClick={() => handleVoiceClick(type.voicetypes)}
+              >
+                {type.voicetypes}
+              </div>
+            ))
+
+            }
+          </div>
+        </div>
+
       <div>
         <button
          onClick={submitPrefs}
