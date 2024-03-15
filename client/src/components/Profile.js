@@ -135,7 +135,7 @@ function getMonthName(monthNumber) {
 
   const handleVoiceClick = (voice) => {
     console.log(voice)
-    setSelectedLength(voice);
+    setSelectedVoice(voice);
   };
 
   const handleTopicClick = (topicName) => {
@@ -254,6 +254,7 @@ function getMonthName(monthNumber) {
 
         <div className="flex gap-10 justify-center items-center flex-col mt-14">
           <div className="font-bold text-base">Voice Types</div>
+           <div className="flex gap-10 flex-wrap justify-center">
             {voiceTypes.map((type, index)=>(
               <div 
                 key={index}
@@ -268,6 +269,7 @@ function getMonthName(monthNumber) {
             ))
 
             }
+          </div>
         </div>
 
         <div className="">
