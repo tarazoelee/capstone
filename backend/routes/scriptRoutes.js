@@ -194,7 +194,7 @@ async function synthesize(script, voiceOption) {
       headers: {
         ...formData.getHeaders(),
       },
-    });
+    }); 
 
     //console.log(uploadResponse.data.fileId);
     const refID = uploadResponse.data.fileId; // Assuming the response structure includes {data: { fileId: "someId" }}
