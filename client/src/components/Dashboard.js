@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Footer from "./Footer";
@@ -21,6 +21,7 @@ export default function Dashboard() {
   const year = today.getFullYear();
   const month = today.getMonth() + 1;
   const day = today.getDate();
+  const audioRef = useRef(null); // Create a ref for the audio element
 
   /**GETTING SCRIPTS ON FIRST LOAD */
   useEffect(() => {
@@ -44,6 +45,8 @@ export default function Dashboard() {
   }
 
   async function getPodcast() {
+    if (!podcastRefID) return; // Exit if there is no podcastRefID
+
     try {
       const response = await fetch(
         `http://localhost:5001/image/${podcastRefID}`
@@ -51,8 +54,12 @@ export default function Dashboard() {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      const data = await response.blob();
-      downloadBlob(data, "downloadedAudio.mp3");
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      if (audioRef.current) {
+        audioRef.current.src = url;
+        audioRef.current.load();
+      }
     } catch (error) {
       console.error(
         "There has been a problem with your fetch operation:",
@@ -60,6 +67,11 @@ export default function Dashboard() {
       );
     }
   }
+
+  // Call getPodcast when the component mounts or podcastRefID changes
+  useEffect(() => {
+    getPodcast();
+  }, [podcastRefID]);
 
   function downloadBlob(blob, filename) {
     // Create a URL for the blob
@@ -163,6 +175,11 @@ export default function Dashboard() {
           >
             Get Your Personal Byte for Today!
           </button>
+        </div>
+        <div className="audio-player-container">
+          <audio controls ref={audioRef}>
+            Your browser does not support the audio element.
+          </audio>
         </div>
 
         <div className="flex flex-col justify-center w-7/12 mb-44 gap-7 self-center">
