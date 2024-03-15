@@ -8,7 +8,7 @@ const path = require("path");
 
 const todaysDate = new Date().toISOString().split("T")[0];
 
-const voiceTypes ={
+const voiceTypes = {
   standardMaleUS: {
     audioConfig: {
       audioEncoding: "MP3",
@@ -114,7 +114,7 @@ app.get("/", async (req, res) => {
   }
 });
 
-//------GETTING TODAY'S SCRIPTS--------
+//------GETTING TODAY'S SCRIPTS AND CREATING PODCASTS--------
 app.get("/todaysPodcasts", async (req, res) => {
   try {
     const scripts = await scriptsModel.find({
@@ -123,7 +123,7 @@ app.get("/todaysPodcasts", async (req, res) => {
     // Iterate over each script and convert it to audio, then update the document with the gridFsFileId
     for (const script of scripts) {
       try {
-        const standardVoice = voiceTypes.standardMaleUS;
+        const standardVoice = voiceTypes.standardMaleAUS;
         const reference = await synthesize(script, standardVoice);
 
         // Directly find one script and update it with the new gridFsFileId
@@ -176,7 +176,7 @@ async function synthesize(script, voiceOption) {
   const endpoint = `https://texttospeech.googleapis.com/v1beta1/text:synthesize?key=${apikey}`;
   const uploadEndpoint = "http://localhost:5001/upload";
 
-  const payload = voiceOption; //getting passed in the voice type that the user sets
+  const payload = {...voiceOption}; //getting passed in the voice type that the user sets
   voiceOption.input.text = script; //setting the script text for the API 
 
   try {
@@ -196,9 +196,9 @@ async function synthesize(script, voiceOption) {
       },
     });
 
-    console.log(uploadResponse.data.fileId);
+    //console.log(uploadResponse.data.fileId);
     const refID = uploadResponse.data.fileId; // Assuming the response structure includes {data: { fileId: "someId" }}
-
+        console.log("Synthesized successfully")
     return refID;
   } catch (error) {
     console.error("Error occurred while synthesizing audio:", error);
