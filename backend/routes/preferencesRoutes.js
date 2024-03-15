@@ -3,6 +3,7 @@ const app = express();
 
 const usersModel = require("../models/Users");
 const podcastsModel = require("../models/Podcasts");
+const voiceTypes = require("../models/VoiceTypes");
 
 //ADD USER PREFERENCES
 app.post("/postPrefs", async (req, res) => {
@@ -106,10 +107,9 @@ app.get("/getUserLengthAndPreferences", async (req, res) => {
 
 //UPDATE USER PREFERENCES
 app.post("/updatePreferences", async (req, resp) => {
-  const { email, topic1, topic2, topic3, length } = req.body;
-  console.log(req.body);
+  const { email, topic1, topic2, topic3, length, voice} = req.body;
 
-  if (!email || !topic1 || !topic2 || !topic3 || !length) {
+  if (!email || !topic1 || !topic2 || !topic3 || !length || !voice) {
     return resp.status(400).send("All fields are required.");
   }
 
@@ -125,6 +125,7 @@ app.post("/updatePreferences", async (req, resp) => {
 
     user.topics = topicsArray;
     user.length = length;
+    user.voice = voice;
 
     await user.save();
 
@@ -134,6 +135,18 @@ app.post("/updatePreferences", async (req, resp) => {
     resp.status(500).send("Server error");
   }
 });
+
+/**----GETTING VOICE TYPES----- */
+app.get("/getVoiceTypes", async (req,res)=>{
+  try{
+    const voices = await voiceTypes.find();
+    res.send(voices);
+  }
+  catch(e){
+    res.status(400).send("Cannot get voice types from db")
+  }
+})
+
 
 /*
 //BACKEND TO GET USER PODCASTS

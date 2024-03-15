@@ -12,11 +12,13 @@ function Profile() {
   const [topics, setTopics] = useState([]);
   const [userTopics, setUserTopics] = useState([]);
   const [selectedLength, setSelectedLength] = useState("");
+  const [selectedVoice, setSelectedVoice] = useState("");
   const { currentUser } = useAuth();
   const [openModal, setOpenModal] = useState(false);
   const [modalText, setModalText] = useState('');
   const [accountYear, setAccountYear] = useState('');
   const [accountMonth, setAccountMonth] = useState('');
+  const [voiceTypes, setVoiceTypes] = useState([]);
   const monthNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   const monthNames = [
     "January", "February", "March", "April", "May", "June",
@@ -55,6 +57,7 @@ function getMonthName(monthNumber) {
     getTopics();
     getUserLengthandPrefs();
     getUserCreationDate();
+    getVoiceTypes();
   }, []);
 
   /**GETTING ALL TOPICS FROM THE TOPICS COLLECTION */
@@ -64,6 +67,16 @@ function getMonthName(monthNumber) {
       .then((data) => {
         setTopics(data);
       });
+  }
+
+  async function getVoiceTypes(){
+     await fetch(`${baseURL}/pref/getVoiceTypes`)
+      .then((res) => res.json())
+      .then((data) => {
+        setVoiceTypes(data);
+        console.log(voiceTypes)
+      });
+  
   }
 
   /**GETTING USERS SELECTED LENGTH*/
@@ -120,6 +133,11 @@ function getMonthName(monthNumber) {
     setSelectedLength(lengthValue);
   };
 
+  const handleVoiceClick = (voice) => {
+    console.log(voice)
+    setSelectedVoice(voice);
+  };
+
   const handleTopicClick = (topicName) => {
     setUserTopics((prevTopics) => {
       if (prevTopics.includes(topicName)) {
@@ -153,6 +171,7 @@ function getMonthName(monthNumber) {
             topic2: userTopics[1],
             topic3: userTopics[2],
             length: selectedLength,
+            voice: selectedVoice,
           }),
           headers: {
             "Content-Type": "application/json",
@@ -231,6 +250,26 @@ function getMonthName(monthNumber) {
                 </div>
               )
             )}
+          </div>
+        </div>
+
+        <div className="flex gap-10 justify-center items-center flex-col mt-14">
+          <div className="font-bold text-base">Voice Types</div>
+           <div className="flex gap-10 flex-wrap justify-center">
+            {voiceTypes.map((type, index)=>(
+              <div 
+                key={index}
+                className={`${selectedVoice == type.voicetypes
+                      ? "bg-orange-300"
+                      : "bg-orange-100"
+                    } w-40 px-6 py-4 text-center text-xs rounded-med rounded cursor-pointer hover:bg-orange-200 ease-linear transition duration-100`}
+                onClick={() => handleVoiceClick(type.voicetypes)}
+              >
+                {type.voicetypes}
+              </div>
+            ))
+
+            }
           </div>
         </div>
 

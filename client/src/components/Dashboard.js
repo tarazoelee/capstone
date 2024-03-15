@@ -11,21 +11,21 @@ import Typewriter from "typewriter-effect";
 
 export default function Dashboard() {
   const [error, setError] = useState("");
-  const [newsContent, setNewsContent] = useState("");
+  // const [newsContent, setNewsContent] = useState("");
   const [podcastScript, setPodcastScript] = useState("");
   const [podcastRefID, setPodcastRefID] = useState("");
   const { currentUser, logout } = useAuth();
-  const nav = useNavigate();
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth() + 1;
-  const day = today.getDate();
+  const nav = useNavigate();
+  // const year = today.getFullYear();
+  // const month = today.getMonth() + 1;
+  // const day = today.getDate();
   const audioRef = useRef(null); // Create a ref for the audio element
-
   /**GETTING SCRIPTS ON FIRST LOAD */
   useEffect(() => {
     getTodaysScript();
+
   }, []);
 
   async function getTodaysScript() {
