@@ -4,6 +4,7 @@ const app = express();
 const usersModel = require("../models/Users");
 const podcastsModel = require("../models/Podcasts");
 const voiceTypes = require("../models/VoiceTypes");
+const Users = require("../models/Users");
 
 //ADD USER PREFERENCES
 app.post("/postPrefs", async (req, res) => {
@@ -15,12 +16,14 @@ app.post("/postPrefs", async (req, res) => {
 
     const length = String(req.body.length);
     const email = String(req.body.email);
+    const voice = String(req.body.voice);
 
     const query = { email: email };
     const update = {
       $set: {
         topics: topics,
         length: length,
+        voice: voice,
       },
     };
 
@@ -82,7 +85,7 @@ app.get("/getUserLengthAndPreferences", async (req, res) => {
 
     const user = await usersModel.findOne(
       { email: userEmail },
-      "length topics"
+      "length topics voice"
     );
 
     if (!user) {
@@ -93,12 +96,14 @@ app.get("/getUserLengthAndPreferences", async (req, res) => {
     const topic1 = user.topics[0];
     const topic2 = user.topics[1];
     const topic3 = user.topics[2];
+    const voice = user.voice;
 
     res.json({
       length: length,
       topic1: topic1,
       topic2: topic2,
       topic3: topic3,
+      voice: voice,
     });
   } catch (error) {
     res.status(500).send("Server error");

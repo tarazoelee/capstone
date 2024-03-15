@@ -101,6 +101,7 @@ function getMonthName(monthNumber) {
 
       setSelectedLength(data.length); // Assuming the length is determined by the number of topics
       setUserTopics(topics);
+      setSelectedVoice(data.voice);
       });
   }
 
@@ -177,7 +178,10 @@ function getMonthName(monthNumber) {
             "Content-Type": "application/json",
           },
         });
-      }}
+      }
+      setOpenModal(true);
+      setModalText('User preferences updates.')
+    }
       catch(e){
         setOpenModal(true);
         setModalText('Unable to update user preferences')
