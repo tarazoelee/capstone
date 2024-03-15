@@ -31,13 +31,14 @@ async function getTopicCombinations() {
 
   users.forEach((user) => {
     const sortedTopics = [...new Set(user.topics)].sort();
-    const key = `${sortedTopics.join("|")}|${user.length}`;
+    const key = `${sortedTopics.join("|")}|${user.length}|${user.voice}`;
 
     if (!combinations.has(key)) {
       combinations.set(key, {
         topics: sortedTopics,
         length: user.length,
         users: [user.email],
+        voice:user.voice
       });
     } else {
       combinations.get(key).users.push(user.email);
