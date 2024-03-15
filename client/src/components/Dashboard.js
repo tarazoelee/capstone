@@ -150,14 +150,14 @@ export default function Dashboard() {
         </div>
         <div className="flex flex-col justify-center w-7/12 mb-44 mt-24 gap-7 self-center">
           <div className="font-bold text-3xl text-orange-900">Today's Byte</div>
-          <div className="px-28 py-20 bg-orange-50 text-gray-900 rounded-md shadow-lg">
-            {podcastScript}
+          <div className="px-28 py-14 bg-orange-50 text-gray-900 rounded-md shadow-lg flex flex-col gap-6 align-middle">
+            <div className="">
+              <audio controls ref={audioRef}>
+                Your browser does not support the audio element.
+              </audio>
+            </div>
+            <div>{podcastScript} </div>
           </div>
-        </div>
-        <div className="audio-player-container">
-          <audio controls ref={audioRef}>
-            Your browser does not support the audio element.
-          </audio>
         </div>
 
         <div className="flex flex-col justify-center w-7/12 mb-44 gap-7 self-center">
