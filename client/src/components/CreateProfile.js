@@ -158,7 +158,7 @@ function CreateProfile() {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-full gap-12 py-24 font-display">
+    <div className="flex flex-col justify-center items-center min-h-full gap-8 py-24 font-display text-orange-900 ">
       <Modal 
         open={openModal} 
         onClose={handleCloseModal} 
@@ -180,7 +180,7 @@ function CreateProfile() {
           What Topics Interest You?
         </div>
         <div className="italic">Select up to 3</div>
-        <div className="flex gap-10 flex-wrap items-center justify-center text-gray-700">
+        <div className="flex gap-10 flex-wrap items-center justify-center mt-4 font-semibold">
           {topics.map((t) => (
             <div
               id={t.topic}
@@ -197,7 +197,7 @@ function CreateProfile() {
         <div className="font-bold text-xl my-10 text-orange-900">
           How long do you want your daily updates?
         </div>
-        <div className="flex gap-10 flex-wrap items-center justify-center text-gray-700">
+        <div className="flex gap-10 flex-wrap items-center justify-center font-semibold ">
           <div
             className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded hover:bg-orange-200 cursor-pointer ease-linear transition duration-100"
             id="2 min"
@@ -233,7 +233,7 @@ function CreateProfile() {
 
       <div className="flex gap-10 justify-center items-center flex-col mt-14 w-1/2">
           <div className="font-bold text-xl text-orange-900">Voice Types</div>
-           <div className="flex gap-10 flex-wrap justify-center">
+           <div className="flex gap-10 flex-wrap justify-center font-semibold ">
             {voiceTypes.map((type, index)=>(
               <div 
                 key={index}

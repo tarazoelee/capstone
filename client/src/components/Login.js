@@ -87,7 +87,7 @@ export default function Login() {
             placeholder="Email"
             name="username"
             ref={emailRef}
-            onKeyPress={handleKeyPress}
+            onKeyDown={handleKeyPress}
             required
           />
           <input
@@ -96,7 +96,7 @@ export default function Login() {
             placeholder="Password"
             name="password"
             ref={passwordRef}
-            onKeyPress={handleKeyPress}
+            onKeyDown={handleKeyPress}
             required
           />{" "}
           <button

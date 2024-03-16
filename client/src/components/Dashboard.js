@@ -103,7 +103,7 @@ export default function Dashboard() {
       <div className="flex h-full flex-col">
         <div className="bg-orange-950 py-24 px-72 shadow-lgflex-col">
           <div
-            className="font-bold flex-col h-20 text-sm text-orange-200 mb-8 flex float-right w-20"
+            className="font-semibold flex-col h-20 text-sm text-orange-200 mb-8 flex float-right w-20"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >

@@ -190,7 +190,7 @@ function getMonthName(monthNumber) {
   }
 
   return (
-    <div className="flex flex-col min-h-screen font-display text-yellow-900 ">
+    <div className="flex flex-col min-h-screen font-display text-yellow-900">
       <Modal 
         open={openModal} 
         onClose={handleCloseModal} 
@@ -199,35 +199,35 @@ function getMonthName(monthNumber) {
             <p>{modalText}</p> 
           </Box>
         </Modal>
-      <div className="font-bold flex justify-end px-72 pt-24 hover:text-yellow-700 ease-linear transition duration-100">
+      <div className="weight flex justify-end px-72 pt-24 font-semibold hover:text-yellow-700 ease-linear transition duration-100">
         <button onClick={navDash}>Dashboard</button>
       </div>
-      <div className="flex flex-col gap-12 self-center items-center my-20 py-12 w-2/3">
-        <div className="flex gap-10 text-yellow-900 font-bold ">
-          <div className="font-bold text-base">User since {accountMonth} {accountYear} </div>
+      <div className="flex flex-col gap-12 self-center items-center mt-20 mb-28 px-40">
+        <div className="flex gap-10 ">
+          <div className="text-lg">User since {accountMonth} {accountYear} </div>
         </div>
 
         <div className="flex gap-10 items-center">
-          <div className="font-bold text-base">Account Email</div>
+          <div className="text-base">Account Email</div>
           <div className="bg-gray-100 rounded-md px-28 py-2 text-xs">
             {currentUser.email}
           </div>
         </div>
 
         <div className="flex gap-10 justify-center items-center flex-wrap mt-10 px-28">
-          <div className="font-bold text-base">Your Interests</div>
-          <div className="flex gap-10 flex-wrap justify-center items-center">
+          <div className="text-lg">Your Interests</div>
+          <div className="flex gap-10 flex-wrap justify-center items-center font-semibold">
             {topics.map((topicObj, index) => {
               const topicName = topicObj.topic;
 
               const topicClass = isUserTopic(topicName)
-                ? "bg-orange-300 cursor-pointer" // Darker shade for user's topic
-                : "bg-orange-100 cursor-pointer"; // Lighter shade for other topics
+                ? "bg-amber-700 text-white hover:text-white hover:bg-amber-700 " // Darker shade for user's topic
+                : "bg-orange-100"; // Lighter shade for other topics
 
               return (
                 <div
                   key={index}
-                  className={`${topicClass} w-32 px-6 py-2 align-middle text-center text-xs rounded-med rounded hover:bg-orange-200 ease-linear transition duration-100`}
+                  className={`${topicClass} w-32 px-6 py-2 align-middle text-center cursor-pointer text-xs rounded-med rounded hover:bg-orange-200 hover:text-yellow-900 ease-linear transition duration-100`}
                   onClick={() => handleTopicClick(topicName)}
                 >
                   {topicName}
@@ -238,16 +238,16 @@ function getMonthName(monthNumber) {
         </div>
 
         <div className="flex gap-10 justify-center items-center flex-col mt-14">
-          <div className="font-bold text-base">Podcast Length</div>
-          <div className="flex gap-10 flex-wrap justify-center">
+          <div className="text-lg">Podcast Length</div>
+          <div className="flex gap-10 flex-wrap justify-center font-semibold">
             {["2 min", "5 min", "10 min", "20 min"].map(
               (lengthValue, index) => (
                 <div
                   key={index}
                   className={`${selectedLength === lengthValue
-                      ? "bg-orange-300"
+                      ? "bg-amber-700 text-white hover:text-white hover:bg-amber-700"
                       : "bg-orange-100"
-                    } w-32 px-6 py-2 text-center text-xs rounded-med rounded cursor-pointer hover:bg-orange-200 ease-linear transition duration-100`}
+                    } w-32 px-6 py-2 text-center text-xs rounded-med rounded cursor-pointer hover:bg-orange-200 hover:text-yellow-900 ease-linear transition duration-100`}
                   onClick={() => handleLengthClick(lengthValue)}
                 >
                   {lengthValue}
@@ -258,15 +258,15 @@ function getMonthName(monthNumber) {
         </div>
 
         <div className="flex gap-10 justify-center items-center flex-col mt-14">
-          <div className="font-bold text-base">Voice Types</div>
-           <div className="flex gap-10 flex-wrap justify-center">
+          <div className="text-lg">Voice Types</div>
+           <div className="flex gap-10 flex-wrap justify-center font-semibold">
             {voiceTypes.map((type, index)=>(
               <div 
                 key={index}
                 className={`${selectedVoice == type.voicetypes
-                      ? "bg-orange-300"
+                      ? "bg-amber-700 text-white hover:text-white hover:bg-amber-700 "
                       : "bg-orange-100"
-                    } w-40 px-6 py-4 text-center text-xs rounded-med rounded cursor-pointer hover:bg-orange-200 ease-linear transition duration-100`}
+                    } w-40 px-6 py-4 text-center text-xs rounded-med rounded cursor-pointer hover:bg-orange-200 hover:text-yellow-900 ease-linear transition duration-100`}
                 onClick={() => handleVoiceClick(type.voicetypes)}
               >
                 {type.voicetypes}
@@ -280,7 +280,7 @@ function getMonthName(monthNumber) {
         <div className="">
           <button
             onClick={saveChanges}
-            className="bg-orange-900 text-gray-100 mt-10 px-10 py-2 rounded-md hover:bg-yellow-700 ease-linear transition duration-100"
+            className="bg-orange-900 text-gray-100 mt-10 px-10 py-2 rounded-md hover:bg-amber-700 ease-linear transition duration-100 font-bold"
           >
             Save
           </button>
