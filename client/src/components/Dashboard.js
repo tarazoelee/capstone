@@ -58,17 +58,17 @@ export default function Dashboard() {
       if (data && data.length > 0) {
         // Directly use the fetched data to set modal content and open modal
         const script = data[0].script;
-        const refID = data[0].refID;
+        const oldRefID = data[0].refID;
         setModalContent(
           <>
             <h2>Podcast Preview for {formattedDate}</h2>
             <p>{script}</p>
-            {/* Optional: If you decide to add the audio player
-            {refID && (
-              <audio controls src={`${baseURL}/image/${refID}`}>
+            Optional: If you decide to add the audio player
+            {oldRefID && (
+              <audio controls src={`${baseURL}/image/${oldRefID}`}>
                 Your browser does not support the audio element.
               </audio>
-            )} */}
+            )}
           </>
         );
         setOpenModal(true);
@@ -274,7 +274,6 @@ export default function Dashboard() {
           aria-describedby="modal-description"
         >
           <Box sx={modalStyle}>
-            <h2 id="modal-title">Podcast Preview</h2>
             <p id="modal-description">{modalContent}</p>
           </Box>
         </Modal>
