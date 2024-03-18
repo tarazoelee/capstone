@@ -237,4 +237,4 @@ async function putScrapedNewsIntoDB(
 //   }
 // }
 
-module.exports = app;
+module.exports = { app, scrapeURLs };

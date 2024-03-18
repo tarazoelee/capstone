@@ -136,6 +136,6 @@ app.post("/send-contact-email", async (req, res) => {
 app.use("/users", userRoutes);
 app.use("/topics", topicRoutes);
 app.use("/pref", prefRoutes);
-app.use("/scraper", scraperRoutes);
+// app.use("/scraper", scraperRoutes);
 app.use("/chat", chatbotRoutes);
 app.use("/scripts", scriptRoutes);
