@@ -36,6 +36,7 @@ export default function Dashboard() {
     background-color: rgb(17 24 39);
     border-radius: 3px;
     padding:30px;
+    height:600px;
 
     /* ~~~ navigation styles ~~~ */
   .react-calendar__navigation {
@@ -64,6 +65,7 @@ export default function Dashboard() {
       color: white;
       padding: 5px 10px;
       height:50px;
+      margin: 0.8rem 0px;
       
 
     &:hover {
@@ -71,9 +73,17 @@ export default function Dashboard() {
     }
 
     &:active {
-      background-color: #a5c1a5;
+      background-color: rgb(156 163 175);;
     }
   }
+
+    /* ~~~ neighboring month & weekend styles ~~~ */
+    .react-calendar__month-view__days__day--neighboringMonth {
+      opacity: 0.7;
+    }
+    .react-calendar__month-view__days__day--weekend {
+      color: #dfdfdf;
+    }
 `;
 
   const modalStyle = {
@@ -84,7 +94,8 @@ export default function Dashboard() {
     width: 800,
     bgcolor: "background.paper",
     boxShadow: 24,
-    p: 4,
+    py:6,
+    px:10
   };
 
   function formatDateToYYYYMMDD(date) {
@@ -105,10 +116,10 @@ export default function Dashboard() {
         const script = data[0].script;
         const oldRefID = data[0].refID;
         setModalContent(
-          <div className="w-50">
-            <h2>Podcast Preview for {formattedDate}</h2>
-            <p>{script}</p>
-            Optional: If you decide to add the audio player
+          <div>
+            <div className="font-bold text-black text-xl">{formattedDate}</div>
+            <p className="my-4">{script}</p>
+            {/* Optional: If you decide to add the audio player */}
             {oldRefID && (
               <audio controls src={`${baseURL}/image/${oldRefID}`}>
                 Your browser does not support the audio element.
