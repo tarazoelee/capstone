@@ -6,18 +6,20 @@ const multer = require("multer");
 const { Readable } = require("stream");
 
 const app = express();
+const cron = require("node-cron");
 
-// Import routes
-const userRoutes = require("./routes/userRoutes");
-const topicRoutes = require("./routes/topicRoutes");
-const prefRoutes = require("./routes/preferencesRoutes");
-const scraperRoutes = require("./routes/scraperRoutes");
-const chatbotRoutes = require("./routes/chatbotRoutes");
-const scriptRoutes = require("./routes/scriptRoutes");
+// import routes
+const { router: userRoutes } = require("./routes/userRoutes");
+const { router: topicRoutes } = require("./routes/topicRoutes");
+const { router: prefRoutes } = require("./routes/preferencesRoutes");
+const { router: scraperRoutes, scrapeURLs } = require("./routes/scraperRoutes");
+
+const { router: chatbotRoutes } = require("./routes/chatbotRoutes");
+const { router: scriptRoutes } = require("./routes/scriptRoutes");
 
 const { sendContactEmail } = require("./contactFormHandler");
 
-// Middlewares
+// middlewares
 app.use(express.json());
 app.use(cors());
 
@@ -52,7 +54,6 @@ connection.on("open", () => {
 
   app.post("/upload", upload.single("file"), async (req, res) => {
     let { file } = req;
-    // console.log(file);
 
     let { fieldname, originalname, mimetype, buffer, encoding } = file;
 
@@ -109,7 +110,7 @@ connection.on("open", () => {
     downloadStream.on("file", (file) => {
       // Set the proper content type
       res.set("Content-Type", file.metadata.contentType);
-      // Optional: Set the filename in the content disposition
+      // Set the filename in the content disposition
       res.set("Content-Disposition", file.filename);
     });
 
@@ -132,10 +133,21 @@ app.post("/send-contact-email", async (req, res) => {
   }
 });
 
+// // Set up cron job to use getAllTopics
+// cron.schedule("* * * * *", async () => {
+//   console.log("Scheduled task to fetch all topics");
+//   try {
+//     const fetched = await scrapeURLs();
+//     console.log("Fetched topics:", fetched);
+//   } catch (error) {
+//     console.error("Error fetching topics in scheduled task:", error);
+//   }
+// });
+
 // Use routes
 app.use("/users", userRoutes);
 app.use("/topics", topicRoutes);
 app.use("/pref", prefRoutes);
-// app.use("/scraper", scraperRoutes);
+app.use("/scraper", scraperRoutes);
 app.use("/chat", chatbotRoutes);
 app.use("/scripts", scriptRoutes);

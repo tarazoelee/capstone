@@ -1,11 +1,16 @@
 const express = require("express");
-const app = express();
+const router = express.Router();
 const usersModel = require("../models/Users");
 
-//ADDING NEW USER ON SIGN UP
-app.post("/addUser", async (req, res) => {
-  const userEmail = req.body.email;
+// Route definitions
+router.get("/", (req, res) => {
+  res.send("Users endpoint");
+});
 
+//ADDING NEW USER ON SIGN UP
+router.post("/addUser", async (req, res) => {
+  const userEmail = req.body.email;
+  s;
   try {
     // Use findOne to check if the email already exists
     const userExists = await usersModel.findOne({ email: userEmail });
@@ -28,4 +33,4 @@ app.post("/addUser", async (req, res) => {
   }
 });
 
-module.exports = app;
+module.exports = { router };

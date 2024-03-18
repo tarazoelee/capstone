@@ -1,5 +1,5 @@
 const express = require("express");
-const app = express();
+const router = express.Router();
 const axios = require("axios");
 const FormData = require("form-data");
 const scriptsModel = require("../models/PodcastScripts");
@@ -64,7 +64,7 @@ const voiceTypes = {
   },
 };
 //------GETTING ALL SCRIPTS--------
-app.get("/", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const scripts = await scriptsModel.find();
     res.send(scripts);
@@ -80,7 +80,7 @@ async function getUserVoice(u) {
 }
 
 //------GETTING TODAY'S SCRIPTS AND CREATING PODCASTS--------
-app.get("/todaysPodcasts", async (req, res) => {
+router.get("/todaysPodcasts", async (req, res) => {
   try {
     const scripts = await scriptsModel.find({
       date: todaysDate,
@@ -119,7 +119,7 @@ app.get("/todaysPodcasts", async (req, res) => {
 });
 
 /**----GETTING TODAYS SCRIPT FOR A SPECIFIC USER ------ */
-app.get("/todaysScript/:user", async (req, res) => {
+router.get("/todaysScript/:user", async (req, res) => {
   try {
     const userEmail = req.params.user; //getting email
 
@@ -137,7 +137,7 @@ app.get("/todaysScript/:user", async (req, res) => {
 });
 
 /**----GETTING OLD SCRIPT FOR A SPECIFIC USER ------ */
-app.get("/pastScript/:user/:date", async (req, res) => {
+router.get("/pastScript/:user/:date", async (req, res) => {
   try {
     const userEmail = req.params.user; //getting email
     const dateToGet = req.params.date; //getting email
@@ -208,4 +208,4 @@ async function synthesize(script, voiceOption) {
   }
 }
 
-module.exports = app;
+module.exports = { router };

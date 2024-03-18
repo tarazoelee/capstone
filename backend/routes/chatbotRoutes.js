@@ -1,5 +1,5 @@
 const express = require("express");
-const app = express();
+const router = express.Router();
 const OpenAI = require("openai");
 require("dotenv").config();
 
@@ -13,7 +13,7 @@ const openai = new OpenAI({
 
 const getTodaysDate = () => new Date().toISOString().split("T")[0];
 
-app.get("/test", async (req, res) => {
+router.get("/test", async (req, res) => {
   try {
     const combinationsArray = await getTopicCombinations();
     const newsArticleMap = await getDailyScripts();
@@ -38,7 +38,7 @@ async function getTopicCombinations() {
         topics: sortedTopics,
         length: user.length,
         users: [user.email],
-        voice:user.voice
+        voice: user.voice,
       });
     } else {
       combinations.get(key).users.push(user.email);
@@ -110,4 +110,4 @@ async function createScript(combinationsArray, newsArticleMap) {
   }
 }
 
-module.exports = app;
+module.exports = { router };
