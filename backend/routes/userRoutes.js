@@ -10,7 +10,7 @@ router.get("/", (req, res) => {
 //ADDING NEW USER ON SIGN UP
 router.post("/addUser", async (req, res) => {
   const userEmail = req.body.email;
-  s;
+
   try {
     // Use findOne to check if the email already exists
     const userExists = await usersModel.findOne({ email: userEmail });
