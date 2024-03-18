@@ -32,13 +32,48 @@ export default function Dashboard() {
 
   /**------STYLING THE REACT CALENDAR------- */
   const CalendarContainer = styled.div`
-  /* ~~~ container styles ~~~ */
-    max-width: 600px;
-    margin: auto;
-    margin-top: 20px;
-    background-color: #d4f7d4;
-    padding: 10px;
+   /* ~~~ container styles ~~~ */
+    background-color: rgb(17 24 39);
     border-radius: 3px;
+    padding:30px;
+
+    /* ~~~ navigation styles ~~~ */
+  .react-calendar__navigation {
+    display: flex;
+
+    .react-calendar__navigation__label {
+      font-weight: bold;
+    }
+
+    .react-calendar__navigation__arrow {
+      flex-grow: 0.333;
+    }
+  }
+
+   /* ~~~ label styles ~~~ */
+  .react-calendar__month-view__weekdays {
+    text-align: center;
+    color:white;
+    margin:20px 0;
+  }
+
+  /* ~~~ button styles ~~~ */
+    button {
+      border: 0;
+      border-radius: 3px;
+      color: white;
+      padding: 5px 10px;
+      height:50px;
+      
+
+    &:hover {
+      background-color: rgb(156 163 175);;
+    }
+
+    &:active {
+      background-color: #a5c1a5;
+    }
+  }
 `;
 
   const modalStyle = {
@@ -257,7 +292,7 @@ export default function Dashboard() {
 
         <div className="flex flex-col justify-center w-7/12 mb-44 gap-7 self-center">
           <div className="font-bold text-3xl text-orange-900">Past Bytes</div>
-          <div className="border border-gray bg-gray-900 text-white rounded-lg p-20">
+          <div className="border border-gray">
             <CalendarContainer>
               <Calendar
                 // onChange={(value) => {
@@ -277,6 +312,7 @@ export default function Dashboard() {
               />
             </CalendarContainer>
           </div>
+   
           {showPreviewButton && (
           <button
             onClick={openPreviewModal}
