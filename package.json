@@ -25,6 +25,7 @@
     "firebase-admin": "^11.11.0",
     "flask": "^0.2.10",
     "rsuite": "^5.46.0",
+    "styled-components": "^6.1.8",
     "typewriter-effect": "^2.21.0"
   },
   "proxy": "http://localhost:5001",

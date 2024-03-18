@@ -297,7 +297,7 @@ export default function Dashboard() {
                 Your browser does not support the audio element.
               </audio>
             </div>
-            <div>{podcastScript} </div>
+            <div className="leading-7 text-base">{podcastScript} </div>
           </div>
         </div>
 
