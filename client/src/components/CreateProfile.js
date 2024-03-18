@@ -17,6 +17,15 @@ function CreateProfile() {
   const [voiceTypes, setVoiceTypes] = useState([]);
   
 
+  const voiceTypeLabels = {
+    standardMaleUS: 'American Male',
+    standardFemaleUS: 'American Female',
+    standardMaleAUS: 'Australian Male',
+    standardFemaleAUS: 'Australian Female',
+    standardMaleGB: 'British Male',
+    standardFemaleGB: 'British Female',
+  };
+
 
   const style = {
     position: "absolute",
@@ -243,7 +252,7 @@ function CreateProfile() {
                     } w-40 px-6 py-4 text-center text-xs rounded-med rounded cursor-pointer ease-linear transition duration-100`}
                 onClick={() => handleVoiceClick(type.voicetypes)}
               >
-                {type.voicetypes}
+                {voiceTypeLabels[type.voicetypes] || type.voiceTypes}
               </div>
             ))
 

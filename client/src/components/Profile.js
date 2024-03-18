@@ -41,6 +41,15 @@ function Profile() {
     fontFamily:'display',
 };
 
+  const voiceTypeLabels = {
+    standardMaleUS: 'American Male',
+    standardFemaleUS: 'American Female',
+    standardMaleAUS: 'Australian Male',
+    standardFemaleAUS: 'Australian Female',
+    standardMaleGB: 'British Male',
+    standardFemaleGB: 'British Female',
+  };
+
 function getMonthName(monthNumber) {
   // Subtracting 1 as month numbers are 1-indexed
   const index = monthNumber - 1;
@@ -269,7 +278,7 @@ function getMonthName(monthNumber) {
                     } w-40 px-6 py-4 text-center text-xs rounded-med rounded cursor-pointer hover:bg-orange-200 hover:text-yellow-900 ease-linear transition duration-100`}
                 onClick={() => handleVoiceClick(type.voicetypes)}
               >
-                {type.voicetypes}
+                {voiceTypeLabels[type.voicetypes] || type.voiceTypes}
               </div>
             ))
 
