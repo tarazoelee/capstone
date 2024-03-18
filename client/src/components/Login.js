@@ -13,23 +13,23 @@ export default function Login() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
-  const handleOnSubmit = async (e) => {
-    e.preventDefault();
-    let result = await fetch(`${baseURL}/register`, {
-      method: "post",
-      body: JSON.stringify({ name, email }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    result = await result.json();
-    console.warn(result);
-    if (result) {
-      //alert("Data saved succesfully");
-      setEmail("");
-      setName("");
-    }
-  };
+  // const handleOnSubmit = async (e) => {
+  //   e.preventDefault();
+  //   let result = await fetch(`${baseURL}/register`, {
+  //     method: "post",
+  //     body: JSON.stringify({ name, email }),
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   });
+  //   result = await result.json();
+  //   console.warn(result);
+  //   if (result) {
+  //     //alert("Data saved succesfully");
+  //     setEmail("");
+  //     setName("");
+  //   }
+  // };
 
   const nav = useNavigate();
 
@@ -42,8 +42,18 @@ export default function Login() {
     }
   }, [currentUser]);
 
+  
+  //submit on enter 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleSubmit();
+    }
+  };
+
   async function handleSubmit(e) {
+    if(e){
     e.preventDefault();
+  }
     try {
       setError("");
       setLoading(true);
@@ -54,19 +64,7 @@ export default function Login() {
 
     setLoading(false);
   }
-
-  // async function handleGoogleSignIn(e) {
-  //   e.preventDefault();
-  //   setLoading(true);
-  //   try {
-  //     setError("");
-  //     await googleSignIn();
-  //   } catch (error) {
-  //     setError("Failed to Login");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // }
+  
 
   return (
     <div className="flex h-full font-display">
@@ -89,6 +87,7 @@ export default function Login() {
             placeholder="Email"
             name="username"
             ref={emailRef}
+            onKeyDown={handleKeyPress}
             required
           />
           <input
@@ -97,6 +96,7 @@ export default function Login() {
             placeholder="Password"
             name="password"
             ref={passwordRef}
+            onKeyDown={handleKeyPress}
             required
           />{" "}
           <button

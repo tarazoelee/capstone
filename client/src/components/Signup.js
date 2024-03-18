@@ -29,12 +29,15 @@ export default function Signup() {
   }
 
   async function handleSubmit(e) {
-    e.preventDefault();
-
+    if(e){
+      e.preventDefault();
+    }
     if (passwordRef.current.value !== confirmPasswordRef.current.value) {
       return setError("Passwords do not match");
     }
+    if(passwordRef.current.value){
 
+    }
     try {
       setError("");
       setLoading(true);
@@ -45,10 +48,10 @@ export default function Signup() {
       if (addUserResponse.status === 400) {
         throw new Error("Failed to Signup");
       }
-
-      await signup(emailRef.current.value, passwordRef.current.value).then(
-        nav("/createProfile")
-      );
+      else{
+        await signup(emailRef.current.value, passwordRef.current.value).then(
+          nav("/createProfile") )
+      ;}
     } catch (e) {
       setError("Failed to Signup");
     }
@@ -65,47 +68,52 @@ export default function Signup() {
       <div className="flex flex-col w-2/3 gap-6 justify-center items-center">
         <div className="text-3xl text-orange-900">Create your account</div>
         <div> {error}</div>
-        <div className="flex flex-col">
-          <input
-            className="mb-6 bg-none border border-gray-200 rounded-2xl w-80 px-4 placeholder:text-gray-600 py-4"
-            type="text"
-            placeholder="Email"
-            name="email"
-            ref={emailRef}
-            required
-          />
-          <input
-            className="mb-6 bg-none border border-gray-200 rounded-2xl w-80 px-4 placeholder:text-gray-600 py-4"
-            type="password"
-            placeholder="Password"
-            name="password"
-            ref={passwordRef}
-            required
-          />{" "}
-          <input
-            className="mb-6 bg-none border border-gray-200 rounded-2xl w-80 px-4 placeholder:text-gray-600 py-4"
-            type="password"
-            placeholder="Confirm password"
-            name="confirmPassword"
-            ref={confirmPasswordRef}
-            required
-          />{" "}
-          <button
-            className="bg-gray-200 h-12 my-4 text-sm rounded-2xl hover:bg-gray-300 ease-linear transition duration-100 shadow-sm"
-            type="submit"
-            onClick={handleSubmit}
-            disabled={loading}
-          >
-            Sign Up
-          </button>
-          <button
-            className="text-center mt-2 text-xs hover:text-gray-800 ease-linear transition duration-100 underline"
-            type="submit"
-            onClick={goBack}
-          >
-            Back to login
-          </button>
-        </div>
+
+        
+          <form onSubmit={handleSubmit}>
+            <div className="flex flex-col">
+            <input
+              className="mb-6 bg-none border border-gray-200 rounded-2xl w-80 px-4 placeholder:text-gray-600 py-4"
+              type="text"
+              placeholder="Email"
+              name="email"
+              ref={emailRef}
+              required
+            />
+            <input
+              className="mb-6 bg-none border border-gray-200 rounded-2xl w-80 px-4 placeholder:text-gray-600 py-4"
+              type="password"
+              placeholder="Password"
+              name="password"
+              ref={passwordRef}
+              required
+            />{" "}
+            <input
+              className="mb-6 bg-none border border-gray-200 rounded-2xl w-80 px-4 placeholder:text-gray-600 py-4"
+              type="password"
+              placeholder="Confirm password"
+              name="confirmPassword"
+              ref={confirmPasswordRef}
+              required
+            />{" "}
+    
+              <button
+                className="bg-gray-200 h-12 my-4 text-sm rounded-2xl hover:bg-gray-300 ease-linear transition duration-100 shadow-sm"
+                type="submit"
+                disabled={loading}
+              >
+                Sign Up
+              </button>
+
+            <button
+              className="text-center mt-2 text-xs hover:text-gray-800 ease-linear transition duration-100 underline"
+              onClick={goBack}
+            >
+              Back to login
+            </button>
+            </div>
+          </form>
+        
       </div>
     </div>
   );
