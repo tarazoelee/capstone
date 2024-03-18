@@ -3,11 +3,12 @@ const router = express.Router();
 const cheerio = require("cheerio");
 const axios = require("axios");
 const { JSDOM } = require("jsdom");
+require("dotenv").config();
 const { Readability } = require("@mozilla/readability");
 const topicModels = require("../models/TopicTables");
 
 //Alex's lex.zhch@gmail.com email signed up with for api key
-const apiKey = "CUgtOGvuEA1d6ui3ezLWhyDgSJe6ddy8TyPsaNN7";
+const apiKey = process.env.NEWSCRAPER_API_KEY;
 const todaysDate = new Date().toISOString().split("T")[0];
 
 function getTodaysDate() {

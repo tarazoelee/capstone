@@ -5,6 +5,7 @@ const FormData = require("form-data");
 const scriptsModel = require("../models/PodcastScripts");
 const fs = require("fs");
 const path = require("path");
+require("dotenv").config();
 const usersModel = require("../models/Users");
 
 const todaysDate = new Date().toISOString().split("T")[0];
@@ -195,7 +196,7 @@ router.get("/pastScript/:user/:date", async (req, res) => {
 
 /** ------Create audio file of text for a single script------ */
 async function synthesize(script, voiceOption) {
-  const apikey = "AIzaSyA888cSZgCc2lMDxqy7g4r7byJOsGfi8GA";
+  const apikey = process.env.TXTAUDIO_API_KEY;
   const endpoint = `https://texttospeech.googleapis.com/v1beta1/text:synthesize?key=${apikey}`;
   const uploadEndpoint = "http://localhost:5001/upload";
 
