@@ -6,9 +6,10 @@ import "rsuite/dist/rsuite.min.css";
 import { baseURL } from "../config.js";
 import Typewriter from "typewriter-effect";
 import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
+//import "react-calendar/dist/Calendar.css";
 import Modal from "@mui/material/Modal";
 import { Box } from "@mui/material";
+import styled from "styled-components";
 
 //import { response } from "../../../backend/routes/scraperRoutes.js";
 
@@ -28,6 +29,17 @@ export default function Dashboard() {
   // const month = today.getMonth() + 1;
   // const day = today.getDate();
   const audioRef = useRef(null); // Create a ref for the audio element
+
+  /**------STYLING THE REACT CALENDAR------- */
+  const CalendarContainer = styled.div`
+  /* ~~~ container styles ~~~ */
+    max-width: 600px;
+    margin: auto;
+    margin-top: 20px;
+    background-color: #d4f7d4;
+    padding: 10px;
+    border-radius: 3px;
+`;
 
   const modalStyle = {
     position: "absolute",
@@ -245,24 +257,25 @@ export default function Dashboard() {
 
         <div className="flex flex-col justify-center w-7/12 mb-44 gap-7 self-center">
           <div className="font-bold text-3xl text-orange-900">Past Bytes</div>
-          <div className="">
-          <Calendar
-            onChange={(value) => {
-              const newDate = new Date(value).setHours(0, 0, 0, 0);
-              const todayDate = new Date().setHours(0, 0, 0, 0);
-              setDate(new Date(newDate).toISOString());
-              //setShowPreviewButton(newDate < todayDate);
-            }}
-            value={new Date(date)}
-            onClickDay={(value)=>{
-              const newDate = new Date(value).setHours(0, 0, 0, 0);
-              const todayDate = new Date().setHours(0, 0, 0, 0);
-              setDate(new Date(newDate).toISOString());
-              openPreviewModal()
-            }
-            }
-            //(value, event) => alert('Clicked day: ', value)
-          />
+          <div className="border border-gray bg-gray-900 text-white rounded-lg p-20">
+            <CalendarContainer>
+              <Calendar
+                // onChange={(value) => {
+                //   const newDate = new Date(value).setHours(0, 0, 0, 0);
+                //   const todayDate = new Date().setHours(0, 0, 0, 0);
+                //   setDate(new Date(newDate).toISOString());
+                //   //setShowPreviewButton(newDate < todayDate);
+                // }}
+                value={new Date(date)}
+                onClickDay={(value)=>{
+                  const newDate = new Date(value).setHours(0, 0, 0, 0);
+                  const todayDate = new Date().setHours(0, 0, 0, 0);
+                  setDate(new Date(newDate).toISOString());
+                  openPreviewModal()
+                }
+                }
+              />
+            </CalendarContainer>
           </div>
           {showPreviewButton && (
           <button
