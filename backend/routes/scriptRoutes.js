@@ -1,10 +1,11 @@
 const express = require("express");
-const app = express();
+const router = express.Router();
 const axios = require("axios");
 const FormData = require("form-data");
 const scriptsModel = require("../models/PodcastScripts");
 const fs = require("fs");
 const path = require("path");
+require("dotenv").config();
 const usersModel = require("../models/Users");
 
 const todaysDate = new Date().toISOString().split("T")[0];
@@ -64,7 +65,7 @@ const voiceTypes = {
   },
 };
 //------GETTING ALL SCRIPTS--------
-app.get("/", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const scripts = await scriptsModel.find();
     res.send(scripts);
@@ -80,8 +81,48 @@ async function getUserVoice(u) {
 }
 
 //------GETTING TODAY'S SCRIPTS AND CREATING PODCASTS--------
-app.get("/todaysPodcasts", async (req, res) => {
+// router.get("/todaysPodcasts", async (req, res) => {
+//   try {
+//     const scripts = await scriptsModel.find({
+//       date: todaysDate,
+//     });
+//     // Iterate over each script and convert it to audio, then update the document with the gridFsFileId
+//     for (const script of scripts) {
+//       try {
+//         //const standardVoice = voiceTypes.standardFemaleAUS;
+//         const user = script.users[0]; //get the first user since they all have the same voice
+//         const voice = await getUserVoice(user);
+//         console.log("voice " + voice);
+//         const reference = await synthesize(script, voice);
+
+//         // Directly find one script and update it with the new gridFsFileId
+//         const updatedScript = await scriptsModel.findOneAndUpdate(
+//           { _id: script._id },
+//           { $set: { refID: reference } },
+//           { new: true } // This option returns the modified document rather than the original
+//         );
+
+//         if (updatedScript) {
+//           console.log(`Updated script ${script._id} with refID ${reference}`);
+//         } else {
+//           console.log(`Script ${script._id} not found for update.`);
+//         }
+//       } catch (error) {
+//         console.error(`Error processing script ${script._id}:`, error);
+//       }
+//     }
+
+//     res.send({ message: "All scripts have been processed and updated" }); // After all scripts have been processed, send a response
+//   } catch (e) {
+//     res.status(500).send("Unable to process scripts");
+//     console.error("Error occurred while retrieving and processing scripts:", e);
+//   }
+// });
+
+//------GETTING TODAY'S SCRIPTS AND CREATING PODCASTS--------
+async function processTodaysPodcasts() {
   try {
+    console.log("Inside the processTodaysPodcasts METHOD");
     const scripts = await scriptsModel.find({
       date: todaysDate,
     });
@@ -89,7 +130,7 @@ app.get("/todaysPodcasts", async (req, res) => {
     for (const script of scripts) {
       try {
         //const standardVoice = voiceTypes.standardFemaleAUS;
-        const user = script.users[0]; //get the first user since they all have the same voice
+        const user = script.users[0]; // get the first user since they all have the same voice
         const voice = await getUserVoice(user);
         console.log("voice " + voice);
         const reference = await synthesize(script, voice);
@@ -110,16 +151,14 @@ app.get("/todaysPodcasts", async (req, res) => {
         console.error(`Error processing script ${script._id}:`, error);
       }
     }
-
-    res.send({ message: "All scripts have been processed and updated" }); // After all scripts have been processed, send a response
+    console.log("All scripts have been processed and updated");
   } catch (e) {
-    res.status(500).send("Unable to process scripts");
     console.error("Error occurred while retrieving and processing scripts:", e);
   }
-});
+}
 
 /**----GETTING TODAYS SCRIPT FOR A SPECIFIC USER ------ */
-app.get("/todaysScript/:user", async (req, res) => {
+router.get("/todaysScript/:user", async (req, res) => {
   try {
     const userEmail = req.params.user; //getting email
 
@@ -137,7 +176,7 @@ app.get("/todaysScript/:user", async (req, res) => {
 });
 
 /**----GETTING OLD SCRIPT FOR A SPECIFIC USER ------ */
-app.get("/pastScript/:user/:date", async (req, res) => {
+router.get("/pastScript/:user/:date", async (req, res) => {
   try {
     const userEmail = req.params.user; //getting email
     const dateToGet = req.params.date; //getting email
@@ -157,7 +196,7 @@ app.get("/pastScript/:user/:date", async (req, res) => {
 
 /** ------Create audio file of text for a single script------ */
 async function synthesize(script, voiceOption) {
-  const apikey = "AIzaSyA888cSZgCc2lMDxqy7g4r7byJOsGfi8GA";
+  const apikey = process.env.TXTAUDIO_API_KEY;
   const endpoint = `https://texttospeech.googleapis.com/v1beta1/text:synthesize?key=${apikey}`;
   const uploadEndpoint = "http://localhost:5001/upload";
 
@@ -208,4 +247,4 @@ async function synthesize(script, voiceOption) {
   }
 }
 
-module.exports = app;
+module.exports = { router, processTodaysPodcasts };
