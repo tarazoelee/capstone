@@ -98,27 +98,26 @@ function CreateProfile() {
   //---- SELECT NEW TOPIC AND CHANGE COLOR TO DISPLAY SELECTION----
   async function showTopicSelect(topic) {
     const newtopicDiv = document.getElementById(`${topic}`);
-    newtopicDiv.style.backgroundColor = "rgb(253 186 116)";
-    //bg-amber-700 text-white hover:text-white hover:bg-amber-700
+    newtopicDiv.style.backgroundColor = "rgb(180 83 9)";
+    newtopicDiv.style.color = "white";
   }
 
   async function unshowTopicSelect(topic){
     const newtopicDiv = document.getElementById(`${topic}`);
     newtopicDiv.style.backgroundColor = "rgb(255 237 213)";
+    newtopicDiv.style.color = "rgb(124 45 18)";
   }
 
   //-----SELECT LENGTH -----
   async function selectLength(l) {
     //unselect length 
     if(length.includes(l)){
-      console.log(length)
         setLength("")
         unshowTopicSelect(l);
     }
     else if(length.length < 1){
       setLength(l);
       showTopicSelect(l);
-      console.log("selected: " + l)
     }
   }
 
@@ -239,9 +238,9 @@ function CreateProfile() {
               <div 
                 key={index}
                 className={`${selectedVoice == type.voicetypes
-                      ? "bg-orange-300"
-                      : "bg-orange-100"
-                    } w-40 px-6 py-4 text-center text-xs rounded-med rounded cursor-pointer hover:bg-orange-200 ease-linear transition duration-100`}
+                      ? "bg-amber-700 text-white hover:text-white hover:bg-amber-700"
+                      : "bg-orange-100 hover:bg-orange-200"
+                    } w-40 px-6 py-4 text-center text-xs rounded-med rounded cursor-pointer ease-linear transition duration-100`}
                 onClick={() => handleVoiceClick(type.voicetypes)}
               >
                 {type.voicetypes}
