@@ -118,6 +118,7 @@ async function getUserVoice(u) {
 //   }
 // });
 
+//------GETTING TODAY'S SCRIPTS AND CREATING PODCASTS--------
 async function processTodaysPodcasts() {
   try {
     console.log("Inside the processTodaysPodcasts METHOD");
