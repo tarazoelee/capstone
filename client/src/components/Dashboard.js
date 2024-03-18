@@ -17,9 +17,7 @@ export default function Dashboard() {
   const [showPreviewButton, setShowPreviewButton] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [modalContent, setModalContent] = useState("");
-
   const [error, setError] = useState("");
-  // const [newsContent, setNewsContent] = useState("");
   const [podcastScript, setPodcastScript] = useState("");
   const [podcastRefID, setPodcastRefID] = useState("");
   const { currentUser, logout } = useAuth();
@@ -36,7 +34,7 @@ export default function Dashboard() {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 400,
+    width: 800,
     bgcolor: "background.paper",
     boxShadow: 24,
     p: 4,
@@ -60,7 +58,7 @@ export default function Dashboard() {
         const script = data[0].script;
         const oldRefID = data[0].refID;
         setModalContent(
-          <>
+          <div className="w-50">
             <h2>Podcast Preview for {formattedDate}</h2>
             <p>{script}</p>
             Optional: If you decide to add the audio player
@@ -69,7 +67,7 @@ export default function Dashboard() {
                 Your browser does not support the audio element.
               </audio>
             )}
-          </>
+          </div>
         );
         setOpenModal(true);
       } else {
@@ -247,18 +245,26 @@ export default function Dashboard() {
 
         <div className="flex flex-col justify-center w-7/12 mb-44 gap-7 self-center">
           <div className="font-bold text-3xl text-orange-900">Past Bytes</div>
-        </div>
-        <Calendar
-          onChange={(value) => {
-            const newDate = new Date(value).setHours(0, 0, 0, 0);
-            const todayDate = new Date().setHours(0, 0, 0, 0);
-            setDate(new Date(newDate).toISOString());
-            setShowPreviewButton(newDate < todayDate);
-          }}
-          value={new Date(date)}
-        />
-
-        {showPreviewButton && (
+          <div className="">
+          <Calendar
+            onChange={(value) => {
+              const newDate = new Date(value).setHours(0, 0, 0, 0);
+              const todayDate = new Date().setHours(0, 0, 0, 0);
+              setDate(new Date(newDate).toISOString());
+              //setShowPreviewButton(newDate < todayDate);
+            }}
+            value={new Date(date)}
+            onClickDay={(value)=>{
+              const newDate = new Date(value).setHours(0, 0, 0, 0);
+              const todayDate = new Date().setHours(0, 0, 0, 0);
+              setDate(new Date(newDate).toISOString());
+              openPreviewModal()
+            }
+            }
+            //(value, event) => alert('Clicked day: ', value)
+          />
+          </div>
+          {showPreviewButton && (
           <button
             onClick={openPreviewModal}
             className="mt-4 px-6 py-2 text-white bg-blue-500 hover:bg-blue-700 rounded-md"
@@ -266,6 +272,8 @@ export default function Dashboard() {
             Preview for {date.split("T")[0]}
           </button>
         )}
+
+        </div>
         {/* Modal component */}
         <Modal
           open={openModal}
