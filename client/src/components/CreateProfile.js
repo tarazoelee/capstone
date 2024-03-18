@@ -99,6 +99,7 @@ function CreateProfile() {
   async function showTopicSelect(topic) {
     const newtopicDiv = document.getElementById(`${topic}`);
     newtopicDiv.style.backgroundColor = "rgb(253 186 116)";
+    //bg-amber-700 text-white hover:text-white hover:bg-amber-700
   }
 
   async function unshowTopicSelect(topic){
@@ -176,7 +177,7 @@ function CreateProfile() {
       </button>
 
       <div className="flex flex-col gap-2 items-center w-1/2 py-14">
-        <div className="font-bold text-orange-900 text-xl">
+        <div className=" text-orange-900 text-xl">
           What Topics Interest You?
         </div>
         <div className="italic">Select up to 3</div>
@@ -194,7 +195,7 @@ function CreateProfile() {
 
       </div>
       <div className="flex flex-col gap-2 items-center w-1/2">
-        <div className="font-bold text-xl my-10 text-orange-900">
+        <div className="text-xl my-10 text-orange-900">
           How long do you want your daily updates?
         </div>
         <div className="flex gap-10 flex-wrap items-center justify-center font-semibold ">
@@ -232,7 +233,7 @@ function CreateProfile() {
       </div>
 
       <div className="flex gap-10 justify-center items-center flex-col mt-14 w-1/2">
-          <div className="font-bold text-xl text-orange-900">Voice Types</div>
+          <div className="text-xl text-orange-900">Voice Types</div>
            <div className="flex gap-10 flex-wrap justify-center font-semibold ">
             {voiceTypes.map((type, index)=>(
               <div 
