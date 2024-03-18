@@ -110,4 +110,4 @@ async function createScript(combinationsArray, newsArticleMap) {
   }
 }
 
-module.exports = { router };
+module.exports = { router, getTopicCombinations, getDailyScripts, createScript};

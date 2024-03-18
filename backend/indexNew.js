@@ -10,12 +10,20 @@ const cron = require("node-cron");
 
 // import routes
 const { router: userRoutes } = require("./routes/userRoutes");
+const {
+  router: scriptRoutes,
+  processTodaysPodcasts,
+} = require("./routes/scriptRoutes");
 const { router: topicRoutes } = require("./routes/topicRoutes");
 const { router: prefRoutes } = require("./routes/preferencesRoutes");
 const { router: scraperRoutes, scrapeURLs } = require("./routes/scraperRoutes");
 
-const { router: chatbotRoutes } = require("./routes/chatbotRoutes");
-const { router: scriptRoutes } = require("./routes/scriptRoutes");
+const {
+  router: chatbotRoutes,
+  getTopicCombinations,
+  getDailyScripts,
+  createScript,
+} = require("./routes/chatbotRoutes");
 
 const { sendContactEmail } = require("./contactFormHandler");
 
@@ -133,16 +141,28 @@ app.post("/send-contact-email", async (req, res) => {
   }
 });
 
-// // Set up cron job to use getAllTopics
-// cron.schedule("* * * * *", async () => {
-//   console.log("Scheduled task to fetch all topics");
-//   try {
-//     const fetched = await scrapeURLs();
-//     console.log("Fetched topics:", fetched);
-//   } catch (error) {
-//     console.error("Error fetching topics in scheduled task:", error);
-//   }
-// });
+// Set up cron job to use getAllTopics
+cron.schedule("* * * * *", async () => {
+  console.log("Scheduled task to fetch all topics");
+  try {
+    //scraping URLs and storing into the db
+    const fetched = await scrapeURLs();
+
+    //getting all topic combinations from the db for all users
+    const combinationsArray = await getTopicCombinations();
+
+    //get all the scraped news articles from the db
+    const newsArticleMap = await getDailyScripts();
+
+    //pass news articles through chatgpt to create proper scripts
+    await createScript(combinationsArray, newsArticleMap);
+
+    //gets all of todays scripts and creates podcasts
+    await processTodaysPodcasts();
+  } catch (error) {
+    console.error("Error fetching topics in scheduled task:", error);
+  }
+});
 
 // Use routes
 app.use("/users", userRoutes);
