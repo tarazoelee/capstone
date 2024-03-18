@@ -5,7 +5,7 @@ const FormData = require("form-data");
 const scriptsModel = require("../models/PodcastScripts");
 const fs = require("fs");
 const path = require("path");
-const usersModel = require("../models/Users")
+const usersModel = require("../models/Users");
 
 const todaysDate = new Date().toISOString().split("T")[0];
 
@@ -17,7 +17,7 @@ const todaysDate = new Date().toISOString().split("T")[0];
 //       speakingRate: 1,
 //     },
 //     input: {
-//       text: "Script goes here", //Assuming script will be updated when synthesize is called 
+//       text: "Script goes here", //Assuming script will be updated when synthesize is called
 //     },
 //     voice: {
 //       languageCode: "en-US",
@@ -30,39 +30,39 @@ const voiceTypes = {
     voice: {
       languageCode: "en-US",
       name: "en-US-Wavenet-J",
-    }
+    },
   },
   standardFemaleUS: {
     voice: {
       languageCode: "en-US",
       name: "en-US-Wavenet-F",
-    }
+    },
   },
   standardMaleAUS: {
     voice: {
-      "languageCode": "en-AU",
-      "name": "en-AU-Wavenet-B"
-    }
+      languageCode: "en-AU",
+      name: "en-AU-Wavenet-B",
+    },
   },
   standardFemaleAUS: {
     voice: {
-      "languageCode": "en-AU",
-      "name": "en-AU-Wavenet-C"
-    }
+      languageCode: "en-AU",
+      name: "en-AU-Wavenet-C",
+    },
   },
   standardMaleGB: {
     voice: {
-      "languageCode": "en-GB",
-      "name": "en-GB-Wavenet-B"
-    }
+      languageCode: "en-GB",
+      name: "en-GB-Wavenet-B",
+    },
   },
   standardFemaleGB: {
     voice: {
-      "languageCode": "en-GB",
-      "name": "en-GB-Wavenet-A"
-    }
+      languageCode: "en-GB",
+      name: "en-GB-Wavenet-A",
+    },
   },
-  }
+};
 //------GETTING ALL SCRIPTS--------
 app.get("/", async (req, res) => {
   try {
@@ -74,8 +74,8 @@ app.get("/", async (req, res) => {
   }
 });
 
-async function getUserVoice(u){
-  const user = await usersModel.find({ email: u});
+async function getUserVoice(u) {
+  const user = await usersModel.find({ email: u });
   return user[0].voice;
 }
 
@@ -89,9 +89,9 @@ app.get("/todaysPodcasts", async (req, res) => {
     for (const script of scripts) {
       try {
         //const standardVoice = voiceTypes.standardFemaleAUS;
-        const user = script.users[0]; //get the first user since they all have the same voice 
+        const user = script.users[0]; //get the first user since they all have the same voice
         const voice = await getUserVoice(user);
-        console.log("voice "+voice)
+        console.log("voice " + voice);
         const reference = await synthesize(script, voice);
 
         // Directly find one script and update it with the new gridFsFileId
@@ -111,13 +111,12 @@ app.get("/todaysPodcasts", async (req, res) => {
       }
     }
 
-    res.send({ message: "All scripts have been processed and updated" });     // After all scripts have been processed, send a response
+    res.send({ message: "All scripts have been processed and updated" }); // After all scripts have been processed, send a response
   } catch (e) {
     res.status(500).send("Unable to process scripts");
     console.error("Error occurred while retrieving and processing scripts:", e);
   }
 });
-
 
 /**----GETTING TODAYS SCRIPT FOR A SPECIFIC USER ------ */
 app.get("/todaysScript/:user", async (req, res) => {
@@ -137,18 +136,35 @@ app.get("/todaysScript/:user", async (req, res) => {
   }
 });
 
+/**----GETTING OLD SCRIPT FOR A SPECIFIC USER ------ */
+app.get("/pastScript/:user/:date", async (req, res) => {
+  try {
+    const userEmail = req.params.user; //getting email
+    const dateToGet = req.params.date; //getting email
 
-/** ------Create audio file of text for a single script------ */ 
+    // Find scripts that match today's date and include the specific user in the users array
+    const scripts = await scriptsModel.find({
+      date: dateToGet,
+      users: userEmail, // This will match any documents where the users array contains the userEmail
+    });
+
+    res.send(scripts);
+  } catch (e) {
+    res.status(500).send("Unable to find scripts");
+    console.error("Error occurred while retrieving scripts:", e);
+  }
+});
+
+/** ------Create audio file of text for a single script------ */
 async function synthesize(script, voiceOption) {
   const apikey = "AIzaSyA888cSZgCc2lMDxqy7g4r7byJOsGfi8GA";
   const endpoint = `https://texttospeech.googleapis.com/v1beta1/text:synthesize?key=${apikey}`;
   const uploadEndpoint = "http://localhost:5001/upload";
 
-  const selectedVoice = voiceTypes[voiceOption]
-  console.log("voice"+ selectedVoice)
+  const selectedVoice = voiceTypes[voiceOption];
+  console.log("voice" + selectedVoice);
 
-  const payload = 
-  {
+  const payload = {
     audioConfig: {
       audioEncoding: "MP3",
       effectsProfileId: ["small-bluetooth-speaker-class-device"],
@@ -156,14 +172,14 @@ async function synthesize(script, voiceOption) {
       speakingRate: 1,
     },
     input: {
-      text: script.script, //Assuming script will be updated when synthesize is called 
+      text: script.script, //Assuming script will be updated when synthesize is called
     },
     voice: {
       // languageCode: "en-US",
       // name: "en-US-Wavenet-J",
-      ...selectedVoice.voice
+      ...selectedVoice.voice,
     },
-  }
+  };
 
   try {
     // Post request to synthesize text
@@ -180,11 +196,11 @@ async function synthesize(script, voiceOption) {
       headers: {
         ...formData.getHeaders(),
       },
-    }); 
+    });
 
     //console.log(uploadResponse.data.fileId);
     const refID = uploadResponse.data.fileId; // Assuming the response structure includes {data: { fileId: "someId" }}
-        console.log("Synthesized successfully")
+    console.log("Synthesized successfully");
     return refID;
   } catch (error) {
     console.error("Error occurred while synthesizing audio:", error);
