@@ -1,0 +1,51 @@
+.cal-container{
+        background-color: rgb(17 24 39);
+            border-radius: 10px;
+            padding: 30px;
+            height: 600px;
+}
+
+ .react-calendar__navigation {
+     display: flex;
+
+     .react-calendar__navigation__label {
+         font-weight: bold;
+     }
+
+     .react-calendar__navigation__arrow {
+         flex-grow: 0.333;
+     }
+ }
+
+.react-calendar__month-view__weekdays {
+    text-align: center;
+    color: white;
+    margin: 20px 0;
+}
+
+/* ~~~ button styles ~~~ */
+button {
+    border: 0;
+    border-radius: 3px;
+    color: white;
+    padding: 5px 10px;
+    height: 50px;
+    margin: 0.8rem 0px;
+
+    &:hover {
+        background-color: rgb(156 163 175);
+    }
+
+    &:active {
+        background-color: rgb(156 163 175);
+    }
+}
+
+/* ~~~ neighboring month & weekend styles ~~~ */
+.react-calendar__month-view__days__day--neighboringMonth {
+    opacity: 0.7;
+}
+
+.react-calendar__month-view__days__day--weekend {
+    color: #dfdfdf;
+}
