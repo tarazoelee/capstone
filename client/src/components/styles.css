@@ -1,3 +1,8 @@
+.bg-custom {
+    background-image: url('./news-bg.jpg');
+    background-size: contain;
+}
+
 .react-calendar{
     background-color: rgb(17 24 39);
     border-radius: 10px;
