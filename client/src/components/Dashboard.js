@@ -23,7 +23,8 @@ export default function Dashboard() {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const nav = useNavigate();
   const audioRef = useRef(null); // Create a ref for the audio element
-
+  const [audioLoaded, setAudioLoaded] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const modalStyle = {
     position: "absolute",
@@ -45,42 +46,55 @@ export default function Dashboard() {
     return `${year}-${month}-${day}`;
   }
 
-  async function openPreviewModal(date){
-    const formattedDate = formatDateToYYYYMMDD(date);
-    // Fetch the old script information first, then update the state and open the modal.
-    try {
-      const data = await getOldScript(formattedDate);
-      if (data && data.length > 0) {
-        // Directly use the fetched data to set modal content and open modal
-        const script = data[0].script;
-        const oldRefID = data[0].refID;
-        setModalContent(
-          <div>
-            <div className="font-bold text-black text-xl">{formattedDate}</div>
-            <div className="my-4">{script}</div>
-            {/* Optional: If you decide to add the audio player */}
-            {oldRefID && (
-              <audio controls src={`${baseURL}/image/${oldRefID}`}>
-                Your browser does not support the audio element.
-              </audio>
-            )}
-          </div>
-        );
-        setOpenModal(true);
-      } else {
-        // Handle the case where no script is found for the selected date
-        setModalContent(
-          <>
-            <h2>Podcast Preview for {formattedDate}</h2>
-            <p>No byte for this day.</p>
-          </>
-        );
-        setOpenModal(true);
-      }
-    } catch (error) {
-      console.error("Error fetching old script:", error);
+ async function openPreviewModal(date) {
+  const formattedDate = formatDateToYYYYMMDD(date);
+  setLoading(true); // Begin with loading state as true
+  setAudioLoaded(false); // Reset audio loaded state
+
+  // Fetch the old script information first, then update the state and open the modal.
+  try {
+    const data = await getOldScript(formattedDate);
+    if (data && data.length > 0) {
+      const script = data[0].script;
+      const oldRefID = data[0].refID;
+      const audioURL = `${baseURL}/image/${oldRefID}`;
+
+    setModalContent(
+        <div>
+          <div className="font-bold text-black text-xl">{formattedDate}</div>
+          <div className="my-4">{script}</div>
+          {/* {!audioLoaded && <p>Loading audio...</p>} */}
+          {
+            <audio 
+              controls 
+              src={audioURL} 
+              onLoadedData={() => {
+                setAudioLoaded(true);
+                setLoading(false); }}
+            >
+              Your browser does not support the audio element.
+            </audio>
+          }
+        </div>
+      )
+
+      // Load the audio and then open the modal
+      setOpenModal(true);
+    } else {
+      setModalContent(// Handle the case where no script is found for the selected date
+        <div>
+          <h2>Podcast Preview for {formattedDate}</h2>
+          <p>No byte for this day.</p>
+        </div>
+      );
+      setLoading(false);
+      setOpenModal(true);
     }
+  } catch (error) {
+    console.error("Error fetching old script:", error);
   }
+}
+
 
   // Function to close the modal
   const handleCloseModal = () => {
@@ -114,6 +128,7 @@ export default function Dashboard() {
       });
   }
 
+  //----GETTING ALL OLD SCRIPTS -------
   async function getOldScript(d) {
     try {
       const response = await fetch(
@@ -220,7 +235,6 @@ export default function Dashboard() {
                 typewriter
                   .typeString(" Listen to the news like never before.")
                   .callFunction(() => {
-                    console.log("String typed out!");
                   })
                   .start();
               }}
