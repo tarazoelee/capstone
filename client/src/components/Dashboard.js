@@ -32,60 +32,60 @@ export default function Dashboard() {
   const audioRef = useRef(null); // Create a ref for the audio element
 
 
-  // /**------STYLING THE REACT CALENDAR------- */
-  // const CalendarContainer = styled.div`
-  //   /* ~~~ container styles ~~~ */
-  //   background-color: rgb(17 24 39);
-  //   border-radius: 3px;
-  //   padding: 30px;
-  //   height: 600px;
+  /**------STYLING THE REACT CALENDAR------- */
+  const CalendarContainer = styled.div`
+    /* ~~~ container styles ~~~ */
+    background-color: rgb(17 24 39);
+    border-radius: 3px;
+    padding: 30px;
+    height: 600px;
 
-  //   /* ~~~ navigation styles ~~~ */
-  //   .react-calendar__navigation {
-  //     display: flex;
+    /* ~~~ navigation styles ~~~ */
+    .react-calendar__navigation {
+      display: flex;
 
-  //     .react-calendar__navigation__label {
-  //       font-weight: bold;
-  //     }
+      .react-calendar__navigation__label {
+        font-weight: bold;
+      }
 
-  //     .react-calendar__navigation__arrow {
-  //       flex-grow: 0.333;
-  //     }
-  //   }
+      .react-calendar__navigation__arrow {
+        flex-grow: 0.333;
+      }
+    }
 
-  //   /* ~~~ label styles ~~~ */
-  //   .react-calendar__month-view__weekdays {
-  //     text-align: center;
-  //     color: white;
-  //     margin: 20px 0;
-  //   }
+    /* ~~~ label styles ~~~ */
+    .react-calendar__month-view__weekdays {
+      text-align: center;
+      color: white;
+      margin: 20px 0;
+    }
 
-  //   /* ~~~ button styles ~~~ */
-  //   button {
-  //     border: 0;
-  //     border-radius: 3px;
-  //     color: white;
-  //     padding: 5px 10px;
-  //     height: 50px;
-  //     margin: 0.8rem 0px;
+    /* ~~~ button styles ~~~ */
+    button {
+      border: 0;
+      border-radius: 3px;
+      color: white;
+      padding: 5px 10px;
+      height: 50px;
+      margin: 0.8rem 0px;
 
-  //     &:hover {
-  //       background-color: rgb(156 163 175);
-  //     }
+      &:hover {
+        background-color: rgb(156 163 175);
+      }
 
-  //     &:active {
-  //       background-color: rgb(156 163 175);
-  //     }
-  //   }
+      &:active {
+        background-color: rgb(156 163 175);
+      }
+    }
 
-  //   /* ~~~ neighboring month & weekend styles ~~~ */
-  //   .react-calendar__month-view__days__day--neighboringMonth {
-  //     opacity: 0.7;
-  //   }
-  //   .react-calendar__month-view__days__day--weekend {
-  //     color: #dfdfdf;
-  //   }
-  // `;
+    /* ~~~ neighboring month & weekend styles ~~~ */
+    .react-calendar__month-view__days__day--neighboringMonth {
+      opacity: 0.7;
+    }
+    .react-calendar__month-view__days__day--weekend {
+      color: #dfdfdf;
+    }
+  `;
 
   const modalStyle = {
     position: "absolute",
@@ -310,7 +310,7 @@ export default function Dashboard() {
         <div className="flex flex-col justify-center w-7/12 mb-44 gap-7 self-center">
           <div className="font-bold text-3xl text-orange-900">Past Bytes</div>
           <div className="border border-gray">
-            {/* <CalendarContainer> */}
+            <CalendarContainer>
             <Calendar
               // onChange={(value) => {
               //   const newDate = new Date(value).setHours(0, 0, 0, 0);
@@ -326,7 +326,7 @@ export default function Dashboard() {
                 openPreviewModal();
               }}
             />
-            {/* </CalendarContainer> */}
+            </CalendarContainer>
           </div>
 
           {showPreviewButton && (
