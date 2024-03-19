@@ -30,7 +30,7 @@ export default function Dashboard() {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 800,
+    width: "80%",
     bgcolor: "background.paper",
     boxShadow: 24,
     py: 6,
@@ -61,7 +61,6 @@ export default function Dashboard() {
       const script = data[0].script;
       const oldRefID = data[0].refID;
       const audioURL = audioData[oldRefID];
-      console.log(audioData)
 
     setModalContent(
         <div>
