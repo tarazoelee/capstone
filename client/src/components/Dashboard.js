@@ -9,7 +9,8 @@ import Calendar from "react-calendar";
 import Modal from "@mui/material/Modal";
 import { Box } from "@mui/material";
 import './styles.css'; 
-
+import styled from "styled-components"
+import { CalendarContainer } from "rsuite/esm/Calendar";
 //import { response } from "../../../backend/routes/scraperRoutes.js";
 
 export default function Dashboard() {
@@ -31,7 +32,7 @@ export default function Dashboard() {
   // const day = today.getDate();
   const audioRef = useRef(null); // Create a ref for the audio element
 
-
+  // const CalendarContainer = styled.div``
 
   const modalStyle = {
     position: "absolute",
@@ -256,6 +257,7 @@ export default function Dashboard() {
         <div className="flex flex-col justify-center w-7/12 mb-44 gap-7 self-center">
           <div className="font-bold text-3xl text-orange-900">Past Bytes</div>
           <div className="cal-container ">
+
             <Calendar
               // onChange={(value) => {
               //   const newDate = new Date(value).setHours(0, 0, 0, 0);
@@ -271,6 +273,7 @@ export default function Dashboard() {
                 openPreviewModal();
               }}
             />
+
           </div>
           {showPreviewButton && (
             <button

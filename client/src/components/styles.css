@@ -1,11 +1,11 @@
-.cal-container{
-        background-color: rgb(17 24 39);
-            border-radius: 10px;
-            padding: 30px;
-            height: 600px;
+.react-calendar{
+    background-color: rgb(17 24 39);
+    border-radius: 10px;
+    padding: 30px;
+    height: 600px;
 }
 
- .react-calendar__navigation {
+.react-calendar__navigation{
      display: flex;
 
      .react-calendar__navigation__label {
@@ -24,7 +24,7 @@
 }
 
 /* ~~~ button styles ~~~ */
-button {
+.react-calendar button {
     border: 0;
     border-radius: 3px;
     color: white;
