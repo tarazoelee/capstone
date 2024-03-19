@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Textarea, useToast } from "@chakra-ui/react";
 import { useAuth } from "../contexts/AuthContext";
-import { baseURL } from "../config.js";
 import Footer from "./Footer.js";
 import Modal from "@mui/material/Modal";
 import { Box } from "@mui/material";
 
 function ContactUs() {
+  const baseURL = process.env.REACT_APP_BASEURL;
   const nav = useNavigate();
   const { currentUser } = useAuth();
   const [formData, setFormData] = useState({

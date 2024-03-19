@@ -81,43 +81,43 @@ async function getUserVoice(u) {
 }
 
 //------GETTING TODAY'S SCRIPTS AND CREATING PODCASTS--------
-// router.get("/todaysPodcasts", async (req, res) => {
-//   try {
-//     const scripts = await scriptsModel.find({
-//       date: todaysDate,
-//     });
-//     // Iterate over each script and convert it to audio, then update the document with the gridFsFileId
-//     for (const script of scripts) {
-//       try {
-//         //const standardVoice = voiceTypes.standardFemaleAUS;
-//         const user = script.users[0]; //get the first user since they all have the same voice
-//         const voice = await getUserVoice(user);
-//         console.log("voice " + voice);
-//         const reference = await synthesize(script, voice);
+router.get("/todaysPodcasts", async (req, res) => {
+  try {
+    const scripts = await scriptsModel.find({
+      date: todaysDate,
+    });
+    // Iterate over each script and convert it to audio, then update the document with the gridFsFileId
+    for (const script of scripts) {
+      try {
+        //const standardVoice = voiceTypes.standardFemaleAUS;
+        const user = script.users[0]; //get the first user since they all have the same voice
+        const voice = await getUserVoice(user);
+        console.log("voice " + voice);
+        const reference = await synthesize(script, voice);
 
-//         // Directly find one script and update it with the new gridFsFileId
-//         const updatedScript = await scriptsModel.findOneAndUpdate(
-//           { _id: script._id },
-//           { $set: { refID: reference } },
-//           { new: true } // This option returns the modified document rather than the original
-//         );
+        // Directly find one script and update it with the new gridFsFileId
+        const updatedScript = await scriptsModel.findOneAndUpdate(
+          { _id: script._id },
+          { $set: { refID: reference } },
+          { new: true } // This option returns the modified document rather than the original
+        );
 
-//         if (updatedScript) {
-//           console.log(`Updated script ${script._id} with refID ${reference}`);
-//         } else {
-//           console.log(`Script ${script._id} not found for update.`);
-//         }
-//       } catch (error) {
-//         console.error(`Error processing script ${script._id}:`, error);
-//       }
-//     }
+        if (updatedScript) {
+          console.log(`Updated script ${script._id} with refID ${reference}`);
+        } else {
+          console.log(`Script ${script._id} not found for update.`);
+        }
+      } catch (error) {
+        console.error(`Error processing script ${script._id}:`, error);
+      }
+    }
 
-//     res.send({ message: "All scripts have been processed and updated" }); // After all scripts have been processed, send a response
-//   } catch (e) {
-//     res.status(500).send("Unable to process scripts");
-//     console.error("Error occurred while retrieving and processing scripts:", e);
-//   }
-// });
+    res.send({ message: "All scripts have been processed and updated" }); // After all scripts have been processed, send a response
+  } catch (e) {
+    res.status(500).send("Unable to process scripts");
+    console.error("Error occurred while retrieving and processing scripts:", e);
+  }
+});
 
 //------GETTING TODAY'S SCRIPTS AND CREATING PODCASTS--------
 async function processTodaysPodcasts() {

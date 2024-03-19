@@ -1,9 +1,9 @@
 import React, { useRef, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { baseURL } from "../config.js";
 
 export default function Signup() {
+  const baseURL = process.env.REACT_APP_BASEURL;
   const emailRef = useRef();
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
@@ -29,14 +29,13 @@ export default function Signup() {
   }
 
   async function handleSubmit(e) {
-    if(e){
+    if (e) {
       e.preventDefault();
     }
     if (passwordRef.current.value !== confirmPasswordRef.current.value) {
       return setError("Passwords do not match");
     }
-    if(passwordRef.current.value){
-
+    if (passwordRef.current.value) {
     }
     try {
       setError("");
@@ -47,11 +46,11 @@ export default function Signup() {
 
       if (addUserResponse.status === 400) {
         throw new Error("Failed to Signup");
-      }
-      else{
+      } else {
         await signup(emailRef.current.value, passwordRef.current.value).then(
-          nav("/createProfile") )
-      ;}
+          nav("/createProfile")
+        );
+      }
     } catch (e) {
       setError("Failed to Signup");
     }
@@ -69,9 +68,8 @@ export default function Signup() {
         <div className="text-3xl text-orange-900">Create your account</div>
         <div> {error}</div>
 
-        
-          <form onSubmit={handleSubmit}>
-            <div className="flex flex-col">
+        <form onSubmit={handleSubmit}>
+          <div className="flex flex-col">
             <input
               className="mb-6 bg-none border border-gray-200 rounded-2xl w-80 px-4 placeholder:text-gray-600 py-4"
               type="text"
@@ -96,24 +94,21 @@ export default function Signup() {
               ref={confirmPasswordRef}
               required
             />{" "}
-    
-              <button
-                className="bg-gray-200 h-12 my-4 text-sm rounded-2xl hover:bg-gray-300 ease-linear transition duration-100 shadow-sm"
-                type="submit"
-                disabled={loading}
-              >
-                Sign Up
-              </button>
-
+            <button
+              className="bg-gray-200 h-12 my-4 text-sm rounded-2xl hover:bg-gray-300 ease-linear transition duration-100 shadow-sm"
+              type="submit"
+              disabled={loading}
+            >
+              Sign Up
+            </button>
             <button
               className="text-center mt-2 text-xs hover:text-gray-800 ease-linear transition duration-100 underline"
               onClick={goBack}
             >
               Back to login
             </button>
-            </div>
-          </form>
-        
+          </div>
+        </form>
       </div>
     </div>
   );

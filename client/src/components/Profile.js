@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { baseURL } from "../config.js";
 import Footer from "./Footer.js";
 import Modal from '@mui/material/Modal';
 import { Box } from "@mui/material";
 
 
 function Profile() {
+  const baseURL = process.env.REACT_APP_BASEURL;
   const nav = useNavigate();
   const [topics, setTopics] = useState([]);
   const [userTopics, setUserTopics] = useState([]);

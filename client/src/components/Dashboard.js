@@ -3,7 +3,6 @@ import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Footer from "./Footer";
 import "rsuite/dist/rsuite.min.css";
-import { baseURL } from "../config.js";
 import Typewriter from "typewriter-effect";
 import Calendar from "react-calendar";
 //import "react-calendar/dist/Calendar.css";
@@ -14,6 +13,7 @@ import styled from "styled-components";
 //import { response } from "../../../backend/routes/scraperRoutes.js";
 
 export default function Dashboard() {
+  const baseURL = process.env.REACT_APP_BASEURL;
   const [date, setDate] = useState(new Date());
   const [showPreviewButton, setShowPreviewButton] = useState(false);
   const [openModal, setOpenModal] = useState(false);
@@ -31,61 +31,61 @@ export default function Dashboard() {
   // const day = today.getDate();
   const audioRef = useRef(null); // Create a ref for the audio element
 
-  /**------STYLING THE REACT CALENDAR------- */
-  const CalendarContainer = styled.div`
-   /* ~~~ container styles ~~~ */
-    background-color: rgb(17 24 39);
-    border-radius: 10px;
-    padding:30px;
-    height:600px;
 
-    /* ~~~ navigation styles ~~~ */
-  .react-calendar__navigation {
-    display: flex;
+  // /**------STYLING THE REACT CALENDAR------- */
+  // const CalendarContainer = styled.div`
+  //   /* ~~~ container styles ~~~ */
+  //   background-color: rgb(17 24 39);
+  //   border-radius: 3px;
+  //   padding: 30px;
+  //   height: 600px;
 
-    .react-calendar__navigation__label {
-      font-weight: bold;
-    }
+  //   /* ~~~ navigation styles ~~~ */
+  //   .react-calendar__navigation {
+  //     display: flex;
 
-    .react-calendar__navigation__arrow {
-      flex-grow: 0.333;
-    }
-  }
+  //     .react-calendar__navigation__label {
+  //       font-weight: bold;
+  //     }
 
-   /* ~~~ label styles ~~~ */
-  .react-calendar__month-view__weekdays {
-    text-align: center;
-    color:white;
-    margin:20px 0;
-  }
+  //     .react-calendar__navigation__arrow {
+  //       flex-grow: 0.333;
+  //     }
+  //   }
 
-  /* ~~~ button styles ~~~ */
-    button {
-      border: 0;
-      border-radius: 3px;
-      color: white;
-      padding: 5px 10px;
-      height:50px;
-      margin: 0.8rem 0px;
-      
+  //   /* ~~~ label styles ~~~ */
+  //   .react-calendar__month-view__weekdays {
+  //     text-align: center;
+  //     color: white;
+  //     margin: 20px 0;
+  //   }
 
-    &:hover {
-      background-color: rgb(156 163 175);;
-    }
+  //   /* ~~~ button styles ~~~ */
+  //   button {
+  //     border: 0;
+  //     border-radius: 3px;
+  //     color: white;
+  //     padding: 5px 10px;
+  //     height: 50px;
+  //     margin: 0.8rem 0px;
 
-    &:active {
-      background-color: rgb(156 163 175);;
-    }
-  }
+  //     &:hover {
+  //       background-color: rgb(156 163 175);
+  //     }
 
-    /* ~~~ neighboring month & weekend styles ~~~ */
-    .react-calendar__month-view__days__day--neighboringMonth {
-      opacity: 0.7;
-    }
-    .react-calendar__month-view__days__day--weekend {
-      color: #dfdfdf;
-    }
-`;
+  //     &:active {
+  //       background-color: rgb(156 163 175);
+  //     }
+  //   }
+
+  //   /* ~~~ neighboring month & weekend styles ~~~ */
+  //   .react-calendar__month-view__days__day--neighboringMonth {
+  //     opacity: 0.7;
+  //   }
+  //   .react-calendar__month-view__days__day--weekend {
+  //     color: #dfdfdf;
+  //   }
+  // `;
 
   const modalStyle = {
     position: "absolute",
@@ -95,8 +95,8 @@ export default function Dashboard() {
     width: 800,
     bgcolor: "background.paper",
     boxShadow: 24,
-    py:6,
-    px:10
+    py: 6,
+    px: 10,
   };
 
   function formatDateToYYYYMMDD(date) {
@@ -299,10 +299,7 @@ export default function Dashboard() {
           <div className="font-bold text-3xl text-orange-900">Today's Byte</div>
           <div className="px-28 py-14 bg-orange-50 text-gray-900 rounded-md shadow-lg flex flex-col gap-6 align-middle">
             <div className="flex flex-col justify-center align-middle items-center">
-              <audio  
-                controls ref={audioRef} 
-                className="w-1/2"
-              >
+              <audio controls ref={audioRef} className="w-1/2">
                 Your browser does not support the audio element.
               </audio>
             </div>
@@ -312,39 +309,34 @@ export default function Dashboard() {
 
         <div className="flex flex-col justify-center w-7/12 mb-44 gap-7 self-center">
           <div className="font-bold text-3xl text-orange-900">Past Bytes</div>
-          <div className="shadow-lg">
-            <CalendarContainer>
-              <Calendar
-                onChange={(value) => {
-                  const newDate = new Date(value).setHours(0, 0, 0, 0);
-                  const todayDate = new Date().setHours(0, 0, 0, 0);
-                  setDate(new Date(newDate).toISOString());
-                  //setShowPreviewButton(newDate < todayDate);
-                  openPreviewModal(newDate < todayDate);
-                }}
-                value={new Date(date)}
-                // value = {selectedDate}
-                // onClickDay={handleClickDay
-                // //   (value)=>{
-                // //   const newDate = new Date(value).setHours(0, 0, 0, 0);
-                // //   const todayDate = new Date().setHours(0, 0, 0, 0);
-                // //   setDate(new Date(newDate).toISOString());
-                // //   openPreviewModal()
-                // // }
-                // }
-              />
-            </CalendarContainer>
+          <div className="border border-gray">
+            {/* <CalendarContainer> */}
+            <Calendar
+              // onChange={(value) => {
+              //   const newDate = new Date(value).setHours(0, 0, 0, 0);
+              //   const todayDate = new Date().setHours(0, 0, 0, 0);
+              //   setDate(new Date(newDate).toISOString());
+              //   //setShowPreviewButton(newDate < todayDate);
+              // }}
+              value={new Date(date)}
+              onClickDay={(value) => {
+                const newDate = new Date(value).setHours(0, 0, 0, 0);
+                const todayDate = new Date().setHours(0, 0, 0, 0);
+                setDate(new Date(newDate).toISOString());
+                openPreviewModal();
+              }}
+            />
+            {/* </CalendarContainer> */}
           </div>
-   
-          {/* {showPreviewButton && (
-          <button
-            onClick={openPreviewModal}
-            className="mt-4 px-6 py-2 text-white bg-blue-500 hover:bg-blue-700 rounded-md"
-          >
-            Preview for {date.split("T")[0]}
-          </button>
-        )} */}
 
+          {showPreviewButton && (
+            <button
+              onClick={openPreviewModal}
+              className="mt-4 px-6 py-2 text-white bg-blue-500 hover:bg-blue-700 rounded-md"
+            >
+              Preview for {date.split("T")[0]}
+            </button>
+          )}
         </div>
         {/* Modal component */}
         <Modal
