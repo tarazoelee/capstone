@@ -64,13 +64,13 @@ export default function Dashboard() {
     if (data && data.length > 0) {
       const script = data[0].script;
       const oldRefID = data[0].refID;
-      const audioURL = `${baseURL}/image/${oldRefID}`;
+      const audioURL = await audioData[oldRefID];
 
     setModalContent(
         <div>
           <div className="font-bold text-black text-xl">{formattedDate}</div>
           <div className="my-4">{script}</div>
-          {/* {!audioLoaded && <p>Loading audio...</p>} */}
+          {!audioURL && <p>Loading audio...</p>}
           {
             <audio 
               controls 
@@ -117,7 +117,6 @@ export default function Dashboard() {
         );
         if (userScript.length > 0) {
           setPodcastScript(userScript[0].script);
-          // setPodcastRefID(userScript[0].refID);
           getPodcast(userScript[0].refID); //getting today's podcast
         } else {
           setPodcastScript("No byte today... :(");
@@ -163,7 +162,6 @@ export default function Dashboard() {
 
   async function getPodcast(refID) {
     if (!refID) return; // Exit if there is no podcastRefID
-
     try {
       const response = await fetch(`${baseURL}/image/${refID}`);
       if (!response.ok) {
@@ -174,6 +172,9 @@ export default function Dashboard() {
       if (audioRef.current) {
         audioRef.current.src = url;
         audioRef.current.load();
+      }
+      if(url && !audioData[refID]){
+        audioData[refID] = url; //adding audio to map in audioData dictionary 
       }
     } catch (error) {
       console.error(
