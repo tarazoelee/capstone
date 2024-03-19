@@ -5,12 +5,9 @@ import Footer from "./Footer";
 import "rsuite/dist/rsuite.min.css";
 import Typewriter from "typewriter-effect";
 import Calendar from "react-calendar";
-//import "react-calendar/dist/Calendar.css";
 import Modal from "@mui/material/Modal";
 import { Box } from "@mui/material";
 import './styles.css'; 
-import styled from "styled-components"
-import { CalendarContainer } from "rsuite/esm/Calendar";
 //import { response } from "../../../backend/routes/scraperRoutes.js";
 
 export default function Dashboard() {

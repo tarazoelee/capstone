@@ -1,6 +1,8 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import Modal from "@mui/material/Modal";
+import { Box } from "@mui/material";
 
 export default function ForgotPassword() {
   const { forgotPassword } = useAuth();
@@ -8,6 +10,8 @@ export default function ForgotPassword() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const nav = useNavigate();
+  const [openModal, setOpenModal] = useState(false);
+  const [modalText, setModalText] = useState('');
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -16,7 +20,8 @@ export default function ForgotPassword() {
       setError("");
       setLoading(true);
       await forgotPassword(emailRef.current.value);
-      nav("/");
+      setOpenModal(true);
+      setModalText("Check your inbox.")
     } catch {
       setError("Failed to Send Email");
     }
@@ -28,8 +33,38 @@ export default function ForgotPassword() {
     nav("/")
   }
 
+    // Function to close the modal
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setModalText("");
+    nav("/");
+  };
+
+  /** -----MODAL STYLING------ */
+  const modalStyle = {
+    position: "absolute",
+    top: "10%",
+    borderRadius: '10px',
+    left: "50%",
+    textAlign:'center',
+    transform: "translate(-50%, -50%)",
+    width: 300,
+    bgcolor: "background.paper",
+    boxShadow: 10,
+    p:4,
+    fontFamily:'display',
+};
+
   return (
     <div className="py-40 px-60 font-display">
+       <Modal 
+        open={openModal} 
+        onClose={handleCloseModal} 
+        aria-describedby="modal-modal-title">
+          <Box sx={modalStyle}>
+            <p>{modalText}</p> 
+          </Box>
+        </Modal>
       {error && <p>{error}</p>}
       <div
        onClick={goBack}
