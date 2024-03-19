@@ -4,7 +4,7 @@
 }
 
 .react-calendar{
-    background-color: rgb(17 24 39);
+    background-color: #807759;
     border-radius: 10px;
     padding: 30px;
     height: 600px;
@@ -38,11 +38,11 @@
     margin: 0.8rem 0px;
 
     &:hover {
-        background-color: rgb(156 163 175);
+        background-color: #c2b485;
     }
 
     &:active {
-        background-color: rgb(156 163 175);
+        background-color: #c2b485;
     }
 }
 
