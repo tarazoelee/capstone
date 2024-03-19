@@ -36,7 +36,7 @@ export default function Dashboard() {
   const CalendarContainer = styled.div`
     /* ~~~ container styles ~~~ */
     background-color: rgb(17 24 39);
-    border-radius: 3px;
+    border-radius: 10px;
     padding: 30px;
     height: 600px;
 
@@ -309,7 +309,7 @@ export default function Dashboard() {
 
         <div className="flex flex-col justify-center w-7/12 mb-44 gap-7 self-center">
           <div className="font-bold text-3xl text-orange-900">Past Bytes</div>
-          <div className="border border-gray">
+          <div className="">
             <CalendarContainer>
             <Calendar
               // onChange={(value) => {
