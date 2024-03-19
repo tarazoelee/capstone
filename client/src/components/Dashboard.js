@@ -24,14 +24,9 @@ export default function Dashboard() {
   const [podcastRefID, setPodcastRefID] = useState("");
   const { currentUser, logout } = useAuth();
   const [isDropdownVisible, setDropdownVisible] = useState(false);
-  //const today = new Date();
   const nav = useNavigate();
-  // const year = today.getFullYear();
-  // const month = today.getMonth() + 1;
-  // const day = today.getDate();
   const audioRef = useRef(null); // Create a ref for the audio element
 
-  // const CalendarContainer = styled.div``
 
   const modalStyle = {
     position: "absolute",
