@@ -23,6 +23,7 @@ export default function Dashboard() {
   const [podcastRefID, setPodcastRefID] = useState("");
   const { currentUser, logout } = useAuth();
   const [isDropdownVisible, setDropdownVisible] = useState(false);
+   const [selectedDate, setSelectedDate] = useState(new Date());
   //const today = new Date();
   const nav = useNavigate();
   // const year = today.getFullYear();
@@ -106,8 +107,14 @@ export default function Dashboard() {
     return `${year}-${month}-${day}`;
   }
 
-  async function openPreviewModal() {
-    const formattedDate = formatDateToYYYYMMDD(date);
+  const handleClickDay = (value) =>{
+    setSelectedDate(value)
+    console.log(selectedDate);
+    openPreviewModal();
+  }
+
+  async function openPreviewModal(){
+    const formattedDate = formatDateToYYYYMMDD(selectedDate);
     // Fetch the old script information first, then update the state and open the modal.
     try {
       const data = await getOldScript(formattedDate);
@@ -118,7 +125,7 @@ export default function Dashboard() {
         setModalContent(
           <div>
             <div className="font-bold text-black text-xl">{formattedDate}</div>
-            <p className="my-4">{script}</p>
+            <div className="my-4">{script}</div>
             {/* Optional: If you decide to add the audio player */}
             {oldRefID && (
               <audio controls src={`${baseURL}/image/${oldRefID}`}>
@@ -140,7 +147,6 @@ export default function Dashboard() {
       }
     } catch (error) {
       console.error("Error fetching old script:", error);
-      // Optionally handle the error, e.g., by showing an error message in the modal
     }
   }
 
@@ -242,7 +248,7 @@ export default function Dashboard() {
   return (
     <div className="font-display">
       <div className="flex h-full flex-col">
-        <div className="bg-orange-950 py-24 px-72 shadow-lgflex-col">
+        <div className="bg-orange-950 py-24 px-72 shadow-lg flex-col">
           <div
             className="font-semibold flex-col h-20 text-sm text-orange-200 mb-8 flex float-right w-20"
             onMouseEnter={handleMouseEnter}
@@ -306,35 +312,38 @@ export default function Dashboard() {
 
         <div className="flex flex-col justify-center w-7/12 mb-44 gap-7 self-center">
           <div className="font-bold text-3xl text-orange-900">Past Bytes</div>
-          <div className="">
+          <div className="shadow-lg">
             <CalendarContainer>
               <Calendar
-                // onChange={(value) => {
-                //   const newDate = new Date(value).setHours(0, 0, 0, 0);
-                //   const todayDate = new Date().setHours(0, 0, 0, 0);
-                //   setDate(new Date(newDate).toISOString());
-                //   //setShowPreviewButton(newDate < todayDate);
-                // }}
-                value={new Date(date)}
-                onClickDay={(value)=>{
+                onChange={(value) => {
                   const newDate = new Date(value).setHours(0, 0, 0, 0);
                   const todayDate = new Date().setHours(0, 0, 0, 0);
                   setDate(new Date(newDate).toISOString());
-                  openPreviewModal()
-                }
-                }
+                  //setShowPreviewButton(newDate < todayDate);
+                  openPreviewModal(newDate < todayDate);
+                }}
+                value={new Date(date)}
+                // value = {selectedDate}
+                // onClickDay={handleClickDay
+                // //   (value)=>{
+                // //   const newDate = new Date(value).setHours(0, 0, 0, 0);
+                // //   const todayDate = new Date().setHours(0, 0, 0, 0);
+                // //   setDate(new Date(newDate).toISOString());
+                // //   openPreviewModal()
+                // // }
+                // }
               />
             </CalendarContainer>
           </div>
    
-          {showPreviewButton && (
+          {/* {showPreviewButton && (
           <button
             onClick={openPreviewModal}
             className="mt-4 px-6 py-2 text-white bg-blue-500 hover:bg-blue-700 rounded-md"
           >
             Preview for {date.split("T")[0]}
           </button>
-        )}
+        )} */}
 
         </div>
         {/* Modal component */}
@@ -345,7 +354,7 @@ export default function Dashboard() {
           aria-describedby="modal-description"
         >
           <Box sx={modalStyle}>
-            <p id="modal-description">{modalContent}</p>
+            <div id="modal-description">{modalContent}</div>
           </Box>
         </Modal>
       </div>
