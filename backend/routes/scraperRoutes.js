@@ -9,15 +9,8 @@ const topicModels = require("../models/TopicTables");
 
 //Alex's lex.zhch@gmail.com email signed up with for api key
 const apiKey = process.env.NEWSCRAPER_API_KEY;
-const todaysDate = new Date().toISOString().split("T")[0];
 
-function getTodaysDate() {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0); // Set hours, minutes, seconds, and milliseconds to zero
-  return today;
-}
-
-function getTodaysDateInISO() {
+function todaysDate() {
   const today = new Date();
   const isoDate = today.toISOString().split("T")[0]; // Extract only the date part
   return isoDate;
@@ -38,32 +31,32 @@ router.get("/", (req, res) => {
 //CHANGE PUBLISHED AFTER DATE LATER
 const topicUrls = {
   //this link isnt great for arts i dont think
-  // arts: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&search="fine-arts"&published_after=${getLastWeekDate()}`,
-  // breakingnews: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=us,ca&categories=general&published_after=2024-03`,
-  // business: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=us,ca&categories=business&published_after=${getLastWeekDate()}`,
-  // canadianpolitics: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=ca&categories=politics&published_after=2024-03`,
-  // canadiansports: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=ca&categories=sports&published_after=2024-03`,
-  // collegebasketball: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=us&categories=sports&search="college basketball"&published_after=2024-03-14`,
-  // collegefootball: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=us&categories=sports&search="college football"&published_after=2024-03`,
-  // economy: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=us&search="economy"&published_after=2024-03-14`,
-  health: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=us&categories=health&published_after=${getLastWeekDate()}&published_before=${getTodaysDateInISO()}`,
-  // international: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&search="international"&published_after=2024-03-14`,
-  // mlb: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=us&categories=sports&search="basketball"&published_after=${getLastWeekDate()}`,
+  arts: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&search="fine-arts"&published_after=${getLastWeekDate()}`,
+  breakingnews: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=us,ca&categories=general&published_after=${getLastWeekDate()}`,
+  business: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=us,ca&categories=business&published_after=${getLastWeekDate()}`,
+  canadianpolitics: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=ca&categories=politics&published_after=${getLastWeekDate()}`,
+  canadiansports: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=ca&categories=sports&published_after=${getLastWeekDate()}`,
+  collegebasketball: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=us&categories=sports&search="college basketball"&published_after=${getLastWeekDate()}`,
+  collegefootball: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=us&categories=sports&search="college football"&published_after=${getLastWeekDate()}`,
+  economy: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=us&search="economy"&published_after=${getLastWeekDate()}`,
+  health: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=us&categories=health&published_after=${getLastWeekDate()}&published_before=${todaysDate()}`,
+  international: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&search="international"&published_after=${getLastWeekDate()}`,
+  mlb: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=us&categories=sports&search="basketball"&published_after=${getLastWeekDate()}`,
   nba: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=us&categories=sports&search="NBA"&published_after=${getLastWeekDate()}`,
-  // ncaa: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&categories=sports&search="ncaa"&published_after=${getLastWeekDate()}`,
-  // nhl: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=us,ca&categories=sports&search="NHL"&published_after=${getLastWeekDate()}`,
-  // nfl: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=us&categories=sports&search="NFL"&published_after=${getLastWeekDate()}`,
+  ncaa: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&categories=sports&search="ncaa"&published_after=${getLastWeekDate()}`,
+  nhl: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=us,ca&categories=sports&search="NHL"&published_after=${getLastWeekDate()}`,
+  nfl: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=us&categories=sports&search="NFL"&published_after=${getLastWeekDate()}`,
   technology: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=us&categories=tech&search="technology"&published_after=${getLastWeekDate()}`,
-  // topstories: `https://api.thenewsapi.com/v1/news/top?locale=us,ca&language=en&api_token=${apiKey}&search="headlines"&published_after=2024-03-14`,
-  // uspolitics: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=us&categories=politics&published_after=2024-03-14`,
-  // worldnews: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&search="world"&published_after=2024-03-14`,
+  topstories: `https://api.thenewsapi.com/v1/news/top?locale=us,ca&language=en&api_token=${apiKey}&search="headlines"&published_after=${getLastWeekDate()}`,
+  uspolitics: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=us&categories=politics&published_after=${getLastWeekDate()}`,
+  worldnews: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&search="world"&published_after=${getLastWeekDate()}`,
 };
 
 //topic (:t) in url param needs to be an exact match of the table name (all lowercase)
 router.get("/topic/", async (req, res) => {
   try {
     scrapeURLs();
-    res.send("topic scrapred and stored");
+    res.send("topic scraped and stored");
   } catch (error) {
     console.error("Error fetching and parsing articles:", error);
     res.status(500).send("Internal server error");
@@ -87,9 +80,9 @@ async function scrapeURLs() {
       const todaysDate = new Date().toISOString().split("T")[0];
       putScrapedNewsIntoDB(topic, articleContents, todaysDate);
       console.log("put everything into the db");
-      console.log("RESP OB", response.data.data[0]);
-      console.log("RESP OB", response.data.data[1]);
-      console.log("RESP OB", response.data.data[2]);
+      // console.log("RESP OB", response.data.data[0]);
+      // console.log("RESP OB", response.data.data[1]);
+      // console.log("RESP OB", response.data.data[2]);
     } catch (error) {
       console.error("Error fetching and parsing articles:", error);
     }

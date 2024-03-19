@@ -10,22 +10,6 @@ const usersModel = require("../models/Users");
 
 const todaysDate = new Date().toISOString().split("T")[0];
 
-// standardMaleUS: {
-//     audioConfig: {
-//       audioEncoding: "MP3",
-//       effectsProfileId: ["small-bluetooth-speaker-class-device"],
-//       pitch: 0,
-//       speakingRate: 1,
-//     },
-//     input: {
-//       text: "Script goes here", //Assuming script will be updated when synthesize is called
-//     },
-//     voice: {
-//       languageCode: "en-US",
-//       name: "en-US-Wavenet-J",
-//     },
-//   },
-
 const voiceTypes = {
   standardMaleUS: {
     voice: {
@@ -214,8 +198,6 @@ async function synthesize(script, voiceOption) {
       text: script.script, //Assuming script will be updated when synthesize is called
     },
     voice: {
-      // languageCode: "en-US",
-      // name: "en-US-Wavenet-J",
       ...selectedVoice.voice,
     },
   };
