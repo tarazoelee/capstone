@@ -18,13 +18,14 @@ export default function Dashboard() {
   const [modalContent, setModalContent] = useState("");
   const [error, setError] = useState("");
   const [podcastScript, setPodcastScript] = useState("");
-  const [podcastRefID, setPodcastRefID] = useState("");
   const { currentUser, logout } = useAuth();
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const nav = useNavigate();
   const audioRef = useRef(null); // Create a ref for the audio element
-  const [audioLoaded, setAudioLoaded] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const [audioLoaded, setAudioLoaded] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const refIDDateDictionary = {};
+  const audioData = {};
 
   const modalStyle = {
     position: "absolute",
@@ -45,6 +46,12 @@ export default function Dashboard() {
     const day = `${d.getDate()}`.padStart(2, "0");
     return `${year}-${month}-${day}`;
   }
+
+  /**GETTING SCRIPTS ON FIRST LOAD */
+  useEffect(() => {
+    getTodaysScript();
+    getAllOldScript();
+  }, []);
 
  async function openPreviewModal(date) {
   const formattedDate = formatDateToYYYYMMDD(date);
@@ -95,22 +102,11 @@ export default function Dashboard() {
   }
 }
 
-
   // Function to close the modal
   const handleCloseModal = () => {
     setOpenModal(false);
     setModalContent("");
   };
-
-  /**GETTING SCRIPTS ON FIRST LOAD */
-  useEffect(() => {
-    getTodaysScript();
-  }, []);
-
-  // Call getPodcast when the component mounts or podcastRefID changes
-  useEffect(() => {
-    getPodcast();
-  }, [podcastRefID]);
 
   async function getTodaysScript() {
     await fetch(`${baseURL}/scripts/todaysScript/${currentUser.email}`)
@@ -121,14 +117,15 @@ export default function Dashboard() {
         );
         if (userScript.length > 0) {
           setPodcastScript(userScript[0].script);
-          setPodcastRefID(userScript[0].refID);
+          // setPodcastRefID(userScript[0].refID);
+          getPodcast(userScript[0].refID); //getting today's podcast
         } else {
           setPodcastScript("No byte today... :(");
         }
       });
   }
 
-  //----GETTING ALL OLD SCRIPTS -------
+  //----GETTING OLD SCRIPTS -------
   async function getOldScript(d) {
     try {
       const response = await fetch(
@@ -144,11 +141,31 @@ export default function Dashboard() {
     }
   }
 
-  async function getPodcast() {
-    if (!podcastRefID) return; // Exit if there is no podcastRefID
+//----GETTING All OLD SCRIPTS -------
+  async function getAllOldScript(d) {
+    try {
+      const response = await fetch(`${baseURL}/scripts/pastScript/${currentUser.email}`);
+      const data = await response.json();
+        // Iterate over the data array and extract refID and date
+      data.forEach((item) => {
+        const refID = item.refID;
+        const date = item.date;
+        refIDDateDictionary[date] = refID;
+        getPodcast(refID); //generating audio of each refID 
+      });
+
+    } catch (error) {
+      console.error("Error fetching old scripts", error);
+      throw error; // Re-throw the error to be caught in the calling function
+    }
+  }
+
+
+  async function getPodcast(refID) {
+    if (!refID) return; // Exit if there is no podcastRefID
 
     try {
-      const response = await fetch(`${baseURL}/image/${podcastRefID}`);
+      const response = await fetch(`${baseURL}/image/${refID}`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
