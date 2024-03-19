@@ -22,8 +22,6 @@ export default function Dashboard() {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const nav = useNavigate();
   const audioRef = useRef(null); // Create a ref for the audio element
-  const [audioLoaded, setAudioLoaded] = useState(false);
-  const [loading, setLoading] = useState(false);
   const refIDDateDictionary = {};
   const audioData = {};
 
@@ -51,12 +49,10 @@ export default function Dashboard() {
   useEffect(() => {
     getTodaysScript();
     getAllOldScript();
-  }, []);
+  }, [audioData]);
 
  async function openPreviewModal(date) {
   const formattedDate = formatDateToYYYYMMDD(date);
-  setLoading(true); // Begin with loading state as true
-  setAudioLoaded(false); // Reset audio loaded state
 
   // Fetch the old script information first, then update the state and open the modal.
   try {
@@ -64,29 +60,27 @@ export default function Dashboard() {
     if (data && data.length > 0) {
       const script = data[0].script;
       const oldRefID = data[0].refID;
-      const audioURL = await audioData[oldRefID];
+      const audioURL = audioData[oldRefID];
+      console.log(audioData)
 
     setModalContent(
         <div>
           <div className="font-bold text-black text-xl">{formattedDate}</div>
           <div className="my-4">{script}</div>
           {!audioURL && <p>Loading audio...</p>}
-          {
-            <audio 
+          {audioURL &&
+            <audio
               controls 
-              src={audioURL} 
-              onLoadedData={() => {
-                setAudioLoaded(true);
-                setLoading(false); }}
+              src={audioURL}
             >
               Your browser does not support the audio element.
             </audio>
           }
         </div>
       )
-
       // Load the audio and then open the modal
       setOpenModal(true);
+
     } else {
       setModalContent(// Handle the case where no script is found for the selected date
         <div>
@@ -94,7 +88,6 @@ export default function Dashboard() {
           <p>No byte for this day.</p>
         </div>
       );
-      setLoading(false);
       setOpenModal(true);
     }
   } catch (error) {
@@ -141,7 +134,7 @@ export default function Dashboard() {
   }
 
 //----GETTING All OLD SCRIPTS -------
-  async function getAllOldScript(d) {
+  async function getAllOldScript() {
     try {
       const response = await fetch(`${baseURL}/scripts/pastScript/${currentUser.email}`);
       const data = await response.json();
