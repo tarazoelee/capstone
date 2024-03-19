@@ -32,7 +32,6 @@ router.get("/", (req, res) => {
 const topicUrls = {
   //this link isnt great for arts i dont think
   arts: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&search="fine-arts"&published_after=${getLastWeekDate()}`,
-  breakingnews: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=us,ca&categories=general&published_after=${getLastWeekDate()}`,
   business: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=us,ca&categories=business&published_after=${getLastWeekDate()}`,
   canadianpolitics: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=ca&categories=politics&published_after=${getLastWeekDate()}`,
   canadiansports: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=ca&categories=sports&published_after=${getLastWeekDate()}`,
