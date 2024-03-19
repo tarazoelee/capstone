@@ -199,7 +199,7 @@ function getMonthName(monthNumber) {
   }
 
   return (
-    <div className="flex flex-col min-h-screen font-display text-yellow-900">
+    <div className="flex flex-col min-h-screen font-display text-yellow-950">
       <Modal 
         open={openModal} 
         onClose={handleCloseModal} 
@@ -208,7 +208,7 @@ function getMonthName(monthNumber) {
             <p>{modalText}</p> 
           </Box>
         </Modal>
-      <div className="weight flex justify-end px-72 pt-24 font-semibold hover:text-yellow-700 ease-linear transition duration-100">
+      <div className="flex justify-end px-72 pt-24 font-semibold hover:text-yellow-700 ease-linear transition duration-100">
         <button onClick={navDash}>Dashboard</button>
       </div>
       <div className="flex flex-col gap-12 self-center items-center mt-20 mb-28 px-40">

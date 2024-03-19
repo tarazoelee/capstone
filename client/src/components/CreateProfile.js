@@ -158,7 +158,7 @@ function CreateProfile() {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-full gap-8 py-24 font-display text-orange-900 ">
+    <div className="flex flex-col justify-center items-center min-h-full gap-8 py-24 font-display text-yellow-950 ">
       <Modal
         open={openModal}
         onClose={handleCloseModal}

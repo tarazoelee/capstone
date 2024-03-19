@@ -5,11 +5,9 @@ import Footer from "./Footer";
 import "rsuite/dist/rsuite.min.css";
 import Typewriter from "typewriter-effect";
 import Calendar from "react-calendar";
-//import "react-calendar/dist/Calendar.css";
 import Modal from "@mui/material/Modal";
 import { Box } from "@mui/material";
 import './styles.css'; 
-
 //import { response } from "../../../backend/routes/scraperRoutes.js";
 
 export default function Dashboard() {
@@ -20,18 +18,12 @@ export default function Dashboard() {
   const [modalContent, setModalContent] = useState("");
   const [error, setError] = useState("");
   const [podcastScript, setPodcastScript] = useState("");
-  const [podcastRefID, setPodcastRefID] = useState("");
   const { currentUser, logout } = useAuth();
   const [isDropdownVisible, setDropdownVisible] = useState(false);
-   const [selectedDate, setSelectedDate] = useState(new Date());
-  //const today = new Date();
   const nav = useNavigate();
-  // const year = today.getFullYear();
-  // const month = today.getMonth() + 1;
-  // const day = today.getDate();
   const audioRef = useRef(null); // Create a ref for the audio element
-
-
+  const refIDDateDictionary = {};
+  const audioData = {};
 
   const modalStyle = {
     position: "absolute",
@@ -53,64 +45,61 @@ export default function Dashboard() {
     return `${year}-${month}-${day}`;
   }
 
-  const handleClickDay = (value) =>{
-    setSelectedDate(value)
-    console.log(selectedDate);
-    openPreviewModal();
-  }
+  /**GETTING SCRIPTS ON FIRST LOAD */
+  useEffect(() => {
+    getTodaysScript();
+    getAllOldScript();
+  }, [audioData]);
 
-  async function openPreviewModal(){
-    const formattedDate = formatDateToYYYYMMDD(selectedDate);
-    // Fetch the old script information first, then update the state and open the modal.
-    try {
-      const data = await getOldScript(formattedDate);
-      if (data && data.length > 0) {
-        // Directly use the fetched data to set modal content and open modal
-        const script = data[0].script;
-        const oldRefID = data[0].refID;
-        setModalContent(
-          <div>
-            <div className="font-bold text-black text-xl">{formattedDate}</div>
-            <div className="my-4">{script}</div>
-            {/* Optional: If you decide to add the audio player */}
-            {oldRefID && (
-              <audio controls src={`${baseURL}/image/${oldRefID}`}>
-                Your browser does not support the audio element.
-              </audio>
-            )}
-          </div>
-        );
-        setOpenModal(true);
-      } else {
-        // Handle the case where no script is found for the selected date
-        setModalContent(
-          <>
-            <h2>Podcast Preview for {formattedDate}</h2>
-            <p>No byte for this day.</p>
-          </>
-        );
-        setOpenModal(true);
-      }
-    } catch (error) {
-      console.error("Error fetching old script:", error);
+ async function openPreviewModal(date) {
+  const formattedDate = formatDateToYYYYMMDD(date);
+
+  // Fetch the old script information first, then update the state and open the modal.
+  try {
+    const data = await getOldScript(formattedDate);
+    if (data && data.length > 0) {
+      const script = data[0].script;
+      const oldRefID = data[0].refID;
+      const audioURL = audioData[oldRefID];
+      console.log(audioData)
+
+    setModalContent(
+        <div>
+          <div className="font-bold text-black text-xl">{formattedDate}</div>
+          <div className="my-4">{script}</div>
+          {!audioURL && <p>Loading audio...</p>}
+          {audioURL &&
+            <audio
+              controls 
+              src={audioURL}
+            >
+              Your browser does not support the audio element.
+            </audio>
+          }
+        </div>
+      )
+      // Load the audio and then open the modal
+      setOpenModal(true);
+
+    } else {
+      setModalContent(// Handle the case where no script is found for the selected date
+        <div>
+          <h2>Podcast Preview for {formattedDate}</h2>
+          <p>No byte for this day.</p>
+        </div>
+      );
+      setOpenModal(true);
     }
+  } catch (error) {
+    console.error("Error fetching old script:", error);
   }
+}
 
   // Function to close the modal
   const handleCloseModal = () => {
     setOpenModal(false);
     setModalContent("");
   };
-
-  /**GETTING SCRIPTS ON FIRST LOAD */
-  useEffect(() => {
-    getTodaysScript();
-  }, []);
-
-  // Call getPodcast when the component mounts or podcastRefID changes
-  useEffect(() => {
-    getPodcast();
-  }, [podcastRefID]);
 
   async function getTodaysScript() {
     await fetch(`${baseURL}/scripts/todaysScript/${currentUser.email}`)
@@ -121,13 +110,14 @@ export default function Dashboard() {
         );
         if (userScript.length > 0) {
           setPodcastScript(userScript[0].script);
-          setPodcastRefID(userScript[0].refID);
+          getPodcast(userScript[0].refID); //getting today's podcast
         } else {
           setPodcastScript("No byte today... :(");
         }
       });
   }
 
+  //----GETTING OLD SCRIPTS -------
   async function getOldScript(d) {
     try {
       const response = await fetch(
@@ -143,11 +133,30 @@ export default function Dashboard() {
     }
   }
 
-  async function getPodcast() {
-    if (!podcastRefID) return; // Exit if there is no podcastRefID
-
+//----GETTING All OLD SCRIPTS -------
+  async function getAllOldScript() {
     try {
-      const response = await fetch(`${baseURL}/image/${podcastRefID}`);
+      const response = await fetch(`${baseURL}/scripts/pastScript/${currentUser.email}`);
+      const data = await response.json();
+        // Iterate over the data array and extract refID and date
+      data.forEach((item) => {
+        const refID = item.refID;
+        const date = item.date;
+        refIDDateDictionary[date] = refID;
+        getPodcast(refID); //generating audio of each refID 
+      });
+
+    } catch (error) {
+      console.error("Error fetching old scripts", error);
+      throw error; // Re-throw the error to be caught in the calling function
+    }
+  }
+
+
+  async function getPodcast(refID) {
+    if (!refID) return; // Exit if there is no podcastRefID
+    try {
+      const response = await fetch(`${baseURL}/image/${refID}`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -156,6 +165,9 @@ export default function Dashboard() {
       if (audioRef.current) {
         audioRef.current.src = url;
         audioRef.current.load();
+      }
+      if(url && !audioData[refID]){
+        audioData[refID] = url; //adding audio to map in audioData dictionary 
       }
     } catch (error) {
       console.error(
@@ -234,7 +246,6 @@ export default function Dashboard() {
                 typewriter
                   .typeString(" Listen to the news like never before.")
                   .callFunction(() => {
-                    console.log("String typed out!");
                   })
                   .start();
               }}
@@ -256,30 +267,18 @@ export default function Dashboard() {
         <div className="flex flex-col justify-center w-7/12 mb-44 gap-7 self-center">
           <div className="font-bold text-3xl text-orange-900">Past Bytes</div>
           <div className="cal-container ">
+
             <Calendar
-              // onChange={(value) => {
-              //   const newDate = new Date(value).setHours(0, 0, 0, 0);
-              //   const todayDate = new Date().setHours(0, 0, 0, 0);
-              //   setDate(new Date(newDate).toISOString());
-              //   //setShowPreviewButton(newDate < todayDate);
-              // }}
               value={new Date(date)}
               onClickDay={(value) => {
                 const newDate = new Date(value).setHours(0, 0, 0, 0);
                 const todayDate = new Date().setHours(0, 0, 0, 0);
                 setDate(new Date(newDate).toISOString());
-                openPreviewModal();
+                openPreviewModal(value);
               }}
             />
+
           </div>
-          {showPreviewButton && (
-            <button
-              onClick={openPreviewModal}
-              className="mt-4 px-6 py-2 text-white bg-blue-500 hover:bg-blue-700 rounded-md"
-            >
-              Preview for {date.split("T")[0]}
-            </button>
-          )}
         </div>
         {/* Modal component */}
         <Modal
