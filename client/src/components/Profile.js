@@ -249,7 +249,7 @@ function getMonthName(monthNumber) {
         <div className="flex gap-10 justify-center items-center flex-col mt-14">
           <div className="text-lg">Podcast Length</div>
           <div className="flex gap-10 flex-wrap justify-center font-semibold">
-            {["2 min", "5 min", "10 min", "20 min"].map(
+            {["2 min", "5 min", "10 min"].map(
               (lengthValue, index) => (
                 <div
                   key={index}
