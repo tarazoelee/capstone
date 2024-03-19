@@ -34,7 +34,7 @@ export default function Dashboard() {
   const CalendarContainer = styled.div`
    /* ~~~ container styles ~~~ */
     background-color: rgb(17 24 39);
-    border-radius: 3px;
+    border-radius: 15px;
     padding:30px;
     height:600px;
 
