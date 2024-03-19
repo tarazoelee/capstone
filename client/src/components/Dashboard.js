@@ -24,7 +24,6 @@ export default function Dashboard() {
   const [podcastRefID, setPodcastRefID] = useState("");
   const { currentUser, logout } = useAuth();
   const [isDropdownVisible, setDropdownVisible] = useState(false);
-   const [selectedDate, setSelectedDate] = useState(new Date());
   //const today = new Date();
   const nav = useNavigate();
   // const year = today.getFullYear();
@@ -54,14 +53,8 @@ export default function Dashboard() {
     return `${year}-${month}-${day}`;
   }
 
-  const handleClickDay = (value) =>{
-    setSelectedDate(value)
-    console.log(selectedDate);
-    openPreviewModal();
-  }
-
-  async function openPreviewModal(){
-    const formattedDate = formatDateToYYYYMMDD(selectedDate);
+  async function openPreviewModal(date){
+    const formattedDate = formatDateToYYYYMMDD(date);
     // Fetch the old script information first, then update the state and open the modal.
     try {
       const data = await getOldScript(formattedDate);
@@ -259,30 +252,16 @@ export default function Dashboard() {
           <div className="cal-container ">
 
             <Calendar
-              // onChange={(value) => {
-              //   const newDate = new Date(value).setHours(0, 0, 0, 0);
-              //   const todayDate = new Date().setHours(0, 0, 0, 0);
-              //   setDate(new Date(newDate).toISOString());
-              //   //setShowPreviewButton(newDate < todayDate);
-              // }}
               value={new Date(date)}
               onClickDay={(value) => {
                 const newDate = new Date(value).setHours(0, 0, 0, 0);
                 const todayDate = new Date().setHours(0, 0, 0, 0);
                 setDate(new Date(newDate).toISOString());
-                openPreviewModal();
+                openPreviewModal(value);
               }}
             />
 
           </div>
-          {showPreviewButton && (
-            <button
-              onClick={openPreviewModal}
-              className="mt-4 px-6 py-2 text-white bg-blue-500 hover:bg-blue-700 rounded-md"
-            >
-              Preview for {date.split("T")[0]}
-            </button>
-          )}
         </div>
         {/* Modal component */}
         <Modal
