@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import {bg} from './news-bg.jpg'
 
 export default function Login() {
   const baseURL = process.env.REACT_APP_BASEURL;
@@ -68,8 +69,8 @@ export default function Login() {
 
   return (
     <div className="flex h-full font-display">
-      <div className="flex flex-col w-1/2 items-center justify-center rounded-xl p-10 my-5 mx-3 bg-orange-900 shadow-lg">
-        <div className="font-bold text-6xl px-36 text-orange-300 leading-tight">
+      <div className="flex flex-col w-3/5 items-center justify-center rounded-xl p-10 my-5 mx-3 bg-orange-900 shadow-lg">
+        <div className="font-bold text-6xl px-52 text-orange-200 leading-tight">
           {" "}
           Discover the daily news like never before.
         </div>

@@ -7,6 +7,7 @@ import Typewriter from "typewriter-effect";
 import Calendar from "react-calendar";
 import Modal from "@mui/material/Modal";
 import { Box } from "@mui/material";
+import ReactLoading from "react-loading";
 import './styles.css'; 
 //import { response } from "../../../backend/routes/scraperRoutes.js";
 
@@ -24,13 +25,14 @@ export default function Dashboard() {
   const audioRef = useRef(null); // Create a ref for the audio element
   const refIDDateDictionary = {};
   const audioData = {};
+  const [isLoading, setIsLoading] = useState(true);
 
   const modalStyle = {
     position: "absolute",
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: "80%",
+    width: "70%",
     bgcolor: "background.paper",
     boxShadow: 24,
     py: 6,
@@ -239,7 +241,7 @@ export default function Dashboard() {
               </div>
             )}
           </div>
-          <div className="text-6xl font-bold text-left text-orange-200 w-3/5 h-40 pt-10">
+          <div className="text-6xl font-bold text-left text-orange-200 w-3/5 h-40 mt-20 mb-10 ">
             <Typewriter
               onInit={(typewriter) => {
                 typewriter
@@ -255,9 +257,10 @@ export default function Dashboard() {
           <div className="font-bold text-3xl text-orange-900">Today's Byte</div>
           <div className="px-28 py-14 bg-orange-50 text-gray-900 rounded-md shadow-lg flex flex-col gap-6 align-middle">
             <div className="flex flex-col justify-center align-middle items-center">
-              <audio controls ref={audioRef} className="w-1/2">
+              {
+                <audio controls ref={audioRef} className="w-1/2">
                 Your browser does not support the audio element.
-              </audio>
+              </audio>}
             </div>
             <div className="leading-7 text-base">{podcastScript} </div>
           </div>
