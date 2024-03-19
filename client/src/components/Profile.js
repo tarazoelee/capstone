@@ -199,7 +199,7 @@ function getMonthName(monthNumber) {
   }
 
   return (
-    <div className="flex flex-col min-h-screen font-display text-yellow-900">
+    <div className="flex flex-col min-h-screen font-display text-yellow-950">
       <Modal 
         open={openModal} 
         onClose={handleCloseModal} 
