@@ -1,9 +1,9 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { baseURL } from "../config.js";
 
 export default function Login() {
+  const baseURL = process.env.REACT_APP_BASEURL;
   const emailRef = useRef();
   const passwordRef = useRef();
   const { login, currentUser, googleSignIn } = useAuth();

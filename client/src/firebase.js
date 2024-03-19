@@ -2,13 +2,13 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 
 const app = firebase.initializeApp({
-  apiKey: "AIzaSyB_np7pOAhsX0VGgneEtq4bCDmqmDASdAc",
-  authDomain: "capstone-74be8.firebaseapp.com",
-  projectId: "capstone-74be8",
-  storageBucket: "capstone-74be8.appspot.com",
-  messagingSenderId: "575373605196",
-  appId: "1:575373605196:web:9a8ce81801af0ec7f0b7e9",
-  measurementId: "G-76NS7Y260R",
+  apiKey: process.env.REACT_APP_FIREBASE,
+  authDomain: process.env.REACT_APP_FB_AUTHDOMAIN,
+  projectId: process.env.REACT_APP_FB_PROJECTID,
+  storageBucket: process.env.REACT_APP_FB_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MSG_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 });
 
 if (!firebase.apps.length) {

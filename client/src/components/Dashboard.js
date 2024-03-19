@@ -3,7 +3,6 @@ import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Footer from "./Footer";
 import "rsuite/dist/rsuite.min.css";
-import { baseURL } from "../config.js";
 import Typewriter from "typewriter-effect";
 import Calendar from "react-calendar";
 //import "react-calendar/dist/Calendar.css";
@@ -14,6 +13,7 @@ import styled from "styled-components";
 //import { response } from "../../../backend/routes/scraperRoutes.js";
 
 export default function Dashboard() {
+  const baseURL = process.env.REACT_APP_BASEURL;
   const [date, setDate] = useState(new Date());
   const [showPreviewButton, setShowPreviewButton] = useState(false);
   const [openModal, setOpenModal] = useState(false);
