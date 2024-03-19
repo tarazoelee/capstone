@@ -192,7 +192,7 @@ async function synthesize(script, voiceOption) {
       audioEncoding: "MP3",
       effectsProfileId: ["small-bluetooth-speaker-class-device"],
       pitch: 0,
-      speakingRate: 1,
+      speakingRate: 0.81,
     },
     input: {
       text: script.script, //Assuming script will be updated when synthesize is called

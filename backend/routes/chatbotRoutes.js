@@ -90,7 +90,7 @@ async function createScript(combinationsArray, newsArticleMap) {
     const number = parseInt(combination.length, 10);
     //number of words to show what the length of the podcast should be. Using 150 as this is on average the number of words per minute someone speaks
     const numberOfWords = number * 150;
-    const message = `CONTEXT: Put the following articles into an interesting news format that summarizes the articles and can be read by one person in a compelling way (imagine a narrator like David Attenborough) with a captivating beginning. The summary should be at LEAST ${numberOfWords} words long. This is the information that you must summarize :\n${aggregatedNewsData}`;
+    const message = `CONTEXT: Create a long and compelling script that describes the following news articles with extensive detail (imagine a narrator like David Attenborough). Include a captivating introduction. The summary should be between ${numberOfWords} and ${numberOfWords+200} words long. This is the information that you must summarize :\n${aggregatedNewsData}`;
 
     try {
       const response = await openai.chat.completions.create({
