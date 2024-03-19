@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-
 const usersModel = require("../models/Users");
 const voiceTypes = require("../models/VoiceTypes");
 

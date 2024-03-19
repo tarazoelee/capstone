@@ -7,7 +7,6 @@ const topicsModel = require("../models/topics");
 router.get("/", async (req, res) => {
   try {
     const topics = await topicsModel.find().sort({ topic: 1 });
-
     res.send(topics);
   } catch (e) {
     res.status(500).send("Unable to get topics");
