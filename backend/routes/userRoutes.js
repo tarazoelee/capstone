@@ -33,4 +33,13 @@ router.post("/addUser", async (req, res) => {
   }
 });
 
-module.exports = { router };
+const getAllUsers = async () => {
+  try {
+    const users = await usersModel.find({}); //find all users
+    return users;
+  } catch (e) {
+    console.log("Error fetching all users:", e);
+  }
+};
+
+module.exports = { router, getAllUsers };
