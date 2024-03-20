@@ -19,6 +19,7 @@ router.post("/postPrefs", async (req, res) => {
     const length = String(req.body.length);
     const email = String(req.body.email);
     const voice = String(req.body.voice);
+    const speed = String(req.body.speed)
 
     const query = { email: email };
     const update = {
@@ -26,6 +27,7 @@ router.post("/postPrefs", async (req, res) => {
         topics: topics,
         length: length,
         voice: voice,
+        speakingRate:speed
       },
     };
 
@@ -81,7 +83,7 @@ router.get("/getUserLengthAndPreferences", async (req, res) => {
 
     const user = await usersModel.findOne(
       { email: userEmail },
-      "length topics voice"
+      "length topics voice speakingRate"
     );
 
     if (!user) {
@@ -93,6 +95,7 @@ router.get("/getUserLengthAndPreferences", async (req, res) => {
     const topic2 = user.topics[1];
     const topic3 = user.topics[2];
     const voice = user.voice;
+    const speed = user.speakingRate;
 
     res.json({
       length: length,
@@ -100,6 +103,7 @@ router.get("/getUserLengthAndPreferences", async (req, res) => {
       topic2: topic2,
       topic3: topic3,
       voice: voice,
+      speed: speed
     });
   } catch (error) {
     res.status(500).send("Server error");
@@ -108,7 +112,7 @@ router.get("/getUserLengthAndPreferences", async (req, res) => {
 
 //UPDATE USER PREFERENCES
 router.post("/updatePreferences", async (req, resp) => {
-  const { email, topic1, topic2, topic3, length, voice } = req.body;
+  const { email, topic1, topic2, topic3, length, voice, speed} = req.body;
   console.log(req.body)
 
 
@@ -129,6 +133,7 @@ router.post("/updatePreferences", async (req, resp) => {
     user.topics = topicsArray;
     user.length = length;
     user.voice = voice;
+    user.speakingRate = speed;
 
     await user.save();
 
