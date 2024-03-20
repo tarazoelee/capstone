@@ -28,6 +28,12 @@ export default function Signup() {
     return response;
   }
 
+  function isValidEmail(email) {
+    const re =
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\\.,;:\s@\"]+\.)+[^<>()[\]\\.,;:\s@\"]{2,})$/i;
+    return re.test(email);
+  }
+
   async function handleSubmit(e) {
     if (e) {
       e.preventDefault();
@@ -35,6 +41,13 @@ export default function Signup() {
     if (passwordRef.current.value !== confirmPasswordRef.current.value) {
       return setError("Passwords do not match");
     }
+
+    const email = emailRef.current.value;
+
+    if (!isValidEmail(email)) {
+      return setError("Invalid email format");
+    }
+    
     if (passwordRef.current.value) {
     }
     try {

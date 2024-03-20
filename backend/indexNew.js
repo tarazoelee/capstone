@@ -9,7 +9,7 @@ const app = express();
 const cron = require("node-cron");
 
 // import routes
-const { router: userRoutes } = require("./routes/userRoutes");
+const { router: userRoutes, getAllUsers } = require("./routes/userRoutes");
 const {
   router: scriptRoutes,
   processTodaysPodcasts,
@@ -26,6 +26,7 @@ const {
 } = require("./routes/chatbotRoutes");
 
 const { sendContactEmail } = require("./contactFormHandler");
+const { sendPodcastToEmail } = require("./emailPodcastsHandler");
 
 // middlewares
 app.use(express.json());
@@ -141,6 +142,43 @@ app.post("/send-contact-email", async (req, res) => {
   }
 });
 
+//-----SENDS PODCAST TO EACH USER EMAIL -------//
+async function getPodcastForUserEmail() {
+  let users = await getAllUsers();
+  for (const user of users) {
+    const response = await fetch(
+      `http://localhost:5001/scripts/todaysScript/${user.email}`
+    );
+    const data = await response.json();
+
+    const userScript = data.filter((item) => item.users[0] === user.email);
+    if (userScript.length > 0) {
+      let buffer = await getPodcast(userScript[0].refID); //returns a buffer of the podcast
+      await sendPodcastToEmail(user.email, buffer);
+      console.log("YAY");
+    } else {
+      console.log("No byte today... :(", user.email);
+    }
+  }
+}
+
+//-------GETS THE PODCAST AUDIO AS A BUFFER TO SEND OVER EMAIL -----//
+async function getPodcast(refID) {
+  if (!refID) return;
+  try {
+    const response = await fetch(`http://localhost:5001/image/${refID}`);
+    console.log("response from refid", response);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const arrayBuffer = await response.arrayBuffer(); // Convert the response to a buffer
+    const buffer = Buffer.from(arrayBuffer); //convert arrayBuffer to Buffer
+    return buffer;
+  } catch (e) {
+    console.error("There has been a problem with your fetch operation:", e);
+  }
+}
+
 /** ------AUTOMATION OF SCRAPING + CREATION OF PODCASTS ----- */
 // cron.schedule("0 20 * * *", async () => {
 //   console.log("Scheduled task to fetch all topics");
@@ -159,6 +197,9 @@ app.post("/send-contact-email", async (req, res) => {
 
 //     //gets all of todays scripts and creates podcasts
 //     await processTodaysPodcasts();
+
+//     //sends podcast to each user's email
+//     getPodcastForUserEmail();
 //   } catch (error) {
 //     console.error("Error fetching topics in scheduled task:", error);
 //   }
