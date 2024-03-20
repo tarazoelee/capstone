@@ -8,7 +8,7 @@ import Calendar from "react-calendar";
 import Modal from "@mui/material/Modal";
 import { Box } from "@mui/material";
 import ReactLoading from "react-loading";
-import './styles.css'; 
+import "./styles.css";
 //import { response } from "../../../backend/routes/scraperRoutes.js";
 
 export default function Dashboard() {
@@ -53,48 +53,45 @@ export default function Dashboard() {
     getAllOldScript();
   }, [audioData]);
 
- async function openPreviewModal(date) {
-  const formattedDate = formatDateToYYYYMMDD(date);
+  async function openPreviewModal(date) {
+    const formattedDate = formatDateToYYYYMMDD(date);
 
-  // Fetch the old script information first, then update the state and open the modal.
-  try {
-    const data = await getOldScript(formattedDate);
-    if (data && data.length > 0) {
-      const script = data[0].script;
-      const oldRefID = data[0].refID;
-      const audioURL = audioData[oldRefID];
+    // Fetch the old script information first, then update the state and open the modal.
+    try {
+      const data = await getOldScript(formattedDate);
+      if (data && data.length > 0) {
+        const script = data[0].script;
+        const oldRefID = data[0].refID;
+        const audioURL = audioData[oldRefID];
 
-    setModalContent(
-        <div>
-          <div className="font-bold text-black text-xl">{formattedDate}</div>
-          <div className="my-4">{script}</div>
-          {!audioURL && <p>Loading audio...</p>}
-          {audioURL &&
-            <audio
-              controls 
-              src={audioURL}
-            >
-              Your browser does not support the audio element.
-            </audio>
-          }
-        </div>
-      )
-      // Load the audio and then open the modal
-      setOpenModal(true);
-
-    } else {
-      setModalContent(// Handle the case where no script is found for the selected date
-        <div>
-          <h2>Podcast Preview for {formattedDate}</h2>
-          <p>No byte for this day.</p>
-        </div>
-      );
-      setOpenModal(true);
+        setModalContent(
+          <div>
+            <div className="font-bold text-black text-xl">{formattedDate}</div>
+            <div className="my-4">{script}</div>
+            {!audioURL && <p>Loading audio...</p>}
+            {audioURL && (
+              <audio controls src={audioURL}>
+                Your browser does not support the audio element.
+              </audio>
+            )}
+          </div>
+        );
+        // Load the audio and then open the modal
+        setOpenModal(true);
+      } else {
+        setModalContent(
+          // Handle the case where no script is found for the selected date
+          <div>
+            <h2>Podcast Preview for {formattedDate}</h2>
+            <p>No byte for this day.</p>
+          </div>
+        );
+        setOpenModal(true);
+      }
+    } catch (error) {
+      console.error("Error fetching old script:", error);
     }
-  } catch (error) {
-    console.error("Error fetching old script:", error);
   }
-}
 
   // Function to close the modal
   const handleCloseModal = () => {
@@ -134,25 +131,25 @@ export default function Dashboard() {
     }
   }
 
-//----GETTING All OLD SCRIPTS -------
+  //----GETTING All OLD SCRIPTS -------
   async function getAllOldScript() {
     try {
-      const response = await fetch(`${baseURL}/scripts/pastScript/${currentUser.email}`);
+      const response = await fetch(
+        `${baseURL}/scripts/pastScript/${currentUser.email}`
+      );
       const data = await response.json();
-        // Iterate over the data array and extract refID and date
+      // Iterate over the data array and extract refID and date
       data.forEach((item) => {
         const refID = item.refID;
         const date = item.date;
         refIDDateDictionary[date] = refID;
-        getPodcast(refID); //generating audio of each refID 
+        getPodcast(refID); //generating audio of each refID
       });
-
     } catch (error) {
       console.error("Error fetching old scripts", error);
       throw error; // Re-throw the error to be caught in the calling function
     }
   }
-
 
   async function getPodcast(refID) {
     if (!refID) return; // Exit if there is no podcastRefID
@@ -167,8 +164,8 @@ export default function Dashboard() {
         audioRef.current.src = url;
         audioRef.current.load();
       }
-      if(url && !audioData[refID]){
-        audioData[refID] = url; //adding audio to map in audioData dictionary 
+      if (url && !audioData[refID]) {
+        audioData[refID] = url; //adding audio to map in audioData dictionary
       }
     } catch (error) {
       console.error(
@@ -246,8 +243,7 @@ export default function Dashboard() {
               onInit={(typewriter) => {
                 typewriter
                   .typeString(" Listen to the news like never before.")
-                  .callFunction(() => {
-                  })
+                  .callFunction(() => {})
                   .start();
               }}
             />
@@ -259,8 +255,9 @@ export default function Dashboard() {
             <div className="flex flex-col justify-center align-middle items-center">
               {
                 <audio controls ref={audioRef} className="w-1/2">
-                Your browser does not support the audio element.
-              </audio>}
+                  Your browser does not support the audio element.
+                </audio>
+              }
             </div>
             <div className="leading-7 text-base">{podcastScript} </div>
           </div>
@@ -269,9 +266,9 @@ export default function Dashboard() {
         <div className="flex flex-col justify-center w-7/12 mb-44 gap-7 self-center">
           <div className="font-bold text-3xl text-yellow-950">Past Bytes</div>
           <div className="cal-container ">
-
             <Calendar
               value={new Date(date)}
+              maxDate={new Date()}
               onClickDay={(value) => {
                 const newDate = new Date(value).setHours(0, 0, 0, 0);
                 const todayDate = new Date().setHours(0, 0, 0, 0);
@@ -279,7 +276,6 @@ export default function Dashboard() {
                 openPreviewModal(value);
               }}
             />
-
           </div>
         </div>
         {/* Modal component */}
