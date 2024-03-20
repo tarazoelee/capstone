@@ -11,7 +11,6 @@ function Profile() {
   const nav = useNavigate();
   const [topics, setTopics] = useState([]);
   const [userTopics, setUserTopics] = useState([]);
-  const [selectedLength, setSelectedLength] = useState("");
   const [selectedVoice, setSelectedVoice] = useState("");
   const { currentUser } = useAuth();
   const [openModal, setOpenModal] = useState(false);
@@ -108,7 +107,6 @@ function getMonthName(monthNumber) {
           }
         }
 
-      setSelectedLength(data.length); // Assuming the length is determined by the number of topics
       setUserTopics(topics);
       setSelectedVoice(data.voice);
       setSelectedSpeed(data.speed);
@@ -137,10 +135,6 @@ function getMonthName(monthNumber) {
   // Function to check if a topic is one of the user's topics
   const isUserTopic = (topicName) => {
     return userTopics.includes(topicName);
-  };
-
-  const handleLengthClick = (lengthValue) => {
-    setSelectedLength(lengthValue);
   };
 
   const handleSpeedClick = (speedVal) => {
@@ -183,7 +177,6 @@ function getMonthName(monthNumber) {
             topic1: userTopics[0],
             topic2: userTopics[1],
             topic3: userTopics[2],
-            length: selectedLength,
             voice: selectedVoice,
             speed: selectedSpeed
           }),
@@ -247,26 +240,6 @@ function getMonthName(monthNumber) {
                 </div>
               );
             })}
-          </div>
-        </div>
-
-        <div className="flex gap-10 justify-center items-center flex-col mt-14">
-          <div className="text-lg">Podcast Length</div>
-          <div className="flex gap-10 flex-wrap justify-center font-semibold">
-            {["2 min", "5 min", "10 min"].map(
-              (lengthValue, index) => (
-                <div
-                  key={index}
-                  className={`${selectedLength === lengthValue
-                      ? "bg-amber-700 text-white hover:text-white hover:bg-amber-700"
-                      : "bg-orange-100"
-                    } w-32 px-6 py-2 text-center text-xs rounded-med rounded cursor-pointer hover:bg-orange-200 hover:text-yellow-900 ease-linear transition duration-100`}
-                  onClick={() => handleLengthClick(lengthValue)}
-                >
-                  {lengthValue}
-                </div>
-              )
-            )}
           </div>
         </div>
 
