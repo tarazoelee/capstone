@@ -132,8 +132,12 @@ function CreateProfile() {
   async function selectSpeed(s) {
     //unselect length
     console.log(s + selectedSpeed)
-   if (selectedSpeed != s) {
+   if (selectedSpeed && selectedSpeed != s) {
       unshowTopicSelect(selectedSpeed)
+      setSelectedSpeed(s);
+      showTopicSelect(s);
+    }
+    else{
       setSelectedSpeed(s);
       showTopicSelect(s);
     }
