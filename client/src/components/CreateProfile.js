@@ -221,13 +221,7 @@ function CreateProfile() {
           >
             10 min
           </div>
-           <div
-            className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded hover:bg-orange-200 cursor-pointer ease-linear transition duration-100"
-            id="20 min"
-            onClick={() => selectLength("20 min")}
-          >
-            20 min
-          </div>
+      
         </div>
       </div>
 
