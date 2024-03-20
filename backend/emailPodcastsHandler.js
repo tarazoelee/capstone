@@ -16,9 +16,9 @@ async function sendPodcastToEmail(recipientEmail, podcastBuffer) {
   //CHANGE HARDCODED RECIPIENT
   const mailOptions = {
     from: "dailybytes.contact@gmail.com",
-    to: "lex.zhch@gmail.com",
+    to: recipientEmail,
     subject: `Your DailyBytes Podcast !`,
-    text: `AHHHHH`,
+    text: `Seize the day by listening to your lastest podcast, attached below !`,
     attachments: [
       {
         filename: "Todays BYTE", // Provide a filename for the podcast

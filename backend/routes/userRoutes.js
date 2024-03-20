@@ -33,6 +33,27 @@ router.post("/addUser", async (req, res) => {
   }
 });
 
+//GET A SINGLEUSER
+router.get("/findUser/:email", async (req, res) => {
+  const userEmail = req.params.email;
+
+  try {
+    // Use findOne to check if the email already exists
+    const user = await usersModel.findOne({ email: userEmail });
+
+    if (!user) {
+      // If the user doesn't exist, send a 404 response
+      res.status(404).send("User not found");
+    } else {
+      // If the user exists, send it back with a 200 response
+      res.status(200).json(user);
+    }
+  } catch (err) {
+    console.error(err); // It's a good practice to log the error
+    res.status(500).send("Server Error");
+  }
+});
+
 const getAllUsers = async () => {
   try {
     const users = await usersModel.find({}); //find all users
