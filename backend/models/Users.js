@@ -12,10 +12,6 @@ const UserSchema = new mongoose.Schema({
       required: false,
     },
   ],
-  length: {
-    type: String,
-    required: false,
-  },
   voice:{
     type:String,
     require:false

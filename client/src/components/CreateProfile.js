@@ -12,7 +12,6 @@ function CreateProfile() {
   const [selectedVoice, setSelectedVoice] = useState("");
   const [selectedSpeed, setSelectedSpeed] = useState("");
   const { currentUser, logout } = useAuth();
-  const [length, setLength] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [modalText, setModalText] = useState("");
   const [voiceTypes, setVoiceTypes] = useState([]);
@@ -116,17 +115,7 @@ function CreateProfile() {
     newtopicDiv.style.color = "rgb(124 45 18)";
   }
 
-  //-----SELECT LENGTH -----
-  async function selectLength(l) {
-    //unselect length
-    if (length.includes(l)) {
-      setLength("");
-      unshowTopicSelect(l);
-    } else if (length.length < 1) {
-      setLength(l);
-      showTopicSelect(l);
-    }
-  }
+
 
   //-----SELECT SPEED-----
   async function selectSpeed(s) {
@@ -147,9 +136,6 @@ function CreateProfile() {
     if (selectedTopics.length <= 0) {
       setOpenModal(true);
       setModalText("Select at least one topic.");
-    } else if (length.length <= 0) {
-      setOpenModal(true);
-      setModalText("Select a podcast length.");
     } else if (!selectedVoice) {
       setOpenModal(true);
       setModalText("Select a voice.");
@@ -170,7 +156,6 @@ function CreateProfile() {
         topic2: selectedTopics[1],
         topic3: selectedTopics[2],
         email: currentUser.email,
-        length: length,
         voice: selectedVoice,
         speed: selectedSpeed
       }),
@@ -214,37 +199,6 @@ function CreateProfile() {
               {t.topic}
             </div>
           ))}
-        </div>
-      </div>
-      <div className="flex flex-col gap-2 items-center w-1/2">
-        <div className="text-xl my-10 text-orange-900">
-          How long do you want your daily updates?
-        </div>
-        <div className="flex gap-10 flex-wrap items-center justify-center font-semibold ">
-          <div
-            className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded hover:bg-orange-200 cursor-pointer ease-linear transition duration-100"
-            id="2 min"
-            onClick={() => selectLength("2 min")}
-          >
-            {" "}
-            2 min
-          </div>
-          <div
-            className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded hover:bg-orange-200 cursor-pointer ease-linear transition duration-100"
-            id="5 min"
-            onClick={() => selectLength("5 min")}
-          >
-            {" "}
-            5 min{" "}
-          </div>
-          <div
-            className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded hover:bg-orange-200 cursor-pointer ease-linear transition duration-100"
-            id="10 min"
-            onClick={() => selectLength("10 min")}
-          >
-            10 min
-          </div>
-      
         </div>
       </div>
 
