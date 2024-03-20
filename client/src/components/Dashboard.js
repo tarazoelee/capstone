@@ -135,7 +135,7 @@ export default function Dashboard() {
   async function getAllOldScript() {
     try {
       const response = await fetch(
-        `${baseURL}/scripts/pastScript/${currentUser.email}`
+        `${baseURL}/scripts/allPastScript/${currentUser.email}`
       );
       const data = await response.json();
       // Iterate over the data array and extract refID and date
