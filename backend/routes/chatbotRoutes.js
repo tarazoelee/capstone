@@ -16,7 +16,9 @@ const getTodaysDate = () => new Date().toISOString().split("T")[0];
 router.get("/test", async (req, res) => {
   try {
     const combinationsArray = await getTopicCombinations();
+    //console.log(combinationsArray);
     const newsArticleMap = await getDailyScripts();
+    //console.log(newsArticleMap);
     await createScript(combinationsArray, newsArticleMap);
     res.status(200).send("Scripts have been processed and saved.");
   } catch (error) {
@@ -30,7 +32,11 @@ async function getTopicCombinations() {
   const users = await usersModel.find({});
 
   users.forEach((user) => {
-    const sortedTopics = [...new Set(user.topics)].sort();
+    const sortedTopics = [
+      ...new Set(
+        user.topics.map((topic) => topic.toLowerCase().replace(/\s+/g, ""))
+      ),
+    ].sort();
     const key = `${sortedTopics.join("|")}|${user.voice}|${user.speakingRate}`;
 
     if (!combinations.has(key)) {
@@ -84,20 +90,22 @@ async function createScript(combinationsArray, newsArticleMap) {
           newsArticleMap.get(topic.toLowerCase()) ||
           `No data found for topic: ${topic}`
       )
-      .join("\n");
+      .join("\nNEW TOPIC START");
 
-    //getting the number out of the podcast length (i.e. 2 for 2 min)
-    const number = parseInt(combination.length, 10);
+    //getting the number out of the podcast length (i.e. for 2 min)
+    //const number = parseInt(combination.length, 10);
     //number of words to show what the length of the podcast should be. Using 150 as this is on average the number of words per minute someone speaks
-    const numberOfWords = number * 200;
-    const message = `CONTEXT: Put the following articles into an interesting news format that summarizes the articles and can be read by one person in a compelling way (imagine a narrator like David Attenborough) with a captivating introduction. The summary should be at LEAST ${numberOfWords} words long. This is the information that you must summarize :\n${aggregatedNewsData}`;
+    //const numberOfWords = number * 200;
+    //console.log(aggregatedNewsData);
+
+    const message = `CONTEXT: Put the following articles into an interesting news format that summarizes the articles and can be read by one person in a compelling way (imagine a narrator like David Attenborough) with a captivating introduction. The summary should be at LEAST 400 words long. This is the information that you must summarize :\n${aggregatedNewsData}`;
 
     try {
       const response = await openai.chat.completions.create({
         model: "gpt-3.5-turbo",
         messages: [{ role: "system", content: message }],
         temperature: 0,
-        max_tokens: 1000,
+        max_tokens: 1500,
       });
 
       const newScript = new podcastScriptsModel({
