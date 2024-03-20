@@ -5,13 +5,14 @@ import Modal from "@mui/material/Modal";
 import { Box } from "@mui/material";
 
 export default function ForgotPassword() {
+  const baseURL = process.env.REACT_APP_BASEURL;
   const { forgotPassword } = useAuth();
   const emailRef = useRef();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const nav = useNavigate();
   const [openModal, setOpenModal] = useState(false);
-  const [modalText, setModalText] = useState('');
+  const [modalText, setModalText] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -19,9 +20,21 @@ export default function ForgotPassword() {
     try {
       setError("");
       setLoading(true);
-      await forgotPassword(emailRef.current.value);
-      setOpenModal(true);
-      setModalText("Check your inbox.")
+      const response = await fetch(
+        `${baseURL}/users/findUser/${emailRef.current.value}`
+      );
+      if (!response.ok) {
+        if (response.status === 404) {
+          setOpenModal(true);
+          setModalText("Cannot Send Forgot Password Email");
+        } else {
+          setModalText("Cannot Send Forgot Password Email");
+        }
+      } else {
+        await forgotPassword(emailRef.current.value);
+        setOpenModal(true);
+        setModalText("Check your inbox.");
+      }
     } catch {
       setError("Failed to Send Email");
     }
@@ -29,11 +42,11 @@ export default function ForgotPassword() {
     setLoading(false);
   }
 
-  async function goBack(){
-    nav("/")
+  async function goBack() {
+    nav("/");
   }
 
-    // Function to close the modal
+  // Function to close the modal
   const handleCloseModal = () => {
     setOpenModal(false);
     setModalText("");
@@ -44,31 +57,32 @@ export default function ForgotPassword() {
   const modalStyle = {
     position: "absolute",
     top: "10%",
-    borderRadius: '10px',
+    borderRadius: "10px",
     left: "50%",
-    textAlign:'center',
+    textAlign: "center",
     transform: "translate(-50%, -50%)",
     width: 300,
     bgcolor: "background.paper",
     boxShadow: 10,
-    p:4,
-    fontFamily:'display',
-};
+    p: 4,
+    fontFamily: "display",
+  };
 
   return (
     <div className="py-40 px-60 font-display">
-       <Modal 
-        open={openModal} 
-        onClose={handleCloseModal} 
-        aria-describedby="modal-modal-title">
-          <Box sx={modalStyle}>
-            <p>{modalText}</p> 
-          </Box>
-        </Modal>
+      <Modal
+        open={openModal}
+        onClose={handleCloseModal}
+        aria-describedby="modal-modal-title"
+      >
+        <Box sx={modalStyle}>
+          <p>{modalText}</p>
+        </Box>
+      </Modal>
       {error && <p>{error}</p>}
       <div
-       onClick={goBack}
-       className="text-orange-900 justify-end cursor-pointer font-semibold hover:text-yellow-700 ease-linear transition duration-100"
+        onClick={goBack}
+        className="text-orange-900 justify-end cursor-pointer font-semibold hover:text-yellow-700 ease-linear transition duration-100"
       >
         Back
       </div>
@@ -86,8 +100,8 @@ export default function ForgotPassword() {
               className="bg-none border border-gray-200 rounded-2xl w-80 px-4 placeholder:text-gray-600 py-4 text-s"
             />
           </div>
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             disabled={loading}
             className="px-12 bg-gray-200 h-12 my-4 text-sm rounded-2xl hover:bg-gray-300 ease-linear transition duration-100 shadow-sm"
           >
