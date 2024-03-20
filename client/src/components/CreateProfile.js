@@ -131,6 +131,7 @@ function CreateProfile() {
   //-----SELECT LENGTH -----
   async function selectSpeed(s) {
     //unselect length
+    console.log(s + selectedSpeed)
    if (selectedSpeed != s) {
       unshowTopicSelect(selectedSpeed)
       setSelectedSpeed(s);
@@ -251,24 +252,24 @@ function CreateProfile() {
         <div className="flex gap-10 flex-wrap items-center justify-center font-semibold ">
           <div
             className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded hover:bg-orange-200 cursor-pointer ease-linear transition duration-100"
-            id="0.8"
-            onClick={() => selectSpeed("0.8")}
+            id="Slow"
+            onClick={() => selectSpeed("Slow")}
           >
             {" "}
             Slow
           </div>
           <div
             className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded hover:bg-orange-200 cursor-pointer ease-linear transition duration-100"
-            id="1"
-            onClick={() => selectSpeed("1")}
+            id="Normal"
+            onClick={() => selectSpeed("Normal")}
           >
             {" "}
             Normal
           </div>
           <div
             className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded hover:bg-orange-200 cursor-pointer ease-linear transition duration-100"
-            id="1.2"
-            onClick={() => selectSpeed("1.2")}
+            id="Fast"
+            onClick={() => selectSpeed("Fast")}
           >
             Fast
           </div>

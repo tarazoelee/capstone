@@ -19,6 +19,7 @@ function Profile() {
   const [accountYear, setAccountYear] = useState('');
   const [accountMonth, setAccountMonth] = useState('');
   const [voiceTypes, setVoiceTypes] = useState([]);
+  const [selectedSpeed, setSelectedSpeed] = useState("");
   const monthNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   const monthNames = [
     "January", "February", "March", "April", "May", "June",
@@ -110,6 +111,8 @@ function getMonthName(monthNumber) {
       setSelectedLength(data.length); // Assuming the length is determined by the number of topics
       setUserTopics(topics);
       setSelectedVoice(data.voice);
+      setSelectedSpeed(data.speed);
+      console.log(data)
       });
   }
 
@@ -257,6 +260,26 @@ function getMonthName(monthNumber) {
                   onClick={() => handleLengthClick(lengthValue)}
                 >
                   {lengthValue}
+                </div>
+              )
+            )}
+          </div>
+        </div>
+
+        <div className="flex gap-10 justify-center items-center flex-col mt-14">
+          <div className="text-lg">Podcast Speed</div>
+          <div className="flex gap-10 flex-wrap justify-center font-semibold">
+            {["Slow", "Normal", "Fast"].map(
+              (speedValue, index) => (
+                <div
+                  key={index}
+                  className={`${selectedSpeed == speedValue
+                      ? "bg-amber-700 text-white hover:text-white hover:bg-amber-700"
+                      : "bg-orange-100"
+                    } w-32 px-6 py-2 text-center text-xs rounded-med rounded cursor-pointer hover:bg-orange-200 hover:text-yellow-900 ease-linear transition duration-100`}
+                  onClick={() => handleLengthClick(speedValue)}
+                >
+                  {speedValue}
                 </div>
               )
             )}

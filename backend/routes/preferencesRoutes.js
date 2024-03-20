@@ -83,7 +83,7 @@ router.get("/getUserLengthAndPreferences", async (req, res) => {
 
     const user = await usersModel.findOne(
       { email: userEmail },
-      "length topics voice"
+      "length topics voice speakingRate"
     );
 
     if (!user) {
