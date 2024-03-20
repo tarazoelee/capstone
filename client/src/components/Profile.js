@@ -112,7 +112,6 @@ function getMonthName(monthNumber) {
       setUserTopics(topics);
       setSelectedVoice(data.voice);
       setSelectedSpeed(data.speed);
-      console.log(data)
       });
   }
 
