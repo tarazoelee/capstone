@@ -10,6 +10,7 @@ function CreateProfile() {
   const [topics, setTopics] = useState([]);
   const [selectedTopics, setSelectedTopics] = useState([]);
   const [selectedVoice, setSelectedVoice] = useState("");
+  const [selectedSpeed, setSelectedSpeed] = useState("");
   const { currentUser, logout } = useAuth();
   const [length, setLength] = useState([]);
   const [openModal, setOpenModal] = useState(false);
@@ -73,8 +74,11 @@ function CreateProfile() {
   }
 
   const handleVoiceClick = (voice) => {
-    console.log(voice);
     setSelectedVoice(voice);
+  };
+
+  const handleSpeedClick = (speed) => {
+    setSelectedSpeed(speed);
   };
 
   //---TOPIC IS SELECTED-----
@@ -124,6 +128,16 @@ function CreateProfile() {
     }
   }
 
+  //-----SELECT LENGTH -----
+  async function selectSpeed(s) {
+    //unselect length
+   if (selectedSpeed != s) {
+      unshowTopicSelect(selectedSpeed)
+      setSelectedSpeed(s);
+      showTopicSelect(s);
+    }
+  }
+
   //WHEN DONE IS CLICKED CHECK PREFS THEN SUBMIT THEM
   async function submitPrefs() {
     if (selectedTopics.length <= 0) {
@@ -135,7 +149,11 @@ function CreateProfile() {
     } else if (!selectedVoice) {
       setOpenModal(true);
       setModalText("Select a voice.");
-    } else {
+    } else if (!selectedSpeed) {
+      setOpenModal(true);
+      setModalText("Select a speed.");
+    } 
+    else {
       postPrefs();
     }
   }
@@ -150,6 +168,7 @@ function CreateProfile() {
         email: currentUser.email,
         length: length,
         voice: selectedVoice,
+        speed: selectedSpeed
       }),
       headers: {
         "Content-Type": "application/json",
@@ -225,6 +244,39 @@ function CreateProfile() {
         </div>
       </div>
 
+      <div className="flex flex-col gap-2 items-center w-1/2">
+        <div className="text-xl my-10 text-orange-900">
+          How fast do you want the speaking voice?
+        </div>
+        <div className="flex gap-10 flex-wrap items-center justify-center font-semibold ">
+          <div
+            className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded hover:bg-orange-200 cursor-pointer ease-linear transition duration-100"
+            id="0.8"
+            onClick={() => selectSpeed("0.8")}
+          >
+            {" "}
+            Slow
+          </div>
+          <div
+            className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded hover:bg-orange-200 cursor-pointer ease-linear transition duration-100"
+            id="1"
+            onClick={() => selectSpeed("1")}
+          >
+            {" "}
+            Normal
+          </div>
+          <div
+            className="bg-orange-100 w-32 px-6 py-2 text-center rounded-med rounded hover:bg-orange-200 cursor-pointer ease-linear transition duration-100"
+            id="1.2"
+            onClick={() => selectSpeed("1.2")}
+          >
+            Fast
+          </div>
+      
+        </div>
+      </div>
+
+      
       <div className="flex gap-10 justify-center items-center flex-col mt-14 w-1/2">
         <div className="text-xl text-orange-900">Voice Types</div>
         <div className="flex gap-10 flex-wrap justify-center font-semibold ">

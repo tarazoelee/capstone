@@ -19,6 +19,10 @@ const UserSchema = new mongoose.Schema({
   voice:{
     type:String,
     require:false
+  },
+  speakingRate:{
+    type:String,
+    require:false
   }
 });
 
