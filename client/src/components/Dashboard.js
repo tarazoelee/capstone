@@ -8,7 +8,8 @@ import Calendar from "react-calendar";
 import Modal from "@mui/material/Modal";
 import { Box } from "@mui/material";
 import ReactLoading from "react-loading";
-import './styles.css'; 
+import "./styles.css";
+//import { response } from "../../../backend/routes/scraperRoutes.js";
 
 export default function Dashboard() {
   const baseURL = process.env.REACT_APP_BASEURL;
@@ -54,49 +55,43 @@ export default function Dashboard() {
 
   async function openPreviewModal(date) {
     const formattedDate = formatDateToYYYYMMDD(date);
-async function openPreviewModal(date) {
-  const formattedDate = formatDateToYYYYMMDD(date);
 
-  // Fetch the old script information first, then update the state and open the modal.
-  try {
-    const data = await getOldScript(formattedDate);
-    if (data && data.length > 0) {
-      const script = data[0].script;
-      const oldRefID = data[0].refID;
-      const audioURL = audioData[oldRefID];
-      console.log(audioURL)
+    // Fetch the old script information first, then update the state and open the modal.
+    try {
+      const data = await getOldScript(formattedDate);
+      if (data && data.length > 0) {
+        const script = data[0].script;
+        const oldRefID = data[0].refID;
+        const audioURL = audioData[oldRefID];
 
-    setModalContent(
-        <div>
-          <div className="font-bold text-black text-xl">{formattedDate}</div>
-          <div className="my-4">{script}</div>
-          {!audioURL && <p>Loading audio...</p>}
-          {audioURL &&
-            <audio
-              controls 
-              src={audioURL}
-            >
-              Your browser does not support the audio element.
-            </audio>
-          }
-        </div>
-      )
-      // Load the audio and then open the modal
-      setOpenModal(true);
-
-    } else {
-      setModalContent(// Handle the case where no script is found for the selected date
-        <div>
-          <h2>Podcast Preview for {formattedDate}</h2>
-          <p>No byte for this day.</p>
-        </div>
-      );
-      setOpenModal(true);
+        setModalContent(
+          <div>
+            <div className="font-bold text-black text-xl">{formattedDate}</div>
+            <div className="my-4">{script}</div>
+            {!audioURL && <p>Loading audio...</p>}
+            {audioURL && (
+              <audio controls src={audioURL}>
+                Your browser does not support the audio element.
+              </audio>
+            )}
+          </div>
+        );
+        // Load the audio and then open the modal
+        setOpenModal(true);
+      } else {
+        setModalContent(
+          // Handle the case where no script is found for the selected date
+          <div>
+            <h2>Podcast Preview for {formattedDate}</h2>
+            <p>No byte for this day.</p>
+          </div>
+        );
+        setOpenModal(true);
+      }
+    } catch (error) {
+      console.error("Error fetching old script:", error);
     }
-  } catch (error) {
-    console.error("Error fetching old script:", error);
   }
-}
 
   // Function to close the modal
   const handleCloseModal = () => {
@@ -139,7 +134,9 @@ async function openPreviewModal(date) {
   //----GETTING All OLD SCRIPTS -------
   async function getAllOldScript() {
     try {
-      const response = await fetch(`${baseURL}/scripts/allPastScript/${currentUser.email}`);
+      const response = await fetch(
+        `${baseURL}/scripts/pastScript/${currentUser.email}`
+      );
       const data = await response.json();
       // Iterate over the data array and extract refID and date
       data.forEach((item) => {
