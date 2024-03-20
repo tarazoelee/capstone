@@ -31,7 +31,7 @@ async function getTopicCombinations() {
 
   users.forEach((user) => {
     const sortedTopics = [...new Set(user.topics)].sort();
-    const key = `${sortedTopics.join("|")}|${user.length}|${user.voice}`;
+    const key = `${sortedTopics.join("|")}|${user.length}|${user.voice}|${user.speakingRate}`;
 
     if (!combinations.has(key)) {
       combinations.set(key, {
@@ -39,6 +39,7 @@ async function getTopicCombinations() {
         length: user.length,
         users: [user.email],
         voice: user.voice,
+        speed: user.speakingRate,
       });
     } else {
       combinations.get(key).users.push(user.email);

@@ -48,6 +48,12 @@ const voiceTypes = {
     },
   },
 };
+
+const speakingRates = {
+  Slow: 0.8,
+  Normal: 1,
+  Fast: 1.2
+}
 //------GETTING ALL SCRIPTS--------
 router.get("/", async (req, res) => {
   try {
@@ -59,9 +65,9 @@ router.get("/", async (req, res) => {
   }
 });
 
-async function getUserVoice(u) {
+async function getUserVoiceSpeed(u) {
   const user = await usersModel.find({ email: u });
-  return user[0].voice;
+  return { voice: user[0].voice, speed: user[0].speakingRate}; 
 }
 
 //------GETTING TODAY'S SCRIPTS AND CREATING PODCASTS--------
@@ -75,9 +81,8 @@ router.get("/todaysPodcasts", async (req, res) => {
       try {
         //const standardVoice = voiceTypes.standardFemaleAUS;
         const user = script.users[0]; //get the first user since they all have the same voice
-        const voice = await getUserVoice(user);
-        console.log("voice " + voice);
-        const reference = await synthesize(script, voice);
+        const voicePrefs = await getUserVoiceSpeed(user);
+        const reference = await synthesize(script, voicePrefs.voice, voicePrefs.speed);
 
         // Directly find one script and update it with the new gridFsFileId
         const updatedScript = await scriptsModel.findOneAndUpdate(
@@ -115,7 +120,7 @@ async function processTodaysPodcasts() {
       try {
         //const standardVoice = voiceTypes.standardFemaleAUS;
         const user = script.users[0]; // get the first user since they all have the same voice
-        const voice = await getUserVoice(user);
+        const voice = await getUserVoiceSpeed(user);
         console.log("voice " + voice);
         const reference = await synthesize(script, voice);
 
@@ -179,20 +184,20 @@ router.get("/pastScript/:user/:date", async (req, res) => {
 });
 
 /** ------Create audio file of text for a single script------ */
-async function synthesize(script, voiceOption) {
+async function synthesize(script, voiceOption, speedOption) {
   const apikey = process.env.TXTAUDIO_API_KEY;
   const endpoint = `https://texttospeech.googleapis.com/v1beta1/text:synthesize?key=${apikey}`;
   const uploadEndpoint = "http://localhost:5001/upload";
 
   const selectedVoice = voiceTypes[voiceOption];
-  console.log("voice" + selectedVoice);
+  const selectedSpeed = speakingRates[speedOption];
 
   const payload = {
     audioConfig: {
       audioEncoding: "MP3",
       effectsProfileId: ["small-bluetooth-speaker-class-device"],
       pitch: 0,
-      speakingRate: 1,
+      speakingRate: selectedSpeed,
     },
     input: {
       text: script.script, //Assuming script will be updated when synthesize is called
