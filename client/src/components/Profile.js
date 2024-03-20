@@ -144,6 +144,10 @@ function getMonthName(monthNumber) {
     setSelectedLength(lengthValue);
   };
 
+  const handleSpeedClick = (speedVal) => {
+    setSelectedSpeed(speedVal);
+  };
+
   const handleVoiceClick = (voice) => {
     setSelectedVoice(voice);
   };
@@ -182,6 +186,7 @@ function getMonthName(monthNumber) {
             topic3: userTopics[2],
             length: selectedLength,
             voice: selectedVoice,
+            speed: selectedSpeed
           }),
           headers: {
             "Content-Type": "application/json",
@@ -273,11 +278,11 @@ function getMonthName(monthNumber) {
               (speedValue, index) => (
                 <div
                   key={index}
-                  className={`${selectedSpeed == speedValue
+                  className={`${selectedSpeed === speedValue
                       ? "bg-amber-700 text-white hover:text-white hover:bg-amber-700"
                       : "bg-orange-100"
                     } w-32 px-6 py-2 text-center text-xs rounded-med rounded cursor-pointer hover:bg-orange-200 hover:text-yellow-900 ease-linear transition duration-100`}
-                  onClick={() => handleLengthClick(speedValue)}
+                  onClick={() => handleSpeedClick(speedValue)}
                 >
                   {speedValue}
                 </div>
