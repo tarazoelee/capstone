@@ -16,7 +16,6 @@ router.post("/postPrefs", async (req, res) => {
       .filter(Boolean)
       .sort();
 
-    const length = String(req.body.length);
     const email = String(req.body.email);
     const voice = String(req.body.voice);
     const speed = String(req.body.speed)
@@ -25,7 +24,6 @@ router.post("/postPrefs", async (req, res) => {
     const update = {
       $set: {
         topics: topics,
-        length: length,
         voice: voice,
         speakingRate:speed
       },
@@ -83,14 +81,13 @@ router.get("/getUserLengthAndPreferences", async (req, res) => {
 
     const user = await usersModel.findOne(
       { email: userEmail },
-      "length topics voice speakingRate"
+      "topics voice speakingRate"
     );
 
     if (!user) {
       return res.status(404).send("User not found");
     }
 
-    const length = user.length;
     const topic1 = user.topics[0];
     const topic2 = user.topics[1];
     const topic3 = user.topics[2];
@@ -98,7 +95,6 @@ router.get("/getUserLengthAndPreferences", async (req, res) => {
     const speed = user.speakingRate;
 
     res.json({
-      length: length,
       topic1: topic1,
       topic2: topic2,
       topic3: topic3,
@@ -112,11 +108,9 @@ router.get("/getUserLengthAndPreferences", async (req, res) => {
 
 //UPDATE USER PREFERENCES
 router.post("/updatePreferences", async (req, resp) => {
-  const { email, topic1, topic2, topic3, length, voice, speed} = req.body;
-  console.log(req.body)
+  const { email, topic1, topic2, topic3, voice, speed} = req.body;
 
-
-  if (!email|| !length || !voice) {
+  if (!email|| !voice) {
     return resp.status(400).send("All fields are required.");
   }
 
@@ -131,7 +125,6 @@ router.post("/updatePreferences", async (req, resp) => {
     }
 
     user.topics = topicsArray;
-    user.length = length;
     user.voice = voice;
     user.speakingRate = speed;
 
