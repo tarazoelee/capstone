@@ -205,6 +205,31 @@ async function getPodcast(refID) {
 //   }
 // });
 
+app.post("/automation-flow", async (req, res) => {
+  console.log("Scheduled task to fetch all topics");
+  try {
+    //scraping URLs and storing into the db
+    const fetched = await scrapeURLs();
+
+    //getting all topic combinations from the db for all users
+    const combinationsArray = await getTopicCombinations();
+
+    //get all the scraped news articles from the db
+    const newsArticleMap = await getDailyScripts();
+
+    //pass news articles through chatgpt to create proper scripts
+    await createScript(combinationsArray, newsArticleMap);
+
+    //gets all of todays scripts and creates podcasts
+    await processTodaysPodcasts();
+
+    //sends podcast to each user's email
+    getPodcastForUserEmail();
+  } catch (error) {
+    console.error("Error fetching topics in scheduled task:", error);
+  }
+});
+
 // Use routes
 app.use("/users", userRoutes);
 app.use("/topics", topicRoutes);
