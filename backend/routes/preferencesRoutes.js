@@ -109,8 +109,6 @@ router.get("/getUserLengthAndPreferences", async (req, res) => {
 //UPDATE USER PREFERENCES
 router.post("/updatePreferences", async (req, resp) => {
   const { email, topic1, topic2, topic3, length, voice } = req.body;
-  console.log(req.body)
-
 
   if (!email|| !length || !voice) {
     return resp.status(400).send("All fields are required.");

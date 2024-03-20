@@ -38,7 +38,6 @@ function ContactUs() {
   };
 
   useEffect(() => {
-    console.log(formData); // This will log formData every time it changes
   }, [formData]);
 
   function navDash() {
