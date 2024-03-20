@@ -128,16 +128,15 @@ function CreateProfile() {
     }
   }
 
-  //-----SELECT LENGTH -----
+  //-----SELECT SPEED-----
   async function selectSpeed(s) {
-    //unselect length
-    console.log(s + selectedSpeed)
+    //unselect current speed and select new one 
    if (selectedSpeed && selectedSpeed != s) {
       unshowTopicSelect(selectedSpeed)
       setSelectedSpeed(s);
       showTopicSelect(s);
     }
-    else{
+    else{ //selecting new speed 
       setSelectedSpeed(s);
       showTopicSelect(s);
     }
