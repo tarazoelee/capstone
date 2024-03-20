@@ -9,7 +9,6 @@ import Modal from "@mui/material/Modal";
 import { Box } from "@mui/material";
 import ReactLoading from "react-loading";
 import './styles.css'; 
-//import { response } from "../../../backend/routes/scraperRoutes.js";
 
 export default function Dashboard() {
   const baseURL = process.env.REACT_APP_BASEURL;
@@ -63,6 +62,7 @@ export default function Dashboard() {
       const script = data[0].script;
       const oldRefID = data[0].refID;
       const audioURL = audioData[oldRefID];
+      console.log(audioURL)
 
     setModalContent(
         <div>
@@ -137,7 +137,7 @@ export default function Dashboard() {
 //----GETTING All OLD SCRIPTS -------
   async function getAllOldScript() {
     try {
-      const response = await fetch(`${baseURL}/scripts/pastScript/${currentUser.email}`);
+      const response = await fetch(`${baseURL}/scripts/allPastScript/${currentUser.email}`);
       const data = await response.json();
         // Iterate over the data array and extract refID and date
       data.forEach((item) => {

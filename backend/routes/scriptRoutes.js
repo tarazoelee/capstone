@@ -183,6 +183,23 @@ router.get("/pastScript/:user/:date", async (req, res) => {
   }
 });
 
+
+/**----GETTING ALL OLD SCRIPT FOR A SPECIFIC USER ------ */
+router.get("/allPastScript/:user/", async (req, res) => {
+  try {
+    const userEmail = req.params.user; //getting email
+    // Find scripts that match today's date and include the specific user in the users array
+    const scripts = await scriptsModel.find({
+      users: userEmail, // This will match any documents where the users array contains the userEmail
+    });
+
+    res.send(scripts);
+  } catch (e) {
+    res.status(500).send("Unable to find scripts");
+    console.error("Error occurred while retrieving scripts:", e);
+  }
+});
+
 /** ------Create audio file of text for a single script------ */
 async function synthesize(script, voiceOption, speedOption) {
   const apikey = process.env.TXTAUDIO_API_KEY;
