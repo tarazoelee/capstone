@@ -22,6 +22,7 @@ export default function Dashboard() {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const nav = useNavigate();
   const audioRef = useRef(null); // Create a ref for the audio element
+  const todayAudioRef = useRef(null); // Create a ref for the audio element
   const refIDDateDictionary = {};
   const audioData = {};
   const [isLoading, setIsLoading] = useState(true);
@@ -113,7 +114,7 @@ async function openPreviewModal(date) {
         );
         if (userScript.length > 0) {
           setPodcastScript(userScript[0].script);
-          getPodcast(userScript[0].refID); //getting today's podcast
+          getTodayPodcast(userScript[0].refID); //getting today's podcast
         } else {
           setPodcastScript("No byte today... :(");
         }
@@ -146,7 +147,7 @@ async function openPreviewModal(date) {
         const refID = item.refID;
         const date = item.date;
         refIDDateDictionary[date] = refID;
-        getPodcast(refID); //generating audio of each refID
+        getOldPodcasts(refID); //generating audio of each refID 
       });
     } catch (error) {
       console.error("Error fetching old scripts", error);
@@ -154,7 +155,30 @@ async function openPreviewModal(date) {
     }
   }
 
-  async function getPodcast(refID) {
+
+  //get all podcast 
+  async function getTodayPodcast(refID) {
+    if (!refID) return; // Exit if there is no podcastRefID
+    try {
+      const response = await fetch(`${baseURL}/image/${refID}`);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      if (todayAudioRef.current) {
+        todayAudioRef.current.src = url;
+        todayAudioRef.current.load();
+      }
+    } catch (error) {
+      console.error(
+        "There has been a problem with your fetch operation:",
+        error
+      );
+    }
+  }
+  //get all podcast 
+  async function getOldPodcasts(refID) {
     if (!refID) return; // Exit if there is no podcastRefID
     try {
       const response = await fetch(`${baseURL}/image/${refID}`);
@@ -257,10 +281,16 @@ async function openPreviewModal(date) {
           <div className="px-28 py-14 bg-orange-50 text-gray-900 rounded-md shadow-lg flex flex-col gap-6 align-middle">
             <div className="flex flex-col justify-center align-middle items-center">
               {
+<<<<<<< HEAD
                 <audio controls ref={audioRef} className="w-1/2">
                   Your browser does not support the audio element.
                 </audio>
               }
+=======
+                <audio controls ref={todayAudioRef} className="w-1/2">
+                Your browser does not support the audio element.
+              </audio>}
+>>>>>>> d687e485 (fixing dash audio bug)
             </div>
             <div className="leading-7 text-base">{podcastScript} </div>
           </div>
