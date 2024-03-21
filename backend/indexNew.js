@@ -224,9 +224,12 @@ app.post("/automation-flow", async (req, res) => {
     await processTodaysPodcasts();
 
     //sends podcast to each user's email
-    getPodcastForUserEmail();
+    await getPodcastForUserEmail();
+
+    res.status(200).send("Done");
   } catch (error) {
     console.error("Error fetching topics in scheduled task:", error);
+    res.status(500).send("Error");
   }
 });
 

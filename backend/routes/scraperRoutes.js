@@ -23,6 +23,12 @@ function getLastWeekDate() {
   return isoDate;
 }
 
+function getYesterdaysDate() {
+  const today = new Date();
+  const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000); // Subtract 1 day
+  const isoDate = yesterday.toISOString().split("T")[0]; // Extract only the date part
+  return isoDate;
+}
 // Route definitions
 router.get("/", (req, res) => {
   res.send("Scraper endpoint");
@@ -46,7 +52,7 @@ const topicUrls = {
   nhl: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=us,ca&categories=sports&search="NHL"&published_after=${getLastWeekDate()}`,
   nfl: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=us&categories=sports&search="NFL"&published_after=${getLastWeekDate()}`,
   technology: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=us&categories=tech&search="technology"&published_after=${getLastWeekDate()}`,
-  topstories: `https://api.thenewsapi.com/v1/news/top?locale=us,ca&language=en&api_token=${apiKey}&search="headlines"&published_after=${getLastWeekDate()}`,
+  topstories: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=2&locale=us&categories=tech&search="headlines"&published_after=${getLastWeekDate()}`,
   uspolitics: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&locale=us&categories=politics&published_after=${getLastWeekDate()}`,
   worldnews: `https://api.thenewsapi.com/v1/news/top?api_token=${apiKey}&language=en&limit=3&search="world"&published_after=${getLastWeekDate()}`,
 };
@@ -61,6 +67,13 @@ router.get("/topic/", async (req, res) => {
     res.status(500).send("Internal server error");
   }
 });
+
+function condenseText(articleContents) {
+  // Correctly join and condense text from an array of strings to a single string
+  return articleContents
+    .map((article) => article.replace(/\s+/g, " ").trim())
+    .join(" ");
+}
 
 async function scrapeURLs() {
   //for loop for each topic and url
@@ -77,11 +90,9 @@ async function scrapeURLs() {
         articleContents.push(readabilityArticle.textContent);
       }
       const todaysDate = new Date().toISOString().split("T")[0];
-      putScrapedNewsIntoDB(topic, articleContents, todaysDate);
+      const condensedData = condenseText(articleContents);
+      putScrapedNewsIntoDB(topic, condensedData, todaysDate);
       console.log("put everything into the db");
-      // console.log("RESP OB", response.data.data[0]);
-      // console.log("RESP OB", response.data.data[1]);
-      // console.log("RESP OB", response.data.data[2]);
     } catch (error) {
       console.error("Error fetching and parsing articles:", error);
     }
@@ -102,12 +113,10 @@ async function putScrapedNewsIntoDB(
 
     const TopicModel = topicModels[collectionName];
 
-    const combinedArticleContents = articleContents.join("\n\n");
-
     const dataDocument = new TopicModel({
       date: contentDate,
 
-      data: combinedArticleContents,
+      data: articleContents,
     });
 
     // Save the document in the database

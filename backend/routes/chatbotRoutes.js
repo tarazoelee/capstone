@@ -105,7 +105,7 @@ async function createScript(combinationsArray, newsArticleMap) {
         model: "gpt-3.5-turbo",
         messages: [{ role: "system", content: message }],
         temperature: 0,
-        max_tokens: 1500,
+        max_tokens: 1350,
       });
 
       const newScript = new podcastScriptsModel({
