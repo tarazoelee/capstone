@@ -281,16 +281,9 @@ async function openPreviewModal(date) {
           <div className="px-28 py-14 bg-orange-50 text-gray-900 rounded-md shadow-lg flex flex-col gap-6 align-middle">
             <div className="flex flex-col justify-center align-middle items-center">
               {
-<<<<<<< HEAD
-                <audio controls ref={audioRef} className="w-1/2">
-                  Your browser does not support the audio element.
-                </audio>
-              }
-=======
                 <audio controls ref={todayAudioRef} className="w-1/2">
                 Your browser does not support the audio element.
               </audio>}
->>>>>>> d687e485 (fixing dash audio bug)
             </div>
             <div className="leading-7 text-base">{podcastScript} </div>
           </div>
