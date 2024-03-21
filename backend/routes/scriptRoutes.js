@@ -52,8 +52,8 @@ const voiceTypes = {
 const speakingRates = {
   Slow: 0.8,
   Normal: 1,
-  Fast: 1.2
-}
+  Fast: 1.2,
+};
 //------GETTING ALL SCRIPTS--------
 router.get("/", async (req, res) => {
   try {
@@ -67,7 +67,7 @@ router.get("/", async (req, res) => {
 
 async function getUserVoiceSpeed(u) {
   const user = await usersModel.find({ email: u });
-  return { voice: user[0].voice, speed: user[0].speakingRate}; 
+  return { voice: user[0].voice, speed: user[0].speakingRate };
 }
 
 //------GETTING TODAY'S SCRIPTS AND CREATING PODCASTS--------
@@ -82,7 +82,11 @@ router.get("/todaysPodcasts", async (req, res) => {
         //const standardVoice = voiceTypes.standardFemaleAUS;
         const user = script.users[0]; //get the first user since they all have the same voice
         const voicePrefs = await getUserVoiceSpeed(user);
-        const reference = await synthesize(script, voicePrefs.voice, voicePrefs.speed);
+        const reference = await synthesize(
+          script,
+          voicePrefs.voice,
+          voicePrefs.speed
+        );
 
         // Directly find one script and update it with the new gridFsFileId
         const updatedScript = await scriptsModel.findOneAndUpdate(
@@ -111,7 +115,6 @@ router.get("/todaysPodcasts", async (req, res) => {
 //------GETTING TODAY'S SCRIPTS AND CREATING PODCASTS--------
 async function processTodaysPodcasts() {
   try {
-    console.log("Inside the processTodaysPodcasts METHOD");
     const scripts = await scriptsModel.find({
       date: todaysDate,
     });
@@ -120,9 +123,12 @@ async function processTodaysPodcasts() {
       try {
         //const standardVoice = voiceTypes.standardFemaleAUS;
         const user = script.users[0]; // get the first user since they all have the same voice
-        const voice = await getUserVoiceSpeed(user);
-        console.log("voice " + voice);
-        const reference = await synthesize(script, voice);
+        const voicePrefs = await getUserVoiceSpeed(user);
+        const reference = await synthesize(
+          script,
+          voicePrefs.voice,
+          voicePrefs.speed
+        );
 
         // Directly find one script and update it with the new gridFsFileId
         const updatedScript = await scriptsModel.findOneAndUpdate(
@@ -183,11 +189,11 @@ router.get("/pastScript/:user/:date", async (req, res) => {
   }
 });
 
-
-/**----GETTING ALL OLD SCRIPT FOR A SPECIFIC USER ------ */
-router.get("/allPastScript/:user/", async (req, res) => {
+/**----GETTING OLD SCRIPT FOR A SPECIFIC USER ------ */
+router.get("/allPastScript/:user", async (req, res) => {
   try {
     const userEmail = req.params.user; //getting email
+
     // Find scripts that match today's date and include the specific user in the users array
     const scripts = await scriptsModel.find({
       users: userEmail, // This will match any documents where the users array contains the userEmail
