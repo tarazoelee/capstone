@@ -320,3 +320,4 @@ async function openPreviewModal(date) {
     </div>
   );
 }
+}
