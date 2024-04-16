@@ -8,9 +8,6 @@ import Profile from "./Profile";
 import CreateProfile from "./CreateProfile";
 import ContactUs from "./ContactUs";
 import ForgotPassword from "./ForgotPassword";
-import { inject } from "@vercel/analytics";
-
-inject();
 
 function App() {
   return (

@@ -18,7 +18,8 @@ const { sendContactEmail } = require("./contactFormHandler");
 
 const app = express();
 
-app.get("/", (req, res) => res.status(200).json({ message: "Hello World" }));
+//app.get("/", (req, res) => res.status(200).json({ message: "Hello World" }));
+
 // Middlewares
 app.use(express.json());
 app.use(cors());
