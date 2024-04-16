@@ -20,7 +20,13 @@ const app = express();
 
 // Middlewares
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: ["capstone-eight-lovat.vercel.app"],
+    methods: ["POST", "GET"],
+    credentials: true,
+  }),
+);
 
 // MongoDB URI
 const mongoURI =
@@ -95,10 +101,10 @@ app.post("/upload", upload.single("file"), async (req, res, next) => {
   }
 });
 
-//find a podcasts
-app.get("/find", (req, res) => {
-  //
-});
+// //find a podcasts
+// app.get("/find", (req, res) => {
+//   //
+// });
 
 // Use routes
 app.use("/users", userRoutes);
