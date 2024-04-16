@@ -22,7 +22,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: ["capstone-eight-lovat.vercel.app"],
+    origin: ["capstone-frontend-tan.vercel.app"],
     methods: ["POST", "GET"],
     credentials: true,
   }),
