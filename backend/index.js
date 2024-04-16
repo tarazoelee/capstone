@@ -21,13 +21,7 @@ const app = express();
 app.get("/", (req, res) => res.status(200).json({ message: "Hello World" }));
 // Middlewares
 app.use(express.json());
-app.use(
-  cors({
-    origin: ["https://capstone-frontend-tan.vercel.app"],
-    methods: ["POST", "GET"],
-    credentials: true,
-  }),
-);
+app.use(cors());
 
 // MongoDB URI
 const mongoURI =
