@@ -210,7 +210,8 @@ router.get("/allPastScript/:user", async (req, res) => {
 async function synthesize(script, voiceOption, speedOption) {
   const apikey = process.env.TXTAUDIO_API_KEY;
   const endpoint = `https://texttospeech.googleapis.com/v1beta1/text:synthesize?key=${apikey}`;
-  const uploadEndpoint = "http://localhost:5001/upload";
+  const uploadEndpoint =
+    "daily-bytes-backend.vercel.app-lq9b.vercel.app/upload";
 
   const selectedVoice = voiceTypes[voiceOption];
   const selectedSpeed = speakingRates[speedOption];

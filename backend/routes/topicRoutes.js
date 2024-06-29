@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const topicsModel = require("../models/topics");
+const topicsModel = require("../models/Topics");
 
 //GETTING ALL TOPICS
 router.get("/", async (req, res) => {

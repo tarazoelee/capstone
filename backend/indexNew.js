@@ -147,7 +147,7 @@ async function getPodcastForUserEmail() {
   let users = await getAllUsers();
   for (const user of users) {
     const response = await fetch(
-      `http://localhost:5001/scripts/todaysScript/${user.email}`
+      `daily-bytes-backend.vercel.app-lq9b.vercel.app/scripts/todaysScript/${user.email}`
     );
     const data = await response.json();
 
@@ -166,7 +166,9 @@ async function getPodcastForUserEmail() {
 async function getPodcast(refID) {
   if (!refID) return;
   try {
-    const response = await fetch(`http://localhost:5001/image/${refID}`);
+    const response = await fetch(
+      `daily-bytes-backend.vercel.app-lq9b.vercel.app/image/${refID}`
+    );
     console.log("response from refid", response);
     if (!response.ok) {
       throw new Error("Network response was not ok");
