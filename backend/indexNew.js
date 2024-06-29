@@ -147,7 +147,7 @@ async function getPodcastForUserEmail() {
   let users = await getAllUsers();
   for (const user of users) {
     const response = await fetch(
-      `daily-bytes-prod-lq9b.vercel.app/scripts/todaysScript/${user.email}`
+      `daily-bytes-backend.vercel.app-lq9b.vercel.app/scripts/todaysScript/${user.email}`
     );
     const data = await response.json();
 
@@ -167,7 +167,7 @@ async function getPodcast(refID) {
   if (!refID) return;
   try {
     const response = await fetch(
-      `daily-bytes-prod-lq9b.vercel.app/image/${refID}`
+      `daily-bytes-backend.vercel.app-lq9b.vercel.app/image/${refID}`
     );
     console.log("response from refid", response);
     if (!response.ok) {
